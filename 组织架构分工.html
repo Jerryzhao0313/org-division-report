@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>玑之智能 · 产品线组织架构 v3.26</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#f5f6f8;--card:#fff;--border:#e0e3e8;--text:#1a1d23;--text2:#6b7280;--text3:#9ca3af;--accent:#2563eb;--radius:10px}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.5;min-height:100vh}
+.header{background:var(--card);border-bottom:1px solid var(--border);padding:12px 24px;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.header h1{font-size:17px;font-weight:600}
+.header h1 span{color:var(--accent)}
+.header-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.status-label{font-size:11px;color:var(--text2)}
+.btn-sm{padding:5px 12px;border:1px solid var(--border);background:var(--card);border-radius:6px;font-size:12px;cursor:pointer;color:var(--text2)}
+.btn-sm:hover{background:var(--bg)}
+.btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-primary:hover{background:#1d4ed8}
+.container{max-width:100%;margin:0 auto;padding:16px 24px}
+.matrix-wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.matrix-wrap .panel-header{padding:10px 14px;border-bottom:1px solid var(--border);font-size:14px;font-weight:600;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.matrix-scroll{overflow:auto;max-height:calc(100vh - 120px)}
+.matrix-scroll table{border-collapse:collapse;width:100%;font-size:12px;min-width:900px;table-layout:fixed}
+.matrix-scroll th{position:sticky;top:0;background:var(--bg);padding:6px 6px;border-bottom:1px solid var(--border);text-align:left;font-weight:600;z-index:2;white-space:nowrap;font-size:11px}
+.matrix-scroll td{padding:5px 6px;border-bottom:1px solid var(--border);vertical-align:middle;font-size:12px}
+.matrix-scroll .prod-header td{background:#f9fafb;font-weight:700;font-size:12px;border-bottom:2px solid var(--border);padding:8px 6px}
+.pl-count{font-weight:400;font-size:11px;color:var(--text2);margin-left:6px}
+.pl-primary{display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:600;white-space:nowrap}
+.pl-secondary{font-size:10px;color:var(--text3)}
+.row-secondary td{color:var(--text3)}
+.row-secondary td strong{color:var(--text3)}
+.row-part td{background:#fefce8}
+.role-tag{display:inline-block;padding:2px 6px;border-radius:4px;font-size:10px;font-weight:500}
+.config-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:2000;display:none;align-items:center;justify-content:center}
+.config-overlay.show{display:flex}
+.config-box{background:var(--card);border-radius:12px;width:96vw;max-width:1300px;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.config-header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.config-header h2{font-size:16px;font-weight:600}
+.config-body{overflow:auto;flex:1;padding:0 18px 18px}
+.config-footer{padding:12px 18px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.config-footer-left{display:flex;gap:6px;align-items:center}
+.config-table{border-collapse:collapse;width:100%;font-size:12px;margin-top:8px;table-layout:fixed}
+.config-table th{position:sticky;top:0;background:var(--bg);padding:7px 4px;border-bottom:1px solid var(--border);text-align:center;font-weight:600;font-size:10px;z-index:1;white-space:nowrap}
+.config-table td{padding:5px 4px;border-bottom:1px solid var(--border);text-align:center;overflow:hidden;white-space:nowrap}
+.config-table td:first-child{text-align:left}
+.config-table td:nth-child(2){text-align:center}
+.config-table td:nth-child(3){text-align:center}
+.config-name{font-size:11px;font-weight:500}
+.config-title{font-size:9px;color:var(--text3)}
+.config-select{font-size:11px;padding:2px 4px;border:1px solid var(--border);border-radius:4px;background:var(--card);cursor:pointer;outline:none;width:80px}
+.config-select:focus{border-color:var(--accent)}
+.config-select.primary-val{border-color:#10b981;background:#d1fae5;color:#065f46;font-weight:600}
+.config-select.secondary-val{border-color:#f59e0b;background:#fef3c7;color:#92400e}
+.config-role-input{width:110px;padding:2px 4px;border:1px solid var(--border);border-radius:4px;font-size:11px;outline:none;background:transparent}
+.config-role-input:focus{border-color:var(--accent);background:#fff}
+.pl-group-row td{background:#f9fafb;font-weight:600;font-size:11px;padding:6px 2px;border-bottom:2px solid var(--border)}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:1000;display:none;align-items:center;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal-box{background:var(--card);border-radius:12px;padding:22px;width:420px;max-width:92vw;max-height:80vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.15);position:relative}
+.modal-close{position:absolute;top:10px;right:10px;width:26px;height:26px;border:none;background:var(--bg);border-radius:50%;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;color:var(--text2)}
+.modal-close:hover{background:var(--border)}
+.modal-box h2{font-size:15px;font-weight:600;margin-bottom:14px;padding-right:28px}
+.modal-info table{width:100%;border-collapse:collapse;font-size:13px}
+.modal-info td{padding:7px 0;border-bottom:1px solid var(--border)}
+.modal-info td:first-child{color:var(--text2);width:80px}
+@media(max-width:700px){.header{flex-direction:column;align-items:flex-start}.header-right{width:100%}}
+.tree-scroll{overflow:auto;max-height:calc(100vh - 120px);padding:16px 8px}
+.tree-section{margin-bottom:24px;border-radius:8px;border:1px solid var(--border);overflow:hidden}
+.tree-sec-head{padding:8px 14px;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:space-between}
+.tree-sec-body{padding:10px 14px 14px}
+.tree-row{display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start;margin-bottom:6px;position:relative}
+.tree-row-sub{margin-left:28px;border-left:2px solid #dbeafe;padding-left:12px;position:relative;display:flex;flex-wrap:wrap;gap:8px;align-items:flex-start;margin-bottom:4px}
+.tree-card{background:var(--card);border:1px solid var(--border);border-radius:6px;padding:6px 10px;font-size:12px;line-height:1.5;min-width:150px;max-width:240px;flex-shrink:0}
+.tree-card .tc-name{font-weight:600;font-size:13px}
+.tree-card .tc-title{font-size:10px;color:var(--text2);margin-top:1px}
+.tree-card .tc-leader{font-size:9px;color:var(--text3)}
+.tree-card.tc-lead{border-color:var(--accent);box-shadow:inset 0 0 0 1px rgba(37,99,235,.1)}
+.tree-card.tc-part{border-style:dashed;border-color:#d1d5db;opacity:.85}
+.tree-card.tc-root{background:#eff6ff;border-color:#93c5fd;min-width:170px}
+.tree-section .tree-dept-label{font-size:10px;color:var(--text2);margin-left:4px;font-weight:400}
+.tree-section .tree-dept-count{font-size:11px;font-weight:400;background:rgba(0,0,0,.06);padding:1px 8px;border-radius:10px}
+.summary-cards{display:flex;gap:10px;flex-wrap:wrap;padding:12px 16px;margin-bottom:4px}
+.summary-card{flex:1;min-width:170px;border-radius:8px;padding:10px 14px;cursor:pointer;transition:opacity .2s}
+.summary-card:hover{opacity:.85}
+.summary-card .sc-name{font-size:14px;font-weight:600;margin-bottom:4px}
+.summary-card .sc-lead{font-size:11px;color:var(--text2)}
+.summary-card .sc-count{font-size:11px;color:var(--text2);margin-top:2px}
+.summary-card .sc-count strong{font-weight:600;font-size:13px}
+.summary-card .sc-count span{color:var(--text3)}
+/* -- 全局状态栏（内嵌于 panel-header）-- */
+.sb-cards{display:flex;gap:6px;align-items:center}
+.sb-cards .sb-card{text-align:center;border-radius:6px;padding:2px 10px;border:1px solid var(--border);background:var(--card);white-space:nowrap}
+.sb-cards .sb-card .sb-num{font-size:13px;font-weight:700;display:inline;margin-right:2px}
+.sb-cards .sb-card .sb-label{font-size:10px;color:var(--text2);display:inline}
+/* === 组织架构图 === */
+.org-chart{display:flex;flex-direction:column;align-items:center;padding:32px 12px 10px}
+/* -- 根节点 -- */
+.org-root{position:relative;margin-bottom:48px;z-index:2}
+.org-root-card{background:linear-gradient(135deg,#eff6ff,#dbeafe);border:2px solid #3b82f6;border-radius:10px;padding:12px 28px;display:inline-block;text-align:center;box-shadow:0 2px 12px rgba(37,99,235,.12)}
+.org-root-card .orn-name{font-size:16px;font-weight:700;color:#1e40af}
+.org-root-card .orn-title{font-size:11px;color:#2563eb;margin-top:2px}
+.org-root::after{content:'';position:absolute;bottom:-48px;left:50%;width:2px;height:48px;background:#94a3b8;transform:translateX(-50%)}
+/* -- 部门层 -- */
+.org-level{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative;padding-top:28px;max-width:100%}
+.org-level::before{content:'';position:absolute;top:0;left:6%;right:6%;height:2px;background:#94a3b8}
+.org-dept{flex:1;min-width:185px;max-width:260px;position:relative}
+.org-dept::before{content:'';position:absolute;top:-28px;left:50%;width:2px;height:28px;background:#94a3b8;transform:translateX(-50%)}
+.org-dept-box{border:1px solid var(--border);border-radius:8px;overflow:hidden;background:var(--card);box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.org-dept-head{padding:8px 12px;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:space-between;border-radius:7px 7px 0 0}
+.org-dept-head .dept-count{font-size:10px;font-weight:500;background:rgba(255,255,255,.55);padding:1px 8px;border-radius:10px;color:inherit}
+.org-dept-body{padding:6px 8px;display:flex;flex-direction:column;gap:4px}
+/* -- 成员卡片 -- */
+.org-person{padding:6px 10px;border-radius:6px;font-size:11px;line-height:1.5;cursor:pointer;border:1px solid transparent;position:relative}
+.org-person:hover{border-color:var(--accent);background:#f8faff}
+.org-person .op-name{font-weight:600;font-size:12px;display:flex;align-items:center;gap:4px}
+.org-person .op-title{font-size:10px;color:var(--text2)}
+.org-person .op-role{font-size:9px;color:var(--text3);margin-top:1px;line-height:1.3}
+.org-person.op-lead{background:#f0f7ff;border-color:#bfdbfe}
+.org-person.op-part{background:#fefce8;border-color:#fde68a}
+.org-person.op-part .op-name{color:#92400e}
+/* -- 部下缩进 -- */
+.org-subs{margin-left:14px;padding-left:12px;border-left:2px solid #cbd5e1;display:flex;flex-direction:column;gap:4px;margin-top:4px;margin-bottom:2px}
+.org-person.op-pending .op-name{color:var(--text3)}
+.org-person.op-pending .op-title{color:var(--text3)}
+.op-lead-tag{display:inline-block;padding:1px 5px;border-radius:3px;font-size:9px;font-weight:700;margin-left:3px;line-height:1.4;color:#fff}
+.org-person.op-sec{color:var(--text3)}
+.op-dept-tag{display:inline-block;padding:1px 5px;border-radius:3px;font-size:9px;line-height:1.4;margin-top:2px;font-weight:500}
+/* -- 无下属成员横排 -- */
+.org-flat{display:flex;flex-wrap:wrap;gap:6px;padding:4px 0}
+.org-flat .org-person{flex:0 0 auto}
+/* -- 双层连接线(有下属的节点) -- */
+.org-person.op-has-subs::after{content:'';position:absolute;bottom:-8px;left:50%;width:2px;height:8px;background:#94a3b8;display:none}
+@media(max-width:860px){.org-dept{min-width:140px;max-width:100%}.org-level::before{left:2%;right:2%}}
+/* -- 分屏布局：职能表 + 组织架构图 -- */
+.split-container{height:calc(100vh - 130px);overflow:hidden}
+.split-view{display:flex;height:100%;gap:0}
+.split-left{flex:0 0 50%;min-width:340px;overflow:auto;border-right:1px solid var(--border);background:var(--card)}
+.split-left table{border-collapse:collapse;width:100%;font-size:11px;table-layout:auto;min-width:580px}
+.split-left th{position:sticky;top:0;background:var(--bg);padding:3px 3px;border-bottom:1px solid var(--border);text-align:left;font-weight:600;z-index:2;white-space:nowrap;font-size:10px}
+.split-left td{padding:2px 3px;border-bottom:1px solid var(--border);vertical-align:middle;font-size:10px;white-space:nowrap}
+.split-left .dept-summary{padding:8px 6px;display:flex;flex-wrap:wrap;gap:4px}
+.split-left .dept-badge{flex:1 1 auto;min-width:0;border-radius:6px;padding:3px 6px;font-size:10px;border:1px solid var(--border);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.split-right{flex:0 0 50%;overflow:auto}
+/* === 平板适配 ≤1024px === */
+@media(max-width:1024px){
+  .split-left{flex:0 0 40%;min-width:280px}
+  .split-left table{min-width:480px}
+  .split-left td{font-size:10px;padding:2px 2px}
+  .split-right{flex:0 0 60%}
+  .org-dept{max-width:160px!important;min-width:120px!important}
+  .header h1{font-size:15px}
+}
+/* === 手机适配 ≤768px === */
+@media(max-width:768px){
+  /* 顶栏堆叠 */
+  .header{flex-direction:column;align-items:flex-start;gap:4px}
+  .header h1{font-size:14px}
+  .btn-sm{font-size:10px!important;padding:4px 8px!important}
+  /* 面板头堆叠 */
+  .panel-header{flex-direction:column;align-items:flex-start;gap:6px}
+  .panel-header>span{width:100%}
+  /* 分屏 → 上下堆叠 */
+  .split-container{height:auto;overflow:visible}
+  .split-view{flex-direction:column}
+  .split-left{flex:0 0 auto;min-width:0!important;max-height:50vh;overflow:auto;border-right:none;border-bottom:1px solid var(--border)}
+  .split-left table{min-width:480px}
+  .split-right{flex:1;min-height:60vh;overflow:auto}
+  /* 架构图部门块折行 */
+  .org-level{flex-wrap:wrap;gap:8px}
+  .org-level::before{display:none}
+  .org-dept{min-width:140px!important;max-width:48%!important}
+  .org-dept::before{display:none}
+  .org-root::after{height:24px;bottom:-24px}
+  .org-root{margin-bottom:28px}
+  .org-root-card{padding:8px 20px}
+  .org-root-card .orn-name{font-size:14px}
+  /* 人员卡片再压缩 */
+  .org-person{padding:3px 6px!important}
+  .org-person .op-name{font-size:10px!important}
+  .org-person .op-title{font-size:8px!important}
+  /* 状态卡片缩小 */
+  .sb-cards .sb-card{padding:1px 6px}
+  .sb-cards .sb-card .sb-num{font-size:11px}
+  .sb-cards .sb-card .sb-label{font-size:9px}
+  /* 概要卡片 */
+  .summary-card{padding:6px 10px}
+  .summary-card .sc-name{font-size:12px}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>玑之智能 · <span>产品线分工 v3.26</span><span style="font-size:10px;color:var(--text3);margin-left:8px;font-weight:400">2026-06-06</span></h1>
+  <div class="header-right">
+    <span style="font-size:10px;color:var(--text3);margin-right:12px" id="apiUrlDisplay">k7vvy9pbjq.coze.site</span>
+    <span class="status-label">数据来源于飞书</span>
+    <button class="btn-sm btn-primary" onclick="openConfig()">&#9881; 人力配置</button>
+    <span id="syncMsg" style="font-size:11px;color:var(--text2);margin-left:4px"></span>
+  </div>
+</div>
+
+<div class="container">
+  <div class="matrix-wrap">
+    <div class="panel-header">
+      <span style="display:flex;align-items:center;gap:8px">产品线分工矩阵<span class="sb-cards" id="statusCards"></span></span>
+      <span style="display:flex;gap:6px">
+        <span class="btn-sm" style="font-size:11px;cursor:pointer;background:#dbeafe;border-color:#3b82f6;color:#1e40af" onclick="switchView('product')" id="viewProdBtn">产品线矩阵<span style="font-weight:400;opacity:.7;margin-left:4px">5个产品线</span></span>
+        <span class="btn-sm" style="font-size:11px;cursor:pointer" onclick="switchView('tree')" id="viewTreeBtn">职能部门<span style="font-weight:400;opacity:.7;margin-left:4px">5个部门</span></span>
+        <span class="btn-sm" style="font-size:11px;cursor:pointer" onclick="switchView('report')" id="viewReportBtn">人员汇报关系</span>
+      </span>
+      <span style="font-size:11px;color:var(--text2)" id="syncMsg2"></span>
+    </div>
+    <div class="matrix-scroll" id="matrixBody"></div>
+  </div>
+</div>
+
+<div class="config-overlay" id="configOverlay">
+  <div class="config-box">
+    <div class="config-header">
+      <h2>人力配置</h2>
+      <span style="font-size:12px;color:var(--text3)">每人有且仅有一个「主力」产品线，可分配多个「辅助」</span>
+    </div>
+    <div class="config-body">
+      <table class="config-table" id="configTable"></table>
+    </div>
+    <div class="config-footer">
+      <div class="config-footer-left">
+        <button class="btn-sm" onclick="exportCSV()">导出 CSV</button>
+        <button class="btn-sm" onclick="document.getElementById('csvFile').click()">导入 CSV</button>
+        <input type="file" id="csvFile" accept=".csv" style="display:none" onchange="importCSV(event)">
+        <span id="importMsg" style="font-size:11px;color:var(--text2)"></span>
+      </div>
+      <div>
+        <button class="btn-sm" onclick="closeConfig()">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <h2 id="modalTitle"></h2>
+    <div class="modal-info" id="modalInfo"></div>
+  </div>
+</div>
+
+<script>
+var ALL_PLS=['市场商务&项目管理','光模块测试站','非标集成线','复合机器人','PCB&仓库&工程'];
+var PL_COLORS={'市场商务&项目管理':'#BA7517','复合机器人':'#378ADD','光模块测试站':'#639922','非标集成线':'#D85A30','PCB&仓库&工程':'#1D9E75'};
+var PL_BG={'市场商务&项目管理':'#FAEEDA','复合机器人':'#E6F1FB','光模块测试站':'#EAF3DE','非标集成线':'#FAECE7','PCB&仓库&工程':'#E1F5EE'};
+var FUNC_DEPT_ORDER=['总经办','市场部','研发部','交付部','财务部'];
+var FUNC_DEPT_BG={'总经办':'#FAEEDA','研发部':'#E6F1FB','交付部':'#E1F5EE','市场部':'#FDE68A','财务部':'#FBEAF0'};
+var FUNC_DEPT_COLOR={'总经办':'#92400e','研发部':'#1e40af','交付部':'#065f46','市场部':'#b45309','财务部':'#be185d'};
+var ZHANG_DUTIES=['高新企业/专精特新申请','专利申请管理','轻流改革','IT升级推进','经营指标管理','产品线考核数据','行政人事数据','公司财务经营分析'];
+var DOTTED_LEADS=['邹振华','黄辉军'];
+var currentView='product';
+
+// 人数格式化：去掉0值
+function fmtCount(a,p,pe){
+  var parts=[];
+  if(a)parts.push(a+'在职');
+  if(p)parts.push(p+'兼职');
+  if(pe)parts.push(pe+'待招');
+  return parts.join(' ');
+}
+
+var LIVE_EMPLOYEES=[];
+var LIVE_CONFIG={};
+var COZE_API_URL='https://k7vvy9pbjq.coze.site/api/org-data';
+
+function processOrgData(result,sourceLabel){
+  var msg=document.getElementById('syncMsg');
+  if(!result.success){throw new Error(result.error||'加载失败');}
+  var items=result.data.items;
+  LIVE_EMPLOYEES=[];
+  LIVE_CONFIG={};
+  items.forEach(function(it){
+    var f=it.fields,name=f['姓名'];
+    if(!name||f['状态']==='离职')return;
+    LIVE_EMPLOYEES.push({
+      name:name,
+      title:f['职位名称']||'',
+      funcDept:f['部门']||'',
+      dept:(f['主力产品线']||'').trim(),
+      leader:f['直属领导姓名']||'',
+      phone:f['联系方式']||'',
+      eid:f['工号']||'',
+      status:f['状态']||'在职',
+      note:f['角色分工']||''
+    });
+    var primary=(f['主力产品线']||'').trim();
+    var sec=(f['辅助产品线']||[]).map(function(s){var v=typeof s==='object'?s.text:s;return v?v.trim():'';}).filter(function(p){return p&&p!==primary;});
+    LIVE_CONFIG[name]={primary:primary,secondary:sec,note:f['角色分工']||''};
+  });
+  var extra='';
+  if(result.syncedAt)extra=' · 缓存 '+new Date(result.syncedAt).toLocaleString('zh-CN');
+  msg.textContent='✓ '+sourceLabel+' '+items.length+' 条'+extra;
+  updateStatusBar();
+  renderProductCombined();
+}
+
+function initFromFeishu(){
+  var msg=document.getElementById('syncMsg');
+  msg.textContent='正在加载...';
+  fetch(COZE_API_URL).then(function(r){return r.json();}).then(function(result){
+    processOrgData(result,'飞书');
+  }).catch(function(err){
+    msg.textContent='飞书超时，尝试缓存...';
+    return fetch(COZE_API_URL+'?source=cloudbase').then(function(r){return r.json();});
+  }).then(function(result){
+    if(!result)return;
+    processOrgData(result,'CloudBase缓存');
+  }).catch(function(err){
+    msg.textContent='✗ 加载失败：'+err.message;
+  });
+}
+
+function rankWeight(t){
+  t=t||'';
+  if(t.indexOf('董事长')>=0)return -1;
+  if(t.indexOf('总经理助理')>=0)return 2;
+  if(t.indexOf('总经理')>=0 && t.indexOf('总经理助理')<0)return 0;
+  if(t.indexOf('副总经理')>=0||t.indexOf('副总')>=0)return 1;
+  if(t.indexOf('总监')>=0)return 3;
+  if(t.indexOf('项目经理')>=0)return 4;
+  if(t.indexOf('开发经理')>=0)return 5;
+  if(t.indexOf('经理')>=0||t.indexOf('主管')>=0)return 6;
+  if(t.indexOf('架构师')>=0)return 8;
+  if(t.indexOf('技术支持')>=0)return 9;
+  if(t.indexOf('采购')>=0)return 10;
+  if(t.indexOf('工程师')>=0)return 11;
+  if(t.indexOf('助理')>=0||t.indexOf('财务')>=0)return 12;
+  return 99;
+}
+function sortByRank(arr,leaderName){
+  return arr.slice().sort(function(a,b){
+    if(leaderName){
+      if(a.name===leaderName)return -1;
+      if(b.name===leaderName)return 1;
+    }
+    return rankWeight(a.title)-rankWeight(b.title);
+  });
+}
+
+function getAssignment(emp,cfg){
+  var key=emp.name;
+  if(cfg&&cfg[key]&&cfg[key].primary)return cfg[key];
+  var n=emp.note||'',sec=[];
+  if(n.indexOf('跨线')>=0){
+    if(n.indexOf('非标')>=0)sec.push('非标集成线');
+    if(n.indexOf('复合')>=0)sec.push('复合机器人');
+    if(n.indexOf('光模块')>=0)sec.push('光模块测试站');
+    if(n.indexOf('仓储')>=0||n.indexOf('PCB')>=0)sec.push('PCB&仓库&工程');
+  }
+  if(key==='吴思豪')sec.push('PCB&仓库&工程');
+  if(key==='欧阳雄军')sec.push('PCB&仓库&工程');
+  return {primary:emp.dept,secondary:sec};
+}
+function getPrimary(emp,cfg){return getAssignment(emp,cfg).primary;}
+function getSecondary(emp,cfg){return getAssignment(emp,cfg).secondary||[];}
+function getCustomNote(emp,cfg){var k=emp.name;if(cfg&&cfg[k]&&cfg[k].note!==undefined)return cfg[k].note;return emp.note||'';}
+function roleDisplay(n){if(!n)return '';return n;}
+
+function updateStatusBar(){
+  var all=LIVE_EMPLOYEES.filter(function(e){return e.name!=='施驰';});
+  var a=all.filter(function(e){return e.status==='在职';}).length;
+  var p=all.filter(function(e){return e.status==='兼职';}).length;
+  var pe=all.filter(function(e){return e.status==='待入职';}).length;
+  var h='<span class="sb-card" style="border-left:3px solid #10b981"><span class="sb-num" style="color:#10b981">'+a+'</span><span class="sb-label">在职</span></span>';
+  h+='<span class="sb-card" style="border-left:3px solid #d97706"><span class="sb-num" style="color:#d97706">'+p+'</span><span class="sb-label">兼职</span></span>';
+  h+='<span class="sb-card" style="border-left:3px solid #9ca3af"><span class="sb-num" style="color:#9ca3af">'+pe+'</span><span class="sb-label">待招</span></span>';
+  document.getElementById('statusCards').innerHTML=h;
+}
+
+function switchView(v){
+  currentView=v;
+  var map={product:'viewProdBtn',tree:'viewTreeBtn',report:'viewReportBtn'};
+  Object.keys(map).forEach(function(m){
+    var btn=document.getElementById(map[m]);
+    btn.style.background=v===m?'#dbeafe':'var(--card)';
+    btn.style.borderColor=v===m?'#3b82f6':'var(--border)';
+    btn.style.color=v===m?'#1e40af':'var(--text2)';
+  });
+  if(v==='report') renderReportView();
+  else if(v==='tree') renderCombined();
+  else renderProductCombined();
+}
+
+// ========== 产品线分屏视图 ==========
+// 左：产品线表格
+function renderProductTableHtml(){
+  var cfg=LIVE_CONFIG;
+  var emps=LIVE_EMPLOYEES.filter(function(e){return e.name!=='施驰';});
+  var groups={};
+  ALL_PLS.forEach(function(pl){groups[pl]={primary:[],secondary:[]};});
+  emps.forEach(function(e){
+    var p=getPrimary(e,cfg),s=getSecondary(e,cfg);
+    if(groups[p])groups[p].primary.push(e);
+    s.forEach(function(pl){if(groups[pl]&&!groups[pl].primary.find(function(x){return x.name===e.name;}))groups[pl].secondary.push(e);});
+  });
+
+  var PL_LEAD_OVERRIDE={'复合机器人':'欧阳雄军'};
+  var h='<table><thead><tr><th>归属</th><th>姓名</th><th>职位</th><th>状态</th><th>角色分工</th><th>职能</th></tr></thead><tbody>';
+  ALL_PLS.forEach(function(pl){
+    var g=groups[pl],c=PL_COLORS[pl]||'#6b7280',bg=PL_BG[pl]||'#f9fafb';
+    var a=g.primary.filter(function(e){return e.status==='在职';}).length;
+    var p=g.primary.filter(function(e){return e.status==='兼职';}).length;
+    var pe=g.primary.filter(function(e){return e.status==='待入职';}).length;
+    var leadName=PL_LEAD_OVERRIDE[pl]||'';
+    var lead=leadName?g.primary.concat(g.secondary).find(function(e){return e.name===leadName&&e.status==='在职';}):(g.primary.length?sortByRank(g.primary.filter(function(e){return e.status==='在职';}))[0]:null);
+    h+='<tr class="prod-header"><td colspan="6" style="border-left:4px solid '+c+';background:'+bg+'"><b>'+pl+'</b><span style="font-weight:400;font-size:10px;color:var(--text2);margin-left:8px">'+fmtCount(a,p,pe)+'</span></td></tr>';
+    var pool=g.primary.concat(g.secondary.filter(function(e){return !g.primary.find(function(x){return x.name===e.name;});}));
+    var all=sortByRank(pool,lead?lead.name:'');
+    all.forEach(function(e){
+      var isSec=g.secondary.indexOf(e)>=0&&g.primary.indexOf(e)<0;
+      var isLead=lead&&e.name===lead.name;
+      var st=e.status,stColor=st==='兼职'?'#d97706':st==='待入职'?'#9ca3af':'';
+      var stTag=st!=='在职'?'<span style="font-size:10px;color:'+stColor+'">'+st+'</span>':'';
+      var rowStyle=st!=='在职'?' style="color:'+(st==='兼职'?'#92400e':'var(--text3)')+'"':(isSec?' style="color:var(--text3)"':'');
+      var leadTag=isLead?' <span class="op-lead-tag" style="background:'+c+';color:#fff">负责</span>':'';
+      h+='<tr'+rowStyle+'>';
+      h+=isSec?'<td><span class="pl-secondary">辅助</span></td>':'<td><span class="pl-primary" style="background:'+bg+';color:'+c+'">主力</span></td>';
+      h+='<td><strong style="cursor:pointer" ondblclick="showModal(\''+e.name+'\')" title="双击查看详情">'+e.name+leadTag+'</strong></td>';
+      h+='<td style="font-size:10px;color:var(--text2)">'+e.title+'</td>';
+      h+='<td>'+stTag+'</td>';
+      h+='<td style="font-size:10px;color:var(--text2);max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(e.note||'')+'</td>';
+      h+='<td><span class="role-tag" style="background:'+FUNC_DEPT_BG[e.funcDept]+'">'+e.funcDept+'</span></td></tr>';
+    });
+  });
+  h+='</tbody></table>';
+  return h;
+}
+
+// 右：产品线层级架构图
+function renderProductTree(){
+  var cfg=LIVE_CONFIG;
+  var emps=LIVE_EMPLOYEES.filter(function(e){return e.name!=='施驰';});
+  var groups={};
+  ALL_PLS.forEach(function(pl){groups[pl]={primary:[],secondary:[]};});
+  emps.forEach(function(e){
+    var pri=getPrimary(e,cfg),sec=getSecondary(e,cfg);
+    if(groups[pri])groups[pri].primary.push(e);
+    sec.forEach(function(pl){
+      if(groups[pl]&&!groups[pl].primary.find(function(x){return x.name===e.name;}))groups[pl].secondary.push(e);
+    });
+  });
+
+  function getDeptInline(e){
+    if(!e.funcDept)return '';
+    var bg=FUNC_DEPT_BG[e.funcDept]||'#f3f4f6',color=FUNC_DEPT_COLOR[e.funcDept]||'#374151';
+    return '<span class="op-dept-tag" style="background:'+bg+';color:'+color+';margin-left:auto;flex-shrink:0">'+e.funcDept+'</span>';
+  }
+  function plPersonCard(e,isSec,isLead,leadColor){
+    var st=e.status,tag='';
+    if(st==='兼职')tag='<span style="font-size:9px;color:#d97706">兼职 </span>';
+    if(st==='待入职')tag='<span style="font-size:9px;color:#9ca3af">待入职 </span>';
+    var leadTag=isLead?'<span class="op-lead-tag" style="background:'+(leadColor||'#6d28d9')+';color:#fff">负责</span>':'';
+    var cls='org-person'+(isSec?' op-sec':' op-lead')+(st==='兼职'?' op-part':'')+(st==='待入职'?' op-pending':'');
+    return '<div class="'+cls+'" style="padding:4px 8px;font-size:10px" ondblclick="showModal(\''+e.name+'\')" title="双击查看详情"><div class="op-name" style="font-size:11px">'+tag+e.name+leadTag+'</div><div class="op-title" style="font-size:9px;display:flex;justify-content:space-between">'+e.title+getDeptInline(e)+'</div></div>';
+  }
+
+  var h='<div class="org-chart">';
+  h+='<div class="org-root"><div class="org-root-card"><div class="orn-name">赵健章</div><div class="orn-title">产品线总负责人</div></div></div>';
+  h+='<div class="org-level">';
+
+  var PL_LEAD_OVERRIDE2={'复合机器人':'欧阳雄军'};
+  ALL_PLS.forEach(function(pl){
+    var g=groups[pl],c=PL_COLORS[pl]||'#6b7280',bg=PL_BG[pl]||'#f9fafb';
+    var a=g.primary.filter(function(e){return e.status==='在职';}).length;
+    var p=g.primary.filter(function(e){return e.status==='兼职';}).length;
+    var pe=g.primary.filter(function(e){return e.status==='待入职';}).length;
+    var leadName=PL_LEAD_OVERRIDE2[pl]||'';
+    var lead=leadName?g.primary.concat(g.secondary).find(function(e){return e.name===leadName&&e.status==='在职';}):(g.primary.length?sortByRank(g.primary.filter(function(e){return e.status==='在职';}))[0]:null);
+    g.primary=sortByRank(g.primary,lead?lead.name:'');
+    g.secondary=sortByRank(g.secondary,lead?lead.name:'');
+    h+='<div class="org-dept" style="max-width:180px;min-width:140px"><div class="org-dept-box">';
+    h+='<div class="org-dept-head" style="background:'+bg+';color:'+c+';flex-direction:column;align-items:flex-start;gap:2px"><span>'+pl+'</span><span class="dept-count" style="background:none;padding:0;font-size:9px">'+fmtCount(a,p,pe)+'</span></div>';
+    h+='<div class="org-dept-body" style="padding:4px 6px;gap:2px">';
+    var all=sortByRank(g.primary.concat(g.secondary.filter(function(e){return !g.primary.find(function(x){return x.name===e.name;});})),lead?lead.name:'');
+    all.forEach(function(e){
+      var isSec=g.secondary.indexOf(e)>=0&&g.primary.indexOf(e)<0;
+      h+=plPersonCard(e,isSec,e===lead,c);
+    });
+    h+='</div></div></div>';
+  });
+
+  h+='</div></div>';
+  return h+'<div style="padding:32px;text-align:center;color:var(--text3);font-size:11px">双击人名查看详情</div>';
+}
+
+function renderProductCombined(){
+  var left=renderProductTableHtml();
+  var right=renderProductTree();
+  var html='<div class="split-container"><div class="split-view">'+
+    '<div class="split-left">'+left+'</div>'+
+    '<div class="split-right">'+right+'</div>'+
+    '</div></div>';
+  document.getElementById('matrixBody').innerHTML=html;
+}
+
+// ========== 职能部门分屏视图 ==========
+// 左：职能部门表格
+function renderFuncTableHtml(){
+  var cfg=LIVE_CONFIG;
+  var emps=LIVE_EMPLOYEES.filter(function(e){return e.name!=='施驰';});
+  var fg={};
+  emps.forEach(function(e){var fd=e.funcDept;if(!fg[fd])fg[fd]=[];fg[fd].push(e);});
+  var fk=Object.keys(fg).sort(function(a,b){return FUNC_DEPT_ORDER.indexOf(a)-FUNC_DEPT_ORDER.indexOf(b);});
+  var h='<table><thead><tr><th>姓名</th><th>职位</th><th>状态</th><th>角色分工</th>';
+  ALL_PLS.forEach(function(pl){h+='<th style="text-align:center" title="'+pl+'">'+(pl.length>4?pl.slice(0,4)+'…':pl)+'</th>';});
+  h+='</tr></thead><tbody>';
+
+  var FUNC_LEAD={'总经办':['赵健章'],'交付部':['欧阳雄军']};
+  fk.forEach(function(fd){
+    var g=fg[fd],bg=FUNC_DEPT_BG[fd];
+    var leadName=FUNC_LEAD[fd]&&FUNC_LEAD[fd].length?FUNC_LEAD[fd][0]:'';
+    g=sortByRank(g,leadName);fg[fd]=g;
+    var lead=leadName?g.filter(function(e){return e.name===leadName;})[0]:null;
+    var a=g.filter(function(e){return e.status==='在职';}).length;
+    var p=g.filter(function(e){return e.status==='兼职';}).length;
+    var pe=g.filter(function(e){return e.status==='待入职';}).length;
+    h+='<tr class="prod-header"><td colspan="'+(4+ALL_PLS.length)+'" style="border-left:4px solid '+PL_COLORS['总经办']+';background:'+bg+'"><b>'+fd+'</b><span style="float:right;font-weight:400;font-size:10px;color:var(--text2)">'+fmtCount(a,p,pe)+'</span></td></tr>';
+    g.forEach(function(e){
+      var pri=getPrimary(e,cfg),sec=getSecondary(e,cfg);
+      var role=getCustomNote(e,cfg)||'';
+      var st=e.status,stColor=st==='兼职'?'#d97706':st==='待入职'?'#9ca3af':'';
+      var stTag=st!=='在职'?'<span style="font-size:10px;color:'+stColor+'">'+st+'</span>':'';
+      var isLead=lead&&e.name===lead.name;
+      var leadTag=isLead?' <span class="op-lead-tag" style="background:'+bg+';color:#fff">负责</span>':'';
+      var rowStyle=st!=='在职'?' style="color:'+(st==='兼职'?'#92400e':'var(--text3)')+'"':'';
+      h+='<tr'+rowStyle+'><td><strong style="cursor:pointer" ondblclick="showModal(\''+e.name+'\')" title="双击查看详情">'+e.name+leadTag+'</strong></td>';
+      h+='<td style="font-size:10px;color:var(--text2)">'+e.title+'</td>';
+      h+='<td>'+stTag+'</td>';
+      h+='<td style="font-size:10px;color:var(--text2);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+(role.replace(/"/g,'&quot;'))+'">'+role+'</td>';
+      ALL_PLS.forEach(function(pl){
+        if(pl===pri)h+='<td style="text-align:center"><span class="pl-primary" style="background:'+PL_BG[pl]+';color:'+PL_COLORS[pl]+'">主</span></td>';
+        else if(sec.indexOf(pl)>=0)h+='<td style="text-align:center"><span class="pl-secondary">辅</span></td>';
+        else h+='<td></td>';
+      });
+      h+='</tr>';
+    });
+  });
+  h+='</tbody></table>';
+  return h;
+}
+
+// 右：职能部门汇报架构图
+function renderTree(){
+  var nodeMap={};
+  LIVE_EMPLOYEES.filter(function(e){return e.name!=='施驰';}).forEach(function(e){nodeMap[e.name]={emp:e,children:[],parent:null};});
+  LIVE_EMPLOYEES.filter(function(e){return e.name!=='施驰';}).forEach(function(e){
+    if(e.leader&&nodeMap[e.leader]){nodeMap[e.leader].children.push(nodeMap[e.name]);nodeMap[e.name].parent=nodeMap[e.leader];}
+  });
+  Object.keys(nodeMap).forEach(function(k){nodeMap[k].children.sort(function(a,b){return rankWeight(a.emp.title)-rankWeight(b.emp.title);});});
+
+  var MGMT_KW=['总经理','副总经理','总监','经理','架构师','主管'];
+  function isMgmt(e){
+    return MGMT_KW.some(function(k){return (e.title||'').indexOf(k)>=0;}) && (e.status==='在职'||e.status==='兼职');
+  }
+  function shouldDemote(n){
+    var leader=n.parent;
+    if(!leader||leader.emp.name==='赵健章')return false;
+    if(!isMgmt(leader.emp))return false;
+    var lt=leader.emp.title||'';
+    if(lt.indexOf('总经理')>=0||lt.indexOf('副总经理')>=0)return false;
+    return true;
+  }
+
+  function personCard(e,isLead){
+    var tag='';
+    if(e.status==='兼职')tag='<span style="font-size:9px;color:#d97706">兼职 </span>';
+    if(e.status==='待入职')tag='<span style="font-size:9px;color:#9ca3af">待入职 </span>';
+    var cls='org-person'+(isLead?' op-lead':'')+(e.status==='兼职'?' op-part':'')+(e.status==='待入职'?' op-pending':'');
+    return '<div class="'+cls+'" style="padding:4px 8px;font-size:10px" ondblclick="showModal(\''+e.name+'\')" title="双击查看详情"><div class="op-name" style="font-size:11px">'+tag+e.name+'</div><div class="op-title" style="font-size:9px">'+e.title+'</div></div>';
+  }
+
+  function renderSubtree(n,forMgmt){
+    var items=[];
+    n.children.forEach(function(c){
+      if(forMgmt&&isMgmt(c.emp)&&!shouldDemote(c))return;
+      items.push(c);
+    });
+    if(!items.length)return '';
+    var h='<div class="org-subs">';
+    items.forEach(function(c){
+      h+=personCard(c.emp,false);
+      if(c.children.length)h+=renderSubtree(c,true);
+    });
+    h+='</div>';
+    return h;
+  }
+
+  function countDept(mgrs,others){
+    var a=0,p=0,pe=0;
+    function tally(e){
+      if(e.status==='在职')a++;
+      else if(e.status==='兼职')p++;
+      else if(e.status==='待入职')pe++;
+    }
+    mgrs.forEach(function(n){tally(n.emp);});
+    others.forEach(function(n){tally(n.emp);});
+    function walk(n){n.children.forEach(function(c){if(!isMgmt(c.emp)||shouldDemote(c)){tally(c.emp);walk(c);}});}
+    mgrs.forEach(function(n){walk(n);});
+    others.forEach(function(n){walk(n);});
+    return {total:a+p+pe,active:a,part:p,pending:pe};
+  }
+
+  var root=nodeMap['赵健章'];
+  if(!root) return '<div style="padding:40px;text-align:center;color:var(--text3)">无层级数据</div>';
+
+  var mgrNodes=[];
+  Object.keys(nodeMap).forEach(function(k){
+    if(k!=='赵健章'&&isMgmt(nodeMap[k].emp)&&!shouldDemote(nodeMap[k]))mgrNodes.push(nodeMap[k]);
+  });
+  var nonMgmtRoot=[];
+  root.children.forEach(function(c){if(!isMgmt(c.emp)&&c.emp.name!=='施驰')nonMgmtRoot.push(c);});
+  root.children.forEach(function(c){
+    if(isMgmt(c.emp)&&shouldDemote(c)&&c.emp.name!=='施驰')nonMgmtRoot.push(c);
+  });
+
+  var depts={};
+  mgrNodes.forEach(function(n){
+    var fd=n.emp.funcDept;
+    if(!depts[fd])depts[fd]={mgrs:[],others:[]};
+    depts[fd].mgrs.push(n);
+  });
+  nonMgmtRoot.forEach(function(n){
+    var fd=n.emp.funcDept;
+    if(!depts[fd])depts[fd]={mgrs:[],others:[]};
+    depts[fd].others.push(n);
+  });
+  Object.keys(depts).forEach(function(fd){
+    depts[fd].mgrs.sort(function(a,b){return rankWeight(a.emp.title)-rankWeight(b.emp.title);});
+  });
+
+  var h='<div class="org-chart">';
+  h+='<div class="org-root"><div class="org-root-card"><div class="orn-name">赵健章</div><div class="orn-title">总经理</div></div></div>';
+  h+='<div class="org-level">';
+
+  FUNC_DEPT_ORDER.forEach(function(fd){
+    var d=depts[fd];
+    if(!d||(!d.mgrs.length&&!d.others.length))return;
+    var bg=FUNC_DEPT_BG[fd]||'#f9fafb';
+    var c=countDept(d.mgrs,d.others);
+
+    h+='<div class="org-dept" style="max-width:180px;min-width:130px"><div class="org-dept-box">';
+    h+='<div class="org-dept-head" style="background:'+bg+';flex-direction:column;align-items:flex-start;gap:2px"><span>'+fd+'</span><span class="dept-count" style="background:none;padding:0;font-size:9px">'+fmtCount(c.active,c.part,c.pending)+'</span></div>';
+    h+='<div class="org-dept-body" style="padding:4px 6px;gap:2px">';
+
+    if(fd==='研发部')h+='<div class="org-person op-lead" style="padding:4px 8px;font-size:10px"><div class="op-name" style="font-size:11px">赵健章（兼）</div><div class="op-title" style="font-size:9px">研发部负责人</div></div>';
+
+    d.mgrs.forEach(function(n){
+      h+=personCard(n.emp,true);
+      var subs=renderSubtree(n,true);
+      if(subs)h+=subs;
+    });
+    d.others.forEach(function(n){
+      h+=personCard(n.emp,false);
+      var subs=renderSubtree(n,true);
+      if(subs)h+=subs;
+    });
+
+    h+='</div></div></div>';
+  });
+
+  h+='</div></div>';
+  return h+'<div style="padding:32px;text-align:center;color:var(--text3);font-size:11px">双击人名查看详情</div>';
+}
+
+function renderCombined(){
+  var left=renderFuncTableHtml();
+  var right=renderTree();
+  var html='<div class="split-container"><div class="split-view">'+
+    '<div class="split-left">'+left+'</div>'+
+    '<div class="split-right">'+right+'</div>'+
+    '</div></div>';
+  document.getElementById('matrixBody').innerHTML=html;
+}
+
+// ========== 人员汇报关系图（SVG）==========
+function renderReportView(){
+  var cfg=LIVE_CONFIG;
+  var emps=LIVE_EMPLOYEES.filter(function(e){return (e.status==='在职'||e.status==='兼职') && e.name!=='施驰' && e.funcDept!=='财务部' && e.name!=='赵健章';});
+  var allEmps=LIVE_EMPLOYEES.filter(function(e){return e.name!=='施驰' && e.funcDept!=='财务部';});
+
+  var PL_LEAD_OVERRIDE3={'复合机器人':'欧阳雄军'};
+  var plLeads={};
+  ALL_PLS.forEach(function(pl){
+    if(PL_LEAD_OVERRIDE3[pl]){
+      plLeads[pl]=allEmps.find(function(e){return e.name===PL_LEAD_OVERRIDE3[pl];});
+    }else{
+      var members=allEmps.filter(function(e){return getPrimary(e,cfg)===pl && (e.status==='在职'||e.status==='兼职');});
+      plLeads[pl]=sortByRank(members)[0];
+    }
+  });
+
+  function nodeMap(name){
+    return emps.find(function(x){return x.name===name;})||allEmps.find(function(x){return x.name===name;});
+  }
+
+  var leaderSet={};
+  emps.forEach(function(e){
+    if(e.leader&&nodeMap(e.leader))leaderSet[e.leader]=true;
+    var pl=getPrimary(e,cfg);
+    var pLead=plLeads[pl];
+    if(pLead&&pLead.name!==e.name)leaderSet[pLead.name]=true;
+  });
+
+  var relations=[];
+  var dualSet={};
+  emps.forEach(function(e){
+    var fl=e.leader;
+    var pl=getPrimary(e,cfg);
+    var pLead=plLeads[pl];
+    var pLeadName=pLead&&pLead.name!==e.name?pLead.name:null;
+    if(pLeadName===fl) pLeadName=null;
+    var toFl=fl&&fl!==e.name?nodeMap(fl):null;
+    if(toFl)relations.push({from:e,to:toFl,type:'solid'});
+    if(pLeadName){
+      var toPl=nodeMap(pLeadName);
+      if(toPl)relations.push({from:e,to:toPl,type:'dashed'});
+    }
+    if(pLeadName&&toFl)dualSet[e.name]=true;
+  });
+
+  var ceo=allEmps.find(function(e){return e.title.indexOf('总经理')>=0&&e.title.indexOf('助理')<0;});
+  if(ceo){
+    leaderSet[ceo.name]=true;
+    Object.keys(plLeads).forEach(function(pl){
+      var lead=plLeads[pl];
+      if(lead&&lead.name!==ceo.name){
+        var leaderEmp=emps.find(function(x){return x.name===lead.name;})||allEmps.find(function(x){return x.name===lead.name;});
+        if(leaderEmp)relations.push({from:leaderEmp,to:ceo,type:'dashed'});
+      }
+    });
+  }
+
+  var leftList=emps.slice().sort(function(a,b){
+    var da=FUNC_DEPT_ORDER.indexOf(a.funcDept),db=FUNC_DEPT_ORDER.indexOf(b.funcDept);
+    if(da!==db) return da-db;
+    return rankWeight(a.title)-rankWeight(b.title);
+  });
+  var rightList=Object.keys(leaderSet).map(function(n){return nodeMap(n);}).filter(Boolean);
+  rightList=rightList.sort(function(a,b){
+    var da=FUNC_DEPT_ORDER.indexOf(a.funcDept),db=FUNC_DEPT_ORDER.indexOf(b.funcDept);
+    if(da!==db) return da-db;
+    return rankWeight(a.title)-rankWeight(b.title);
+  });
+
+  var leftIdx={}; leftList.forEach(function(e,i){leftIdx[e.name]=i;});
+  var rightIdx={}; rightList.forEach(function(e,i){rightIdx[e.name]=i;});
+  var fnCount={}, plCount={};
+  relations.forEach(function(r){
+    if(!r.to)return;
+    if(r.type==='solid')fnCount[r.to.name]=(fnCount[r.to.name]||0)+1;
+    else plCount[r.to.name]=(plCount[r.to.name]||0)+1;
+  });
+
+  var ROW_L=28, CH_L=24;
+  var ROW_R=84, CH_R=72;
+  var STAT_H=54;
+  var LX=80, LW=170, RX=400, RW=150, GX=254;
+  var W=620;
+  var NL=70, NR=548;
+  var H=Math.max(leftList.length*ROW_L, rightList.length*ROW_R,1)+STAT_H+12;
+
+  var DEPT_LINE_CLR={'总经办':'#b45309','市场部':'#ca8a04','研发部':'#2563eb','交付部':'#0d9488'};
+
+  function esc(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+  var s='<svg viewBox="0 0 '+W+' '+H+'" width="100%" height="'+H+'" xmlns="http://www.w3.org/2000/svg">';
+
+  var dualCount=Object.keys(dualSet).length;
+  var singleCount=leftList.length-dualCount;
+  var mgrCount=rightList.length;
+  var stats=[
+    {label:'双线汇报',val:dualCount,color:'#8b5cf6'},
+    {label:'单线汇报',val:singleCount,color:'#3b82f6'},
+    {label:'管理者',val:mgrCount,color:'#0d9488'}
+  ];
+  var sx=60,sy=0,sw=130,sh=STAT_H-4;
+  stats.forEach(function(st,i){
+    var x=i*sw+sx;
+    s+='<rect x="'+x+'" y="'+sy+'" width="'+(sw-4)+'" height="'+sh+'" rx="5" fill="#fff" stroke="'+st.color+'" stroke-width="0.8"/>';
+    s+='<text x="'+(x+sw/2-6)+'" y="'+(sy+13)+'" text-anchor="middle" font-size="9" fill="#64748b" font-family="system-ui,sans-serif">'+st.label+'</text>';
+    s+='<text x="'+(x+sw/2-6)+'" y="'+(sy+28)+'" text-anchor="middle" font-size="14" font-weight="500" fill="'+st.color+'" font-family="system-ui,sans-serif">'+st.val+'</text>';
+  });
+  var lx=520, ly=10;
+  s+='<line x1="'+lx+'" y1="'+ly+'" x2="'+(lx+20)+'" y2="'+ly+'" stroke="#3b82f6" stroke-width="1.5" opacity="0.5"/>';
+  s+='<text x="'+(lx+24)+'" y="'+(ly+3)+'" font-size="8" fill="#64748b" font-family="system-ui,sans-serif">实线 职能汇报</text>';
+  s+='<line x1="'+(lx+90)+'" y1="'+ly+'" x2="'+(lx+110)+'" y2="'+ly+'" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="5,3" opacity="0.4"/>';
+  s+='<text x="'+(lx+114)+'" y="'+(ly+3)+'" font-size="8" fill="#94a3b8" font-family="system-ui,sans-serif">虚线 产品线汇报</text>';
+
+  var YO=STAT_H;
+
+  leftList.forEach(function(e,i){
+    var y=i*ROW_L+YO;
+    var isDual=dualSet[e.name];
+    var bg=FUNC_DEPT_BG[e.funcDept]||'#f9fafb';
+    s+='<rect x="'+LX+'" y="'+y+'" width="'+LW+'" height="'+CH_L+'" rx="4" fill="'+bg+'" stroke="#e2e8f0" stroke-width="0.5"/>';
+    if(isDual){
+      s+='<rect x="'+LX+'" y="'+y+'" width="3" height="'+CH_L+'" rx="1" fill="#8b5cf6"/>';
+      s+='<text x="'+(LX+6)+'" y="'+(y+CH_L/2+4)+'" text-anchor="start" font-size="7" fill="#8b5cf6" font-family="system-ui,sans-serif" font-weight="500">⇄双线</text>';
+    }
+    var note=(e.note||'').trim();
+    if(note)s+='<text x="'+NL+'" y="'+(y+CH_L/2+4)+'" text-anchor="end" font-size="9" fill="#94a3b8" font-family="system-ui,sans-serif">'+esc(note)+'</text>';
+    s+='<text x="'+(LX+LW-6)+'" y="'+(y+CH_L/2+4)+'" text-anchor="end" font-size="10" font-family="system-ui,sans-serif">';
+    s+='<tspan fill="#94a3b8">'+esc(e.funcDept)+'</tspan>';
+    s+='<tspan fill="#64748b" dx="3">'+esc(e.title)+'</tspan>';
+    s+='<tspan fill="#1e293b" font-weight="500" dx="3">'+esc(e.name)+'</tspan>';
+    s+='</text>';
+    s+='<rect x="'+LX+'" y="'+y+'" width="'+LW+'" height="'+CH_L+'" rx="4" fill="transparent" style="cursor:pointer" ondblclick="showModal(\''+esc(e.name)+'\')"><title>'+esc(e.name)+' - '+esc(e.title)+'</title></rect>';
+  });
+
+  rightList.forEach(function(e,i){
+    var y=i*ROW_R+YO;
+    var bg=FUNC_DEPT_BG[e.funcDept]||'#f9fafb';
+    s+='<rect x="'+RX+'" y="'+y+'" width="'+RW+'" height="'+CH_R+'" rx="5" fill="'+bg+'" stroke="#b0c4de" stroke-width="0.5"/>';
+    var fc=fnCount[e.name]||0, pc=plCount[e.name]||0;
+    s+='<text x="'+(RX+8)+'" y="'+(y+22)+'" font-size="12" font-family="system-ui,sans-serif"><tspan fill="#1e40af" font-weight="500">'+esc(e.name)+'</tspan></text>';
+    s+='<text x="'+(RX+8)+'" y="'+(y+40)+'" font-size="10" fill="#64748b" font-family="system-ui,sans-serif">'+esc(e.title)+'</text>';
+    s+='<text x="'+(RX+8)+'" y="'+(y+58)+'" font-size="9" fill="#94a3b8" font-family="system-ui,sans-serif">'+esc(e.funcDept)+'</text>';
+    var note=(e.note||'').trim();
+    if(note)s+='<text x="'+NR+'" y="'+(y+CH_R/2+4)+'" text-anchor="start" font-size="9" fill="#94a3b8" font-family="system-ui,sans-serif">'+esc(note)+'</text>';
+    if(fc)s+='<rect x="'+(RX+RW-60)+'" y="'+(y+4)+'" width="26" height="16" rx="8" fill="rgba(59,130,246,.1)" stroke="#3b82f6" stroke-width="0.5"/><text x="'+(RX+RW-47)+'" y="'+(y+16)+'" text-anchor="middle" font-size="8" font-weight="500" fill="#3b82f6" font-family="system-ui,sans-serif">实'+fc+'</text>';
+    if(pc)s+='<rect x="'+(RX+RW-30)+'" y="'+(y+4)+'" width="26" height="16" rx="8" fill="rgba(148,163,184,.1)" stroke="#94a3b8" stroke-width="0.5" stroke-dasharray="2,1"/><text x="'+(RX+RW-17)+'" y="'+(y+16)+'" text-anchor="middle" font-size="8" font-weight="500" fill="#94a3b8" font-family="system-ui,sans-serif">虚'+pc+'</text>';
+    s+='<rect x="'+RX+'" y="'+y+'" width="'+RW+'" height="'+CH_R+'" rx="5" fill="transparent" style="cursor:pointer" ondblclick="showModal(\''+esc(e.name)+'\')"><title>'+esc(e.name)+' - '+esc(e.title)+'</title></rect>';
+  });
+
+  relations.forEach(function(r){
+    if(!r.from||!r.to)return;
+    var li=leftIdx[r.from.name],ri=rightIdx[r.to.name];
+    if(li===undefined||ri===undefined)return;
+    var y1=li*ROW_L+CH_L/2+YO, y2=ri*ROW_R+CH_R/2+YO;
+    var dash=r.type==='dashed'?' stroke-dasharray="5,3"':'';
+    var dClr=DEPT_LINE_CLR[r.from.funcDept]||'#3b82f6';
+    var color=r.type==='dashed'?'#94a3b8':dClr;
+    var op=r.type==='dashed'?'0.35':'0.5';
+    s+='<line x1="'+GX+'" y1="'+y1+'" x2="'+RX+'" y2="'+y2+'" stroke="'+color+'" stroke-width="1.2"'+dash+' opacity="'+op+'"/>';
+    s+='<circle cx="'+GX+'" cy="'+y1+'" r="2.5" fill="'+color+'" opacity="0.35"/>';
+    s+='<circle cx="'+RX+'" cy="'+y2+'" r="3" fill="'+color+'" opacity="0.55"/>';
+  });
+
+  s+='</svg>';
+  document.getElementById('matrixBody').innerHTML='<div class="report-svg-wrap">'+s+'</div>';
+}
+
+// ========== 弹窗 & 配置 ==========
+function openConfig(){
+  var cfg=LIVE_CONFIG;
+  var fg={};
+  LIVE_EMPLOYEES.forEach(function(e){if((e.status!=='在职'&&e.status!=='兼职')||e.name==='施驰')return;var fd=e.funcDept;if(!fg[fd])fg[fd]=[];fg[fd].push(e);});
+  var fk=Object.keys(fg).sort(function(a,b){return FUNC_DEPT_ORDER.indexOf(a)-FUNC_DEPT_ORDER.indexOf(b);});
+
+  var h='<table class="config-table"><thead><tr><th style="width:70px">姓名</th><th style="width:70px">职位</th><th style="width:70px">职能</th><th style="width:120px">角色分工</th>';
+  ALL_PLS.forEach(function(pl){h+='<th style="width:100px">'+pl+'</th>';});
+  h+='</tr></thead><tbody>';
+
+  fk.forEach(function(fd){
+    var g=fg[fd];
+    h+='<tr class="pl-group-row"><td colspan="'+(4+ALL_PLS.length)+'">'+fd+'</td></tr>';
+    g.forEach(function(e){
+      var pri=getPrimary(e,cfg),sec=getSecondary(e,cfg),role=getCustomNote(e,cfg);
+      h+='<tr><td><span class="config-name">'+e.name+'</span></td>';
+      h+='<td style="font-size:10px;color:var(--text2)">'+e.title+'</td>';
+      h+='<td style="font-size:10px;color:var(--text2)">'+e.funcDept+'</td>';
+      h+='<td><input class="config-role-input" value="'+(role||'').replace(/"/g,'&quot;')+'" disabled></td>';
+      ALL_PLS.forEach(function(pl){
+        var cls='config-select';
+        if(pl===pri)cls+=' primary-val';
+        else if(sec.indexOf(pl)>=0)cls+=' secondary-val';
+        h+='<td><select class="'+cls+'" disabled>';
+        h+='<option value=""'+(pl!==pri&&sec.indexOf(pl)<0?' selected':'')+'>—</option>';
+        h+='<option value="primary"'+(pl===pri?' selected':'')+'>主力</option>';
+        h+='<option value="secondary"'+(sec.indexOf(pl)>=0?' selected':'')+'>辅助</option>';
+        h+='</select></td>';
+      });
+      h+='</tr>';
+    });
+  });
+  h+='</tbody></table>';
+  document.getElementById('configTable').innerHTML=h;
+  document.getElementById('configOverlay').classList.add('show');
+}
+
+function closeConfig(){document.getElementById('configOverlay').classList.remove('show');}
+
+function exportCSV(){
+  var cfg=LIVE_CONFIG;
+  var csv='\uFEFF姓名,职位,职能部门,主力产品线,辅助产品线,角色\n';
+  LIVE_EMPLOYEES.filter(function(e){return (e.status==='在职'||e.status==='兼职') && e.name!=='施驰';}).forEach(function(e){
+    var pri=getPrimary(e,cfg),sec=getSecondary(e,cfg),role=getCustomNote(e,cfg);
+    var esc=function(s){return '"'+(s||'').replace(/"/g,'""')+'"';};
+    csv+=esc(e.name)+','+esc(e.title)+','+esc(e.funcDept)+','+esc(pri)+','+esc(sec.join(';'))+','+esc(role)+'\n';
+  });
+  var blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='人力配置_'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+function importCSV(ev){
+  var file=ev.target.files[0];
+  if(!file)return;
+  var reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      var lines=e.target.result.split('\n').filter(function(l){return l.trim();});
+      if(lines.length<2)throw new Error('数据行不足');
+      var cfg={};
+      for(var i=1;i<lines.length;i++){
+        var row=parseCSVLine(lines[i]);
+        if(row.length<6)continue;
+        var name=row[0].trim();
+        if(!name)continue;
+        var primary=row[3].trim();
+        var secondary=row[4].trim().split(';').filter(function(s){return s&&s!==primary;});
+        var note=row[5].trim();
+        cfg[name]={primary:primary||'',secondary:secondary,note:note};
+      }
+      LIVE_CONFIG=cfg;
+      document.getElementById('importMsg').textContent='✓ 已导入 '+Object.keys(cfg).length+' 人';
+      openConfig();
+      if(currentView==='report') renderReportView();else if(currentView==='tree') renderCombined();else renderProductCombined();
+    }catch(err){
+      document.getElementById('importMsg').textContent='✗ 导入失败：'+err.message;
+    }
+  };
+  reader.readAsText(file);
+  ev.target.value='';
+}
+
+function parseCSVLine(line){
+  var r=[],cur='',inQ=false;
+  for(var i=0;i<line.length;i++){
+    var c=line[i];
+    if(c==='"'){inQ=!inQ;continue;}
+    if(c===','&&!inQ){r.push(cur);cur='';continue;}
+    cur+=c;
+  }
+  r.push(cur);
+  return r;
+}
+
+function showModal(name){
+  var cfg=LIVE_CONFIG;
+  var emp=LIVE_EMPLOYEES.find(function(e){return e.name===name;});
+  if(!emp)return;
+  var pri=getPrimary(emp,cfg),sec=getSecondary(emp,cfg);
+  document.getElementById('modalTitle').textContent=emp.name+' - '+emp.title;
+  var dutiesHtml='';
+  if(name==='张冬晓')dutiesHtml='<tr><td>职责</td><td><div style="font-size:11px;line-height:1.7">'+ZHANG_DUTIES.map(function(d){return '· '+d;}).join('<br>')+'</div></td></tr>';
+  var dottedHtml=DOTTED_LEADS.indexOf(name)>=0?'<tr><td>虚线汇报</td><td>马佳（商务）</td></tr>':'';
+  var secStr=sec.length?sec.join('、'):'无';
+  document.getElementById('modalInfo').innerHTML='<table>'+
+    '<tr><td>姓名</td><td>'+emp.name+'</td></tr>'+
+    '<tr><td>职位</td><td>'+emp.title+'</td></tr>'+
+    '<tr><td>主力归属</td><td><span class="pl-primary" style="background:'+PL_BG[pri]+';color:'+PL_COLORS[pri]+'">'+pri+'</span></td></tr>'+
+    '<tr><td>辅助归属</td><td>'+secStr+'</td></tr>'+
+    '<tr><td>职能归属</td><td>'+(emp.funcDept||'—')+'</td></tr>'+
+    '<tr><td>直属领导</td><td>'+(emp.leader||'无')+'</td></tr>'+
+    '<tr><td>工号</td><td>'+emp.eid+'</td></tr>'+
+    '<tr><td>联系方式</td><td>'+(emp.phone||'未录入')+'</td></tr>'+
+    dottedHtml+dutiesHtml+
+    (emp.note?'<tr><td>角色</td><td>'+getCustomNote(emp,cfg)+'</td></tr>':'')+'</table>';
+  document.getElementById('modalOverlay').classList.add('show');
+}
+
+function closeModal(){document.getElementById('modalOverlay').classList.remove('show');}
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeModal();closeConfig();}});
+
+initFromFeishu();
+</script>
+</body>
+</html>

@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>玑之智能 · 组织架构调整宣贯</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Noto+Serif+SC:wght@400;600;700;900&display=swap');
+
+:root {
+  --dark: #0F1923;
+  --dark2: #162231;
+  --light: #F5F7FA;
+  --white: #FFFFFF;
+  --blue: #1A56DB;
+  --blueL: #DBEAFE;
+  --blueM: #3B82F6;
+  --text: #1E293B;
+  --muted: #64748B;
+  --green: #059669;
+  --greenL: #D1FAE5;
+  --amber: #D97706;
+  --amberL: #FEF3C7;
+  --red: #DC2626;
+  --redL: #FEE2E2;
+  --pl-biz: #BA7517;
+  --pl-optical: #639922;
+  --pl-custom: #D85A30;
+  --pl-robot: #378ADD;
+  --pl-pcb: #1D9E75;
+  --font-display: 'Noto Serif SC', serif;
+  --font-body: 'Noto Sans SC', sans-serif;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+
+html,body{width:100%;height:100%;overflow:hidden;font-family:var(--font-body);background:var(--dark)}
+
+/* ─── Deck Container ─── */
+.deck{width:100%;height:100%;position:relative}
+
+/* ─── Slide ─── */
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  opacity:0;transform:scale(0.96);
+  transition:opacity .5s cubic-bezier(.4,0,.2,1),transform .5s cubic-bezier(.4,0,.2,1);
+  pointer-events:none;padding:4vh 4vw;overflow-y:auto
+}
+.slide.active{opacity:1;transform:scale(1);pointer-events:auto;z-index:1}
+.slide.dark{background:var(--dark);color:var(--white)}
+.slide.light{background:var(--light);color:var(--text)}
+
+.slide-inner{width:100%;max-width:92vw;margin:auto}
+
+/* ─── Slide 1: Cover ─── */
+.slide-cover{text-align:center}
+.slide-cover .top-bar{position:absolute;top:0;left:0;right:0;height:.35vh;background:var(--blue)}
+.slide-cover .tag{display:inline-block;padding:.4vw 1.5vw;border:1px solid rgba(255,255,255,.2);border-radius:2vw;font-size:1.1vw;color:var(--blueM);margin-bottom:3vh;letter-spacing:.2vw}
+.slide-cover h1{font-family:var(--font-display);font-size:4.5vw;font-weight:900;line-height:1.2;margin-bottom:2vh;letter-spacing:.3vw}
+.slide-cover .subtitle{font-size:1.6vw;color:var(--blueM);margin-bottom:4vh;letter-spacing:.1vw}
+.slide-cover .meta{font-size:1.15vw;color:var(--muted);display:flex;align-items:center;gap:1vw;justify-content:center}
+.slide-cover .meta span{width:.3vw;height:.3vw;border-radius:50%;background:var(--muted)}
+.slide-cover .footer-cover{position:absolute;bottom:2vh;left:50%;transform:translateX(-50%);font-size:.9vw;color:#475569}
+
+/* ─── Section Title ─── */
+.sec-title h2{font-family:var(--font-display);font-size:2.5vw;font-weight:700;margin-bottom:1vh;letter-spacing:.08vw}
+.sec-title .desc{font-size:1.15vw;color:var(--muted);margin-bottom:0}
+.dark .sec-title .desc{color:#94A3B8}
+
+/* ─── 3-Column Cards ─── */
+.cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5vw;margin-top:2.5vh}
+.card3{background:var(--white);border-radius:.8vw;padding:2vw 1.6vw;position:relative;overflow:hidden;box-shadow:0 .1vw .3vw rgba(0,0,0,.06)}
+.card3::before{content:'';position:absolute;top:0;left:0;right:0;height:.25vw;background:var(--blue)}
+.card3 .card-icon{width:3.2vw;height:3.2vw;border-radius:.8vw;background:var(--blueL);display:flex;align-items:center;justify-content:center;margin-bottom:1.2vh;font-size:1.6vw}
+.card3 h4{font-size:1.3vw;font-weight:700;margin-bottom:.5vh}
+.card3 .card-desc{font-size:1vw;color:var(--muted);line-height:1.6;margin-bottom:1vh}
+.card3 ul{list-style:none;font-size:1vw;color:var(--text)}
+.card3 ul li{padding:.25vh 0;padding-left:1.2vw;position:relative}
+.card3 ul li::before{content:'';position:absolute;left:0;top:.7vh;width:.4vw;height:.4vw;border-radius:50%;background:var(--blue);opacity:.4}
+
+/* ─── 2-Column Panels ─── */
+.panels2{display:grid;grid-template-columns:1fr 1fr;gap:1.5vw;margin-top:2vh}
+.panel{background:var(--white);border-radius:.8vw;padding:0;overflow:hidden;box-shadow:0 .1vw .3vw rgba(0,0,0,.06)}
+.panel-accent{height:.25vw}
+.panel-body{padding:1.8vw 1.6vw}
+.panel h4{font-size:1.3vw;font-weight:700;margin-bottom:.5vh;display:flex;align-items:center;gap:.6vw}
+.panel .panel-desc{font-size:1vw;color:var(--muted);margin-bottom:1vh}
+
+/* ─── Reporting Box ─── */
+.report-box{padding:1.4vw 1.2vw;border-radius:.6vw;margin-bottom:1vh;position:relative}
+.report-box .rb-title{font-size:1.15vw;font-weight:700;margin-bottom:.3vh}
+.report-box .rb-body{font-size:.95vw;line-height:1.5}
+.report-box .rb-meta{font-size:.9vw;font-weight:700;margin-top:.3vh}
+
+/* ─── Product Line Bar ─── */
+.pl-bar{display:flex;align-items:center;padding:.6vw 1vw;border-radius:.5vw;margin-bottom:.3vh;color:#fff;font-size:.9vw;font-weight:600}
+.pl-bar .pl-name{flex:1}
+.pl-bar .pl-type{font-size:.7vw;opacity:.8}
+
+/* ─── Table ─── */
+.data-table{width:100%;border-collapse:collapse;font-size:1vw;margin-top:1.5vh}
+.data-table th{background:var(--dark);color:#fff;padding:.8vw 1vw;text-align:left;font-weight:600;font-size:1vw}
+.data-table td{padding:.7vw 1vw;border-bottom:1px solid #E2E8F0;font-size:.95vw}
+.data-table tr:nth-child(even) td{background:rgba(0,0,0,.015)}
+.data-table .pl-tag{font-weight:700}
+
+/* ─── Highlight Box ─── */
+.hl-box{background:var(--blueL);border-radius:.6vw;padding:1vw 1.5vw;font-size:1vw;color:var(--blue);font-weight:700;margin-top:1.5vh}
+
+/* ─── Delivery Triangle ─── */
+.delivery-section{display:grid;grid-template-columns:1fr 1fr;gap:2vw;margin-top:2vh}
+.delivery-col h4{font-size:1.3vw;color:var(--blue);font-weight:700;margin-bottom:1vh}
+.lead-card{background:var(--white);border-radius:.6vw;padding:1vw 1.2vw;position:relative;margin-bottom:.6vh;box-shadow:0 .08vw .15vw rgba(0,0,0,.04)}
+.lead-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:.25vw;border-radius:.2vw 0 0 .2vw}
+.lead-card .lc-name{font-size:1.15vw;font-weight:700;margin-bottom:.2vh}
+.lead-card .lc-sub{font-size:.95vw;color:var(--muted);line-height:1.4}
+.connector{text-align:center;color:#CBD5E1;font-size:1.2vw;margin:.3vh 0}
+
+.team-card{background:var(--white);border-radius:.5vw;padding:.8vw 1vw;position:relative;margin-bottom:.4vh;box-shadow:0 .08vw .15vw rgba(0,0,0,.03)}
+.team-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:.25vw;border-radius:.2vw 0 0 .2vw}
+.team-card .tc-lead{font-size:1.05vw;font-weight:700}
+.team-card .tc-role{font-size:.9vw;color:var(--muted)}
+.team-card .tc-detail{font-size:.85vw;color:var(--muted);margin-top:.2vh}
+
+/* ─── Dual-reporting Visualization (Slide 8) ─── */
+.dual-container{margin-top:2vh}
+.dual-row{display:flex;align-items:stretch;gap:0;margin-bottom:1.6vh}
+.dual-left{width:18vw;flex-shrink:0;display:flex;align-items:center}
+.dual-svg{width:8vw;flex-shrink:0;position:relative}
+.dual-svg svg{width:100%;height:100%}
+.dual-right{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:0.5vw;align-items:center}
+.dual-right .mgr-card:only-child,.dual-right .mgr-card[style*="grid-column"]{grid-column:1/-1;max-width:22vw;justify-self:start}
+
+.emp-card{background:var(--white);border-left:0.25vw solid;border-radius:0 0.5vw 0.5vw 0;padding:0.8vw 1vw;box-shadow:0 0.08vw 0.15vw rgba(0,0,0,.04);display:flex;flex-direction:column;gap:0.2vh}
+.emp-card .emp-name{font-size:1.05vw;font-weight:700;color:var(--text)}
+.emp-card .emp-pl{font-size:0.8vw;color:var(--muted)}
+
+.mgr-card{background:var(--white);border-left:0.25vw solid;border-radius:0 0.5vw 0.5vw 0;padding:0.7vw 1vw;box-shadow:0 0.08vw 0.15vw rgba(0,0,0,.03)}
+.mgr-card .mgr-name{font-size:1vw;font-weight:700;color:var(--text)}
+.mgr-card .mgr-role{font-size:0.75vw;color:var(--muted);line-height:1.5}
+
+.dual-legend{display:flex;justify-content:center;gap:2vw;margin-top:2vh;padding:0.8vw;background:rgba(0,0,0,.02);border-radius:0.5vw}
+.legend-item{display:flex;align-items:center;gap:0.4vw;font-size:0.85vw;color:var(--muted)}
+
+/* ─── Slide 9: Outlook ─── */
+.outlook-grid{display:grid;grid-template-columns:1fr 1fr;gap:2vw;margin-top:2vh}
+.stat-big{font-family:var(--font-display);font-size:5vw;font-weight:900;line-height:1;margin-bottom:.4vh}
+.stat-label{font-size:1.4vw;font-weight:700;margin-bottom:.4vh}
+.stat-desc{font-size:1vw;color:#94A3B8}
+.outlook-item{background:var(--dark2);border-radius:.6vw;padding:1vw 1.4vw;margin-bottom:.6vh;font-size:1.05vw;color:#CBD5E1}
+
+/* ─── Principles (Slide 4) ─── */
+.principles{margin-top:1vh}
+.principle{display:flex;align-items:flex-start;gap:1vw;padding:1.1vw 1.2vw;border-radius:.6vw;margin-bottom:.8vh;background:var(--greenL)}
+.principle .pr-num{font-family:var(--font-display);font-size:1.8vw;font-weight:900;color:var(--green);line-height:1}
+.principle .pr-content h5{font-size:1.15vw;font-weight:700;margin-bottom:.2vh;color:var(--text)}
+.principle .pr-content p{font-size:.95vw;color:var(--muted);line-height:1.5}
+
+/* ─── AI Steps (Slide 4) ─── */
+.ai-steps{margin-top:1vh}
+.ai-step{display:flex;gap:.8vw;padding:.8vw 1vw;border-radius:.5vw;margin-bottom:.4vh;background:#EFF6FF;border-left:.25vw solid var(--blue)}
+.ai-step .ai-label{font-size:1vw;font-weight:700;color:var(--blue)}
+.ai-step .ai-desc{font-size:.9vw;color:var(--muted)}
+
+/* ─── PL Matrix (Slide 5) ─── */
+.pl-row{display:flex;gap:.6vw;margin-bottom:1vh}
+.pl-block{flex:1;padding:1.6vw .6vw;border-radius:.6vw;text-align:center;font-size:1.15vw;font-weight:700;color:#fff}
+.matrix-x{text-align:center;font-size:1.8vw;color:var(--muted);margin:.6vh 0}
+.dept-row{display:flex;gap:.6vw;margin-bottom:2vh}
+.dept-block{flex:1;padding:1vw .6vw;border-radius:.6vw;text-align:center;font-size:1.05vw;font-weight:700;border:1px solid #E2E8F0}
+.concepts3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2vw}
+.concept-card{text-align:left;padding:1.2vw;border-radius:.6vw;background:var(--white);box-shadow:0 .08vw .15vw rgba(0,0,0,.04)}
+.concept-card .cc-icon{font-size:1.6vw;margin-bottom:.5vh}
+.concept-card h5{font-size:1.1vw;font-weight:700;margin-bottom:.2vh}
+.concept-card p{font-size:.85vw;color:var(--muted);line-height:1.5}
+
+/* ─── Profit Sources (Slide 3) ─── */
+.profit-sources{display:flex;align-items:center;gap:.8vw;margin-top:.8vh}
+.profit-src{flex:1;padding:1vw .8vw;border-radius:.6vw;text-align:center;font-size:1vw;font-weight:700}
+.profit-plus{font-size:1.4vw;color:var(--muted)}
+
+/* ─── Nav Controls ─── */
+.nav{position:fixed;bottom:2.5vh;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.6vw;z-index:100}
+.nav-btn{width:2.5vw;height:2.5vw;min-width:32px;min-height:32px;border-radius:50%;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.2vw;transition:all .2s;backdrop-filter:blur(10px)}
+.nav-btn:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25)}
+.dots{display:flex;gap:.45vw}
+.dot{width:.55vw;height:.55vw;min-width:6px;min-height:6px;border-radius:50%;background:rgba(255,255,255,.2);cursor:pointer;transition:all .3s}
+.dot.active{background:var(--blueM);width:1.6vw;min-width:16px;border-radius:1vw}
+.slide-num{font-size:1vw;color:rgba(255,255,255,.5);margin:0 .6vw;min-width:3vw;text-align:center}
+
+/* ─── Dot Adaptation for Light Slides ─── */
+.slide.light ~ .nav .nav-btn{color:var(--text);border-color:rgba(0,0,0,.1);background:rgba(255,255,255,.8)}
+.slide.light ~ .nav .dot{background:rgba(0,0,0,.15)}
+
+/* ─── Wide screen optimization ─── */
+@media(min-width:1800px){
+  .slide-inner{max-width:88vw}
+}
+@media(min-width:2560px){
+  .slide-inner{max-width:82vw}
+}
+
+/* ─── Mobile fallback ─── */
+@media(max-width:768px){
+  .slide{padding:3vh 3vw}
+  .slide-cover h1{font-size:7vw}
+  .slide-cover .subtitle{font-size:3vw}
+  .slide-cover .meta{font-size:2.5vw}
+  .slide-cover .tag{font-size:2.5vw;padding:1vw 3vw}
+  .sec-title h2{font-size:5vw}
+  .sec-title .desc{font-size:2.5vw}
+  .cards3,.panels2,.delivery-section,.outlook-grid{grid-template-columns:1fr}
+  .card3{padding:4vw 3vw}
+  .card3 h4{font-size:3vw}
+  .card3 .card-desc,.card3 ul,.card3 ul li{font-size:2.2vw}
+  .card3 .card-icon{width:7vw;height:7vw;font-size:3.5vw}
+  .panel h4{font-size:3vw}
+  .data-table th,.data-table td{font-size:2vw;padding:2vw 1.5vw}
+  .ab-row{flex-direction:column;align-items:stretch}
+  .ab-arrow{display:none}
+  .ab-label{margin:.5vh auto;width:auto;padding:1vw 3vw;font-size:2vw}
+  .ab-card .ab-name{font-size:2.5vw}
+  .ab-card .ab-role{font-size:2vw}
+  .ab-card .ab-tag{font-size:1.8vw}
+  .dual-row{flex-direction:column;gap:1vh}
+  .dual-left{width:100%}
+  .dual-svg{width:100%;height:6vh}
+  .dual-right{grid-template-columns:1fr}
+  .dual-right .mgr-card[style*="grid-column"]{max-width:100%}
+  .pl-row,.dept-row{flex-wrap:wrap}
+  .pl-block,.dept-block{flex:0 0 auto;min-width:16vw;font-size:2.2vw}
+  .nav-btn{width:36px;height:36px;font-size:16px}
+  .dot{width:8px;height:8px}
+  .dot.active{width:24px}
+  .slide-num{font-size:14px}
+}
+
+/* ─── Key hint ─── */
+.key-hint{position:fixed;top:1.5vh;right:2vw;font-size:.9vw;color:rgba(255,255,255,.3);z-index:100;pointer-events:none}
+@media(max-width:768px){.key-hint{display:none}}
+
+/* ─── Org Chart (Slide 9) ─── */
+.slide-arch{display:flex;gap:1vw;margin-top:1vh;height:74vh}
+.arch-col{flex:1;display:flex;flex-direction:column;align-items:center;overflow:hidden}
+.arch-col .arch-title{font-size:1.05vw;font-weight:700;color:var(--text);margin-bottom:0.6vh;flex-shrink:0}
+.arch-scroll{flex:1;overflow-y:auto;width:100%;padding:0 0.3vw}
+.arch-scroll::-webkit-scrollbar{width:3px}
+.arch-scroll::-webkit-scrollbar-thumb{background:#CBD5E1;border-radius:2px}
+.org-chart{display:flex;flex-direction:column;align-items:center;padding:0.6vw 0.3vw 0.3vw}
+.org-root{position:relative;margin-bottom:2.2vw;z-index:2}
+.org-root-card{background:linear-gradient(135deg,#eff6ff,#dbeafe);border:1.5px solid #3b82f6;border-radius:0.5vw;padding:0.4vw 1vw;display:inline-block;text-align:center;box-shadow:0 1px 6px rgba(37,99,235,.12)}
+.org-root-card .orn-name{font-size:0.85vw;font-weight:700;color:#1e40af}
+.org-root-card .orn-title{font-size:0.6vw;color:#2563eb;margin-top:1px}
+.org-root::after{content:'';position:absolute;bottom:-2.2vw;left:50%;width:1.5px;height:2.2vw;background:#94a3b8;transform:translateX(-50%)}
+.org-level{display:flex;gap:0.5vw;justify-content:center;flex-wrap:wrap;position:relative;padding-top:1.4vw;max-width:100%}
+.org-level::before{content:'';position:absolute;top:0;left:4%;right:4%;height:1.5px;background:#94a3b8}
+.org-dept{flex:1;min-width:8vw;max-width:14vw;position:relative}
+.org-dept::before{content:'';position:absolute;top:-1.4vw;left:50%;width:1.5px;height:1.4vw;background:#94a3b8;transform:translateX(-50%)}
+.org-dept-box{border:1px solid #E2E8F0;border-radius:0.4vw;overflow:hidden;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.org-dept-head{padding:0.35vw 0.5vw;font-size:0.7vw;font-weight:700;display:flex;align-items:center;justify-content:space-between;border-radius:0.35vw 0.35vw 0 0}
+.org-dept-head .dept-count{font-size:0.55vw;font-weight:500;background:rgba(255,255,255,.55);padding:0 0.4vw;border-radius:0.5vw;color:inherit}
+.org-dept-body{padding:0.25vw 0.35vw;display:flex;flex-direction:column;gap:0.15vw}
+.org-person{padding:0.2vw 0.35vw;border-radius:0.3vw;font-size:0.55vw;line-height:1.4;border:1px solid transparent;position:relative}
+.org-person .op-name{font-weight:600;font-size:0.6vw;display:flex;align-items:center;gap:2px}
+.org-person .op-title{font-size:0.48vw;color:var(--muted)}
+.org-person.op-lead{background:#f0f7ff;border-color:#bfdbfe}
+.org-person.op-part{background:#fefce8;border-color:#fde68a}
+.org-person.op-part .op-name{color:#92400e}
+.org-person.op-pending .op-name{color:var(--muted)}
+.org-person.op-pending .op-title{color:var(--muted)}
+.org-subs{margin-left:0.6vw;padding-left:0.5vw;border-left:1.5px solid #cbd5e1;display:flex;flex-direction:column;gap:0.15vw;margin-top:0.15vw;margin-bottom:0.1vw}
+.org-person.op-lead-func{background:#ede9fe;border-color:#c4b5fd}
+.org-person .op-tag{font-size:0.42vw;color:#6d28d9}
+.arch-note{font-size:0.5vw;color:var(--muted);text-align:center;padding:0.4vw 0;flex-shrink:0}
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- ═══ SLIDE 1: 封面 ═══ -->
+  <div class="slide dark active" data-index="0">
+    <div class="slide-cover">
+      <div class="top-bar"></div>
+      <div class="tag">全员通报</div>
+      <h1>玑之智能<br>组织架构调整宣贯</h1>
+      <div class="subtitle">产品线矩阵化 · 双线汇报 · 利润考核 · 超级个体</div>
+      <div class="meta">2026年5月<span></span>玑之智能 JIZHI Intelligence</div>
+    </div>
+    <div class="footer-cover">← → 键翻页  ·  Space 键切换</div>
+  </div>
+
+  <!-- ═══ SLIDE 2: 为什么调整 ═══ -->
+  <div class="slide light" data-index="1">
+    <div class="slide-inner">
+      <div class="sec-title"><h2>为什么从职能制走向矩阵制？</h2><p class="desc">业务从单线作战变成五线并行，旧架构已经无法支撑快速响应和清晰考核</p></div>
+      <div class="cards3">
+        <div class="card3"><div class="card-icon">🧩</div><h4>产品线要自治</h4><p class="card-desc">5条产品线并行推进，协调靠喊话，响应靠人情。必须让每条产品线端到端对客户负责。</p><ul><li>销售、研发、交付人员固定归属产品线</li><li>产品线负责人直接调度本线资源</li></ul></div>
+        <div class="card3"><div class="card-icon">💰</div><h4>考核要算清</h4><p class="card-desc">论坛积分制无法衡量真实贡献，产品线利润才是硬指标。</p><ul><li>取消论坛任务积分制</li><li>按产品线利润统一考核全组</li></ul></div>
+        <div class="card3"><div class="card-icon">🎯</div><h4>人要能成长</h4><p class="card-desc">旧架构下员工不清楚主战场在哪，晋升路径模糊。</p><ul><li>明确主力产品线 → 清晰成长方向</li><li>辅助产品线 → 拓宽能力边界</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 3: 双线汇报 + 利润考核 ═══ -->
+  <div class="slide light" data-index="2">
+    <div class="slide-inner">
+      <div class="sec-title"><h2>矩阵如何运转？双线汇报 + 利润考核</h2></div>
+      <div class="panels2">
+        <!-- LEFT: 双线汇报 -->
+        <div class="panel"><div class="panel-accent" style="background:var(--blue)"></div>
+          <div class="panel-body">
+            <h4>⚖️ 双线汇报机制<span style="font-weight:400;font-size:0.85vw;color:var(--muted);margin-left:auto">每位成员同时向两个人汇报</span></h4>
+            <div class="report-box" style="background:#EFF6FF;border-left:3px solid var(--blue)">
+              <div class="rb-title" style="color:var(--blue)">产品线负责人</div>
+              <div class="rb-body">汇报业务工作（订单 + 内部研发项目）</div>
+              <div class="rb-meta" style="color:var(--amber)">→ 奖金由产品线发放</div>
+              <div class="rb-meta" style="color:var(--amber);margin-top:2px">→ 产品线所有人员按利润统一考核</div>
+            </div>
+            <div class="report-box" style="background:#F0FDF4;border-left:3px solid var(--green)">
+              <div class="rb-title" style="color:var(--green)">职能部门直属领导</div>
+              <div class="rb-body">汇报职能工作（公共项目 + 日常管理）</div>
+              <div class="rb-meta" style="color:var(--green)">→ 工资由职能部门管理</div>
+            </div>
+          </div>
+        </div>
+        <!-- RIGHT: 利润考核 -->
+        <div class="panel"><div class="panel-accent" style="background:var(--amber)"></div>
+          <div class="panel-body">
+            <h4>💰 产品线利润考核<span style="font-weight:400;font-size:0.85vw;color:var(--muted);margin-left:auto">全面取消论坛任务积分制</span></h4>
+            <div class="pl-bar" style="background:var(--pl-biz)"><span class="pl-name">市场商务&项目管理</span><span class="pl-type">公共产品线</span></div>
+            <div class="pl-bar" style="background:var(--pl-optical)"><span class="pl-name">光模块测试站</span><span class="pl-type">业务产品线</span></div>
+            <div class="pl-bar" style="background:var(--pl-custom)"><span class="pl-name">非标集成线</span><span class="pl-type">业务产品线</span></div>
+            <div class="pl-bar" style="background:var(--pl-robot)"><span class="pl-name">复合机器人</span><span class="pl-type">业务产品线</span></div>
+            <div class="pl-bar" style="background:var(--pl-pcb)"><span class="pl-name">PCB&仓库&工程</span><span class="pl-type">业务产品线</span></div>
+            <div class="profit-sources">
+              <div class="profit-src" style="background:var(--amberL);color:var(--amber)">客户订单</div>
+              <div class="profit-plus">+</div>
+              <div class="profit-src" style="background:var(--blueL);color:var(--blue)">内部立项研发</div>
+            </div>
+            <p style="font-size:0.8vw;color:var(--muted);margin-top:0.8vh;text-align:center">两种利润来源统一计入产品线考核</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 4: 超级个体 + 全员AI化 ═══ -->
+  <div class="slide light" data-index="3">
+    <div class="slide-inner">
+      <div class="sec-title"><h2>超级个体 · 全员 AI 化</h2><p class="desc">矩阵架构需要什么样的「人」？能独当一面、信息透明、AI武装</p></div>
+      <div class="panels2">
+        <!-- LEFT -->
+        <div class="panel"><div class="panel-accent" style="background:var(--green)"></div>
+          <div class="panel-body">
+            <h4>🦾 成为超级个体</h4>
+            <div class="principles">
+              <div class="principle">
+                <div class="pr-num">01</div>
+                <div class="pr-content"><h5>独当一面</h5><p>能一个人干的事情，就不要找第二个人干。减少协作摩擦，提高决策速度。</p></div>
+              </div>
+              <div class="principle">
+                <div class="pr-num">02</div>
+                <div class="pr-content"><h5>信息透明</h5><p>自己做过的事情，不能只让自己一个人知道。至少得让两个汇报对象知道，做好沟通。</p></div>
+              </div>
+              <div class="principle">
+                <div class="pr-num">03</div>
+                <div class="pr-content"><h5>结果导向</h5><p>产品线利润就是你的成绩单。每件事都要指向利润贡献，告别无效忙碌。</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- RIGHT -->
+        <div class="panel"><div class="panel-accent" style="background:var(--blue)"></div>
+          <div class="panel-body">
+            <h4>🤖 全员 AI 化管理<span style="font-weight:400;font-size:0.85vw;color:var(--muted);margin-left:auto">所有项目信息和工作过程 IT 化</span></h4>
+            <div class="ai-steps">
+              <div class="ai-step"><span class="ai-label">项目管理上系统</span><span class="ai-desc" style="margin-left:auto">每个订单、每个内部项目 → 在线系统全程跟踪</span></div>
+              <div class="ai-step"><span class="ai-label">工作过程数字化</span><span class="ai-desc" style="margin-left:auto">沟通记录、设计文档、测试报告 → 结构化存储</span></div>
+              <div class="ai-step"><span class="ai-label">AI 辅助决策</span><span class="ai-desc" style="margin-left:auto">数据驱动排期、风险预警、资源调配</span></div>
+              <div class="ai-step"><span class="ai-label">AI 武装到个人</span><span class="ai-desc" style="margin-left:auto">每人配备 AI 助手，提升编码/文档/分析效率</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 5: 矩阵架构全貌 ═══ -->
+  <div class="slide light" data-index="4">
+    <div class="slide-inner">
+      <div class="sec-title"><h2>矩阵架构：5条产品线 × 5个职能部门</h2><p class="desc">产品线架构总负责人：<span style="color:var(--blue);font-weight:700">赵健章</span>  ·  每人 1 个主力产品线 + 辅助产品线，横向对业务端到端负责、纵向对职能专业负责</p></div>
+      <div class="pl-row">
+        <div class="pl-block" style="background:var(--pl-biz)">市场商务<br>&项目管理<div style="font-size:0.6vw;opacity:.8;font-weight:400;margin-top:0.3vh">负责人：马佳</div></div>
+        <div class="pl-block" style="background:var(--pl-optical)">光模块<br>测试站<div style="font-size:0.6vw;opacity:.8;font-weight:400;margin-top:0.3vh">负责人：邹振华</div></div>
+        <div class="pl-block" style="background:var(--pl-custom)">非标集成线<div style="font-size:0.6vw;opacity:.8;font-weight:400;margin-top:0.3vh">负责人：黄辉军</div></div>
+        <div class="pl-block" style="background:var(--pl-robot)">复合机器人<div style="font-size:0.6vw;opacity:.8;font-weight:400;margin-top:0.3vh">负责人：欧阳雄军</div></div>
+        <div class="pl-block" style="background:var(--pl-pcb)">PCB & 仓库<br>& 工程<div style="font-size:0.6vw;opacity:.8;font-weight:400;margin-top:0.3vh">负责人：欧阳雄军</div></div>
+      </div>
+      <div class="matrix-x">×</div>
+      <div class="dept-row">
+        <div class="dept-block" style="background:#FEF3C7;border-color:#FDE68A">总经办</div>
+        <div class="dept-block" style="background:#FEF9C3;border-color:#FEF08A">市场部</div>
+        <div class="dept-block" style="background:#DBEAFE;border-color:#BFDBFE">研发部</div>
+        <div class="dept-block" style="background:#D1FAE5;border-color:#A7F3D0">交付部</div>
+        <div class="dept-block" style="background:#FCE7F3;border-color:#FBCFE8">财务部</div>
+      </div>
+      <div class="concepts3">
+        <div class="concept-card"><div class="cc-icon">🎯</div><h5>主力产品线</h5><p>80%精力投入，绩效评估主线，奖金发放依据</p></div>
+        <div class="concept-card"><div class="cc-icon">🔗</div><h5>辅助产品线</h5><p>柔性覆盖，补位支持，拓宽能力边界</p></div>
+        <div class="concept-card"><div class="cc-icon">🔄</div><h5>AB角机制</h5><p>交叉备份，任一线人员缺口都能快速顶上</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 6: 管理层 + 项目经理对位表 ═══ -->
+  <div class="slide light" data-index="5">
+    <div class="slide-inner">
+      <div class="sec-title"><h2>管理层 & 项目经理产品线锚定</h2><p class="desc">管理人员 + 项目经理（共15人），每人明确主力 + 辅助产品线</p></div>
+      <table class="data-table">
+        <thead><tr><th>姓名</th><th>职位</th><th style="min-width:120px">主力产品线</th><th style="min-width:130px">辅助产品线</th><th>直属领导</th></tr></thead>
+        <tbody>
+          <tr style="background:rgba(26,86,219,.04)"><td><strong>赵健章</strong></td><td>总经理</td><td class="pl-tag" style="color:var(--pl-biz)">市场商务&项目管理</td><td style="color:var(--muted)">—</td><td>施驰</td></tr>
+          <tr style="background:rgba(26,86,219,.04)"><td><strong>欧阳雄军</strong></td><td>副总经理-经营交付</td><td class="pl-tag" style="color:var(--pl-pcb)">PCB&仓库&工程</td><td style="font-size:0.75vw"><span style="color:var(--pl-robot);font-weight:600">复合机器人</span> <span style="color:var(--muted)">·</span> <span style="color:var(--pl-biz);font-weight:600">市场商务</span></td><td>赵健章</td></tr>
+          <tr style="background:rgba(26,86,219,.04)"><td><strong>马佳</strong></td><td>副总经理-商务</td><td class="pl-tag" style="color:var(--pl-biz)">市场商务&项目管理</td><td style="color:var(--muted)">—</td><td>赵健章</td></tr>
+          <tr style="background:rgba(26,86,219,.04)"><td><strong>张冬晓</strong></td><td>总经理助理</td><td class="pl-tag" style="color:var(--pl-biz)">市场商务&项目管理</td><td style="color:var(--muted)">—</td><td>赵健章</td></tr>
+          <tr style="background:rgba(26,86,219,.04)"><td><strong>黄辉军</strong></td><td>交付总监</td><td class="pl-tag" style="color:var(--pl-custom)">非标集成线</td><td><span style="color:var(--pl-biz);font-weight:600;font-size:0.8vw">市场商务&项目管理</span></td><td>欧阳雄军</td></tr>
+          <tr style="background:rgba(26,86,219,.04)"><td><strong>邹振华</strong></td><td>交付总监</td><td class="pl-tag" style="color:var(--pl-optical)">光模块测试站</td><td><span style="color:var(--pl-biz);font-weight:600;font-size:0.8vw">市场商务&项目管理</span></td><td>欧阳雄军</td></tr>
+          <tr style="background:rgba(26,86,219,.04)"><td><strong>黄子少</strong></td><td>软件开发经理</td><td class="pl-tag" style="color:var(--pl-pcb)">PCB&仓库&工程</td><td style="color:var(--muted)">—</td><td>赵健章</td></tr>
+          <tr style="background:rgba(26,86,219,.04)"><td><strong>李国伟</strong></td><td>软件开发经理</td><td class="pl-tag" style="color:var(--pl-optical)">光模块测试站</td><td><span style="color:var(--pl-custom);font-weight:600;font-size:0.8vw">非标集成线</span></td><td>赵健章</td></tr>
+          <tr style="background:rgba(26,86,219,.04)"><td><strong>许锦川</strong></td><td>机械开发经理</td><td class="pl-tag" style="color:var(--pl-optical)">光模块测试站</td><td style="color:var(--muted)">—</td><td>赵健章</td></tr>
+          <tr style="background:rgba(26,86,219,.04)"><td><strong>许传奇</strong></td><td>后台架构师</td><td class="pl-tag" style="color:var(--pl-robot)">复合机器人</td><td style="color:var(--muted)">—</td><td>赵健章</td></tr>
+          <!-- 项目经理分隔 -->
+          <tr><td colspan="5" style="text-align:center;font-weight:700;color:var(--blue);background:var(--blueL);font-size:0.8vw;padding:0.4vw 0.8vw">▸ 项目经理</td></tr>
+          <tr><td><strong>罗敏</strong></td><td>项目经理</td><td class="pl-tag" style="color:var(--pl-pcb)">PCB&仓库&工程</td><td style="color:var(--muted)">—</td><td>欧阳雄军</td></tr>
+          <tr><td><strong>段文强</strong></td><td>项目经理</td><td class="pl-tag" style="color:var(--pl-robot)">复合机器人</td><td><span style="color:var(--pl-custom);font-weight:600;font-size:0.8vw">非标集成线</span></td><td>欧阳雄军</td></tr>
+          <tr><td><strong>罗宏伟</strong></td><td>项目经理</td><td class="pl-tag" style="color:var(--pl-pcb)">PCB&仓库&工程</td><td><span style="color:var(--pl-custom);font-weight:600;font-size:0.8vw">非标集成线</span></td><td>欧阳雄军</td></tr>
+          <tr><td><strong>陈立智</strong></td><td>项目经理</td><td class="pl-tag" style="color:var(--pl-optical)">光模块测试站</td><td style="color:var(--muted)">—</td><td>邹振华</td></tr>
+          <tr><td><strong>陈凯</strong></td><td>项目经理</td><td class="pl-tag" style="color:var(--pl-custom)">非标集成线</td><td><span style="color:var(--pl-pcb);font-weight:600;font-size:0.8vw">PCB&仓库&工程</span></td><td>黄辉军</td></tr>
+        </tbody>
+      </table>
+      <div class="hl-box">核心变化：副总挂帅 PCB，双总监均带市场商务辅线，项目经理按产品线对位清晰。5 位项目经理覆盖 4 条业务产品线</div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 7: 交付铁三角+项目经理 + 研发四线 ═══ -->
+  <div class="slide light" data-index="6">
+    <div class="slide-inner">
+      <div class="sec-title"><h2>关键架构：交付铁三角 · 项目经理 · 研发四线</h2></div>
+      <div class="delivery-section">
+        <div class="delivery-col">
+          <h4>🔺 交付铁三角 & 项目经理</h4>
+          <!-- 欧阳雄军 -->
+          <div class="lead-card" style="border-left:0.25vw solid var(--pl-pcb);margin-bottom:0.5vh">
+            <div class="lc-name">欧阳雄军 &nbsp; 副总经理-经营交付</div>
+            <div class="lc-sub">主力：PCB&仓库&工程 · 辅助：复合机器人 + 市场商务</div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:0.3vw;margin-bottom:0.5vh">
+            <span class="pm-tag" style="background:var(--pl-pcb);color:#fff;padding:0.25vw 0.7vw;border-radius:0.3vw;font-size:0.8vw;font-weight:600">罗敏 · 工程集成 / 行为监控</span>
+            <span class="pm-tag" style="background:var(--pl-robot);color:#fff;padding:0.25vw 0.7vw;border-radius:0.3vw;font-size:0.8vw;font-weight:600">段文强 · 复合机器人交付 / 现场部署</span>
+            <span class="pm-tag" style="background:var(--pl-pcb);color:#fff;padding:0.25vw 0.7vw;border-radius:0.3vw;font-size:0.8vw;font-weight:600">罗宏伟 · 仓储集成 / PCB运维</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:0.3vw;margin-bottom:0.3vh">
+            <span style="font-size:0.7vw;color:var(--muted);margin-right:0.5vw">辅助线：</span>
+            <span style="font-size:0.7vw;color:var(--pl-custom);font-weight:600">段文强→非标集成线</span>
+            <span style="font-size:0.7vw;color:var(--muted)">·</span>
+            <span style="font-size:0.7vw;color:var(--pl-custom);font-weight:600">罗宏伟→非标集成线</span>
+          </div>
+          <!-- 黄辉军 -->
+          <div class="lead-card" style="border-left:0.25vw solid var(--pl-custom);margin-bottom:0.5vh">
+            <div class="lc-name">黄辉军 &nbsp; 交付总监</div>
+            <div class="lc-sub">主力：非标集成线 · 具身AI落地</div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:0.3vw;margin-bottom:0.5vh">
+            <span class="pm-tag" style="background:var(--pl-custom);color:#fff;padding:0.25vw 0.7vw;border-radius:0.3vw;font-size:0.8vw;font-weight:600">陈凯 · 非标集成交付管理 / 现场安装调试</span>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:0.3vw;margin-bottom:0.3vh">
+            <span style="font-size:0.7vw;color:var(--muted);margin-right:0.5vw">辅助线：</span>
+            <span style="font-size:0.7vw;color:var(--pl-pcb);font-weight:600">陈凯→PCB&仓库&工程</span>
+          </div>
+          <!-- 邹振华 -->
+          <div class="lead-card" style="border-left:0.25vw solid var(--pl-optical);margin-bottom:0.5vh">
+            <div class="lc-name">邹振华 &nbsp; 交付总监</div>
+            <div class="lc-sub">主力：光模块测试站 · 精密测试交付</div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:0.3vw;margin-bottom:0.5vh">
+            <span class="pm-tag" style="background:var(--pl-optical);color:#fff;padding:0.15vw 0.5vw;border-radius:0.25vw;font-size:0.7vw;font-weight:600">陈立智 · 集成交付+部署+运维</span>
+          </div>
+          <p style="font-size:0.75vw;color:var(--muted);font-style:italic">5 位项目经理覆盖 4 条业务产品线</p>
+        </div>
+        <div class="delivery-col">
+          <h4>🔬 研发四线对位</h4>
+          <div class="team-card" style="border-left:0.25vw solid var(--pl-robot)">
+            <div class="tc-lead">许传奇 &nbsp; 后台架构师 → 复合机器人</div>
+            <div class="tc-detail">张雄 + 毕伟平(辅) + 卢柏贵(QA) · 调度系统</div>
+          </div>
+          <div class="team-card" style="border-left:0.25vw solid var(--pl-pcb)">
+            <div class="tc-lead">黄子少 &nbsp; 软件开发经理 → PCB&仓库&工程</div>
+            <div class="tc-detail">黄子访(测试) · 行为监控</div>
+          </div>
+          <div class="team-card" style="border-left:0.25vw solid var(--pl-optical)">
+            <div class="tc-lead">李国伟 &nbsp; 软件开发经理 → 光模块测试站<span style="font-size:0.7vw;color:var(--muted);font-weight:400">&nbsp;&nbsp;（辅助线：<span style="color:var(--pl-custom);font-weight:600">非标集成线</span>）</span></div>
+            <div class="tc-detail">曾庆辰(具身) · 具身预研</div>
+          </div>
+          <div class="team-card" style="border-left:0.25vw solid var(--pl-optical)">
+            <div class="tc-lead">许锦川 &nbsp; 机械开发经理 → 光模块测试站</div>
+            <div class="tc-detail">待招结构工程师 · 结构设计</div>
+          </div>
+          <div class="hl-box" style="margin-top:0.8vh">赵健章直管全部 4 位研发负责人 → 跨产品线调度灵活</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 8: 全量汇报关系 SVG ═══ -->
+  <div class="slide light" data-index="7">
+    <div class="slide-inner">
+      <div class="sec-title"><h2>人员汇报关系：产品线 vs 职能线</h2><p class="desc">左列全员按部门排序 · 右列被汇报者按职级排序 · 蓝色实线=职能 · 灰色虚线=产品线 · 同人合并实线</p></div>
+      <div id="report-chart" style="position:relative;margin:1vh auto 0;width:42vw;overflow:visible">
+        <div id="report-left" style="position:absolute;left:0;top:0;width:14vw"></div>
+        <svg id="report-svg" style="position:absolute;left:14vw;top:0;width:14vw;pointer-events:none;overflow:visible"></svg>
+        <div id="report-right" style="position:absolute;left:28vw;top:0;width:14vw"></div>
+      </div>
+      <div class="dual-legend" style="margin-top:1vh">
+        <span class="legend-item"><svg width="24" height="12"><line x1="0" y1="6" x2="24" y2="6" stroke="#64748B" stroke-width="0.8" stroke-dasharray="4,3"/></svg> 产品线汇报（灰色虚线）</span>
+        <span class="legend-item"><svg width="24" height="12"><line x1="0" y1="6" x2="24" y2="6" stroke="#1A56DB" stroke-width="0.8"/></svg> 职能汇报（蓝色实线）</span>
+        <span class="legend-item"><svg width="24" height="12"><line x1="0" y1="6" x2="24" y2="6" stroke="#1D9E75" stroke-width="1"/></svg> 同人合并</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 10: 架构全貌 ═══ -->
+  <div class="slide light" data-index="8">
+    <div class="slide-inner">
+      <div class="sec-title"><h2>组织架构全貌 · 产品线 × 职能线</h2></div>
+      <div class="slide-arch">
+        <div class="arch-col">
+          <div class="arch-title">产品线架构</div>
+          <div class="arch-scroll" id="productArch"><div style="padding:2vw;text-align:center;color:var(--muted)">渲染中...</div></div>
+        </div>
+        <div class="arch-col">
+          <div class="arch-title">职能线架构</div>
+          <div class="arch-scroll" id="funcArch"><div style="padding:2vw;text-align:center;color:var(--muted)">渲染中...</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 9: 资源聚焦 & 展望 ═══ -->
+  <div class="slide dark" data-index="9">
+    <div class="slide-inner">
+      <div class="sec-title"><h2>资源聚焦 & 未来展望</h2></div>
+      <div class="outlook-grid">
+        <div>
+          <p class="desc" style="color:#94A3B8;margin-bottom:20px">当前资源倾斜方向</p>
+          <div class="stat-big" style="color:var(--pl-optical)">5</div>
+          <div class="stat-label" style="color:#fff">人待入职 → 光模块测试站</div>
+          <div class="stat-desc">结构、测试、电气、技术支持、AI架构师 全面扩充</div>
+          <div style="margin-top:2.5vh">
+            <div class="stat-label" style="color:var(--pl-custom);font-size:1.2vw">人才梯队</div>
+            <div class="stat-desc">提拔交付总监 → 产品线负责人<br><span style="color:#64748B;font-size:0.75vw">黄辉军（非标集成线）· 邹振华（光模块测试站）</span></div>
+            <div class="stat-desc" style="margin-top:0.8vh">培养项目经理 → 未来新产品线负责人<br><span style="color:#64748B;font-size:0.75vw">罗敏 · 段文强 · 罗宏伟 · 陈立智 · 陈凯</span></div>
+          </div>
+        </div>
+        <div>
+          <p class="desc" style="color:#94A3B8;margin-bottom:20px">下一步：从调整到进化</p>
+          <div class="outlook-item">人才引进：6个待入职岗位补齐，光模块交付力量翻倍</div>
+          <div class="outlook-item">矩阵深化：产品线与职能线双向考核机制建立</div>
+          <div class="outlook-item">超级个体：每人独当一面，减少协作摩擦</div>
+          <div class="outlook-item">全员AI化：项目信息和工作过程全面IT化，AI武装到人</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:40px">
+        <div style="font-family:var(--font-display);font-size:1.6vw;font-weight:900;color:var(--blueM);letter-spacing:0.15vw;margin-bottom:1.2vh">锚定产生专业 &nbsp; 柔性创造韧性 &nbsp; AI 加速进化</div>
+        <div style="font-size:0.85vw;color:#64748B">玑之智能 · 2026年5月 · 组织架构调整全员宣贯</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- NAV -->
+<div class="nav" id="nav">
+  <button class="nav-btn" id="prevBtn" title="上一页">◀</button>
+  <div class="dots" id="dots"></div>
+  <button class="nav-btn" id="nextBtn" title="下一页">▶</button>
+  <span class="slide-num" id="slideNum">1 / 10</span>
+</div>
+
+<div class="key-hint">← → 翻页 &nbsp; Space 切换</div>
+
+<!-- ═══ 汇报关系图由下方架构图渲染脚本生成 ═══ -->
+
+<script>
+(function(){
+  var slides = document.querySelectorAll('.slide');
+  var dotsEl = document.getElementById('dots');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var slideNum = document.getElementById('slideNum');
+  var total = slides.length;
+  var current = 0;
+
+  // Create dots
+  for (var i = 0; i < total; i++) {
+    var dot = document.createElement('span');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('data-i', i);
+    dot.onclick = function(){ goTo(parseInt(this.getAttribute('data-i'))); };
+    dotsEl.appendChild(dot);
+  }
+  slideNum.textContent = '1 / ' + total;
+
+  function goTo(idx) {
+    if (idx < 0 || idx >= total) return;
+    slides[current].classList.remove('active');
+    dotsEl.children[current].classList.remove('active');
+    current = idx;
+    slides[current].classList.add('active');
+    dotsEl.children[current].classList.add('active');
+    slideNum.textContent = (current + 1) + ' / ' + total;
+
+    // Update nav color for light/dark slides
+    var isDark = slides[current].classList.contains('dark');
+    var navEl = document.getElementById('nav');
+    if (isDark) {
+      navEl.querySelectorAll('.nav-btn').forEach(function(b){
+        b.style.color = '#fff'; b.style.borderColor = 'rgba(255,255,255,.15)'; b.style.background = 'rgba(255,255,255,.05)';
+      });
+      navEl.querySelectorAll('.dot').forEach(function(d){
+        if (!d.classList.contains('active')) d.style.background = 'rgba(255,255,255,.2)';
+      });
+    } else {
+      navEl.querySelectorAll('.nav-btn').forEach(function(b){
+        b.style.color = 'var(--text)'; b.style.borderColor = 'rgba(0,0,0,.1)'; b.style.background = 'rgba(255,255,255,.8)';
+      });
+      navEl.querySelectorAll('.dot').forEach(function(d){
+        if (!d.classList.contains('active')) d.style.background = 'rgba(0,0,0,.15)';
+      });
+    }
+  }
+
+  prevBtn.onclick = function(){ goTo(current - 1); };
+  nextBtn.onclick = function(){ goTo(current + 1); };
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); goTo(current + 1); }
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
+    if (e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+    if (e.key === 'Home') { e.preventDefault(); goTo(0); }
+    if (e.key === 'End') { e.preventDefault(); goTo(total - 1); }
+  });
+
+  // Touch swipe
+  var touchStartX = 0;
+  document.addEventListener('touchstart', function(e){ touchStartX = e.touches[0].clientX; });
+  document.addEventListener('touchend', function(e){
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 60) { goTo(dx < 0 ? current + 1 : current - 1); }
+  });
+})();
+</script>
+
+<!-- ═══ 架构图渲染脚本 ═══ -->
+<script>
+(function(){
+  var ALL_PLS=['市场商务&项目管理','光模块测试站','非标集成线','复合机器人','PCB&仓库&工程'];
+  var PL_COLORS={'市场商务&项目管理':'#BA7517','复合机器人':'#378ADD','光模块测试站':'#639922','非标集成线':'#D85A30','PCB&仓库&工程':'#1D9E75'};
+  var PL_BG={'市场商务&项目管理':'#FAEEDA','复合机器人':'#E6F1FB','光模块测试站':'#EAF3DE','非标集成线':'#FAECE7','PCB&仓库&工程':'#E1F5EE'};
+  var FUNC_DEPT_ORDER=['总经办','市场部','研发部','交付部','财务部'];
+  var FUNC_DEPT_BG={'总经办':'#FAEEDA','研发部':'#E6F1FB','交付部':'#E1F5EE','市场部':'#FDE68A','财务部':'#FBEAF0'};
+
+  function fmtCount(a,p,pe){
+    var parts=[];
+    if(a)parts.push(a+'在职');
+    if(p)parts.push(p+'兼职');
+    if(pe)parts.push(pe+'待招');
+    return parts.join(' ');
+  }
+  function rankWeight(t){t=t||'';if(t.indexOf('副总经理')>=0||t.indexOf('副总')>=0)return 1;if(t.indexOf('总经理助理')>=0)return 6;if(t.indexOf('总经理')>=0)return 0;if(t.indexOf('总监')>=0)return 2;if(t.indexOf('经理')>=0||t.indexOf('主管')>=0)return 3;if(t.indexOf('架构师')>=0)return 4;if(t.indexOf('工程师')>=0)return 5;if(t.indexOf('助理')>=0||t.indexOf('采购')>=0)return 6;return 99;}
+  function sortByRank(arr){return arr.slice().sort(function(a,b){return rankWeight(a.title)-rankWeight(b.title);});}
+
+  var EMPLOYEES=[
+    // 总经办
+    {name:"赵健章",title:"总经理",funcDept:"总经办",dept:"",leader:"施驰",status:"在职",note:"公司整体战略·AI产品线规划·投融资决策"},
+    {name:"施驰",title:"董事长",funcDept:"总经办",dept:"",leader:"",status:"兼职",note:"大老板"},
+    {name:"张冬晓",title:"总经理助理",funcDept:"总经办",dept:"市场商务&项目管理",leader:"赵健章",status:"在职",note:"轻流改革·IT升级·经营指标·考核数据·行政人事·财务分析"},
+    {name:"喻青",title:"业务助理",funcDept:"总经办",dept:"市场商务&项目管理",leader:"张冬晓",status:"在职",note:"订单跟进·合同管理·客户对账-监管人事"},
+    {name:"唐梅",title:"采购工程师",funcDept:"总经办",dept:"市场商务&项目管理",leader:"张冬晓",status:"在职",note:"运营物资采购·供应商管理·采购流程-监管行政"},
+    // 市场部
+    {name:"马佳",title:"副总经理-商务",funcDept:"市场部",dept:"市场商务&项目管理",leader:"赵健章",status:"在职",note:"客户商务对接·合同管理·投融资推进"},
+    {name:"商务（女）",title:"商务经理",funcDept:"市场部",dept:"市场商务&项目管理",leader:"马佳",status:"待入职",note:"商务合同跟进、客户关系公关"},
+    // 研发部
+    {name:"黄子少",title:"软件开发经理",funcDept:"研发部",dept:"PCB&仓库&工程",leader:"赵健章",status:"在职",note:"研发-行为监控-监管复合机器人导航开发"},
+    {name:"李国伟",title:"软件开发经理",funcDept:"研发部",dept:"光模块测试站",leader:"赵健章",status:"在职",note:"研发-软件·跨线非标集成具身预研-光模块重投入→监管复合机器人Blockly开发"},
+    {name:"许锦川",title:"机械开发经理",funcDept:"研发部",dept:"光模块测试站",leader:"赵健章",status:"在职",note:"研发-结构"},
+    {name:"许传奇",title:"后台架构师",funcDept:"研发部",dept:"复合机器人",leader:"赵健章",status:"在职",note:"研发-调度系统，主要是复合机器人"},
+    {name:"黄子访",title:"测试工程师",funcDept:"研发部",dept:"PCB&仓库&工程",leader:"黄子少",status:"在职",note:"测试-行为监控-监管复合机器人导航测试"},
+    {name:"张雄",title:"软件工程师",funcDept:"研发部",dept:"复合机器人",leader:"许传奇",status:"在职",note:"研发-调度系统"},
+    {name:"曾庆辰",title:"软件工程师",funcDept:"研发部",dept:"非标集成线",leader:"李国伟",status:"在职",note:"研发-具身"},
+    {name:"毕伟平",title:"软件工程师",funcDept:"研发部",dept:"光模块测试站",leader:"许传奇",status:"在职",note:"研发-调度-MES对接，主要是光模块工作站"},
+    {name:"卢柏贵",title:"测试工程师",funcDept:"研发部",dept:"复合机器人",leader:"许传奇",status:"在职",note:"跨线QA·复合调度测试+运维兼职"},
+    {name:"吴思豪",title:"AI架构师",funcDept:"研发部",dept:"非标集成线",leader:"赵健章",status:"兼职",note:"侧重非标集成AI·行为监控辅助"},
+    {name:"唐小初",title:"AI架构师",funcDept:"研发部",dept:"非标集成线",leader:"李国伟",status:"待入职",note:"大模型VLA/WAM，YOLO"},
+    {name:"结构（男）",title:"结构工程师",funcDept:"研发部",dept:"光模块测试站",leader:"许锦川",status:"待入职",note:"光模块测试站整机设计"},
+    {name:"软件开发测试",title:"测试工程师",funcDept:"研发部",dept:"光模块测试站",leader:"李国伟",status:"待入职",note:"机械臂软件白盒测试"},
+    // 交付部
+    {name:"欧阳雄军",title:"副总经理-经营交付",funcDept:"交付部",dept:"PCB&仓库&工程",leader:"赵健章",status:"在职",note:"复合机器人+PCB仓储工程双线运营·平台资源协调"},
+    {name:"黄辉军",title:"交付总监",funcDept:"交付部",dept:"非标集成线",leader:"欧阳雄军",status:"在职",note:"非标集成线统筹·具身AI落地·项目管理-小部分PCB项目"},
+    {name:"邹振华",title:"交付总监",funcDept:"交付部",dept:"光模块测试站",leader:"欧阳雄军",status:"在职",note:"光模块测试站统筹·项目进度·客户交付管理-兼管复合机器人光模块应用落地"},
+    {name:"罗敏",title:"项目经理",funcDept:"交付部",dept:"PCB&仓库&工程",leader:"欧阳雄军",status:"在职",note:"工程集成·行为监控"},
+    {name:"段文强",title:"项目经理",funcDept:"交付部",dept:"复合机器人",leader:"欧阳雄军",status:"在职",note:"复合机器人项目集成交付·现场部署管理-维护Wi-Fi测试工作站"},
+    {name:"罗宏伟",title:"项目经理",funcDept:"交付部",dept:"PCB&仓库&工程",leader:"欧阳雄军",status:"在职",note:"仓储集成+运维-PCB设备-兼管部分非标产线运维"},
+    {name:"陈立智",title:"项目经理",funcDept:"交付部",dept:"光模块测试站",leader:"邹振华",status:"在职",note:"集成交付+部署+运维-兼管小部分复合机器人维护"},
+    {name:"陈凯",title:"项目经理",funcDept:"交付部",dept:"非标集成线",leader:"黄辉军",status:"在职",note:"非标集成项目交付管理·现场安装调试"},
+    {name:"韦灵智",title:"技术支持工程师",funcDept:"交付部",dept:"非标集成线",leader:"黄辉军",status:"在职",note:"部署+运维·跨线复合售后"},
+    {name:"宣恩宝",title:"技术支持工程师",funcDept:"交付部",dept:"非标集成线",leader:"黄辉军",status:"在职",note:"非标集成项目交付·售后运维支持"},
+    {name:"韦伟",title:"技术支持工程师",funcDept:"交付部",dept:"PCB&仓库&工程",leader:"黄辉军",status:"在职",note:"PCB/仓储项目交付·客户现场运维"},
+    {name:"李城洁",title:"结构工程师",funcDept:"交付部",dept:"光模块测试站",leader:"邹振华",status:"在职",note:"非标治具结构设计"},
+    {name:"朱坤城",title:"技术支持工程师",funcDept:"交付部",dept:"光模块测试站",leader:"邹振华",status:"在职",note:"光模块现场支持（侧重）·复合机器人售后（AB角）"},
+    {name:"旷文武",title:"技术支持工程师",funcDept:"交付部",dept:"复合机器人",leader:"邹振华",status:"在职",note:"复合机器人售后（侧重）·光模块现场支持（AB角）"},
+    {name:"蒙增俭",title:"装配工程师",funcDept:"交付部",dept:"光模块测试站",leader:"邹振华",status:"在职",note:"供应链质检·生产跟单·光模块临时现场支持"},
+    {name:"施文实",title:"装配工程师",funcDept:"交付部",dept:"光模块测试站",leader:"邹振华",status:"在职",note:"供应链质检·生产跟单·光模块临时现场支持"},
+    {name:"吴开兴",title:"电气工程师",funcDept:"交付部",dept:"光模块测试站",leader:"邹振华",status:"在职",note:"光模块电气主力·各线按需调度"},
+    {name:"杨舜钧",title:"技术支持工程师",funcDept:"交付部",dept:"光模块测试站",leader:"邹振华",status:"在职",note:"光模块测试站现场部署·客户技术支持"},
+    {name:"电气（男）",title:"电气工程师",funcDept:"交付部",dept:"非标集成线",leader:"黄辉军",status:"待入职",note:"光模块测试站电气设计"},
+    {name:"支持（男）",title:"技术支持工程师",funcDept:"交付部",dept:"光模块测试站",leader:"邹振华",status:"待入职",note:"光模块测试站技术支持"},
+    // 财务部
+    {name:"祁婷",title:"财务",funcDept:"财务部",dept:"",leader:"赵健章",status:"兼职",note:"财务主管"},
+    {name:"俞光武",title:"财务",funcDept:"财务部",dept:"",leader:"赵健章",status:"兼职",note:"财务主管"},
+    {name:"万梦晓",title:"财务",funcDept:"财务部",dept:"",leader:"祁婷",status:"兼职",note:"财务助理"},
+  ];
+
+  function setPL(name,primary,secondary,note){
+    CONFIG[name]={primary:primary,secondary:secondary||[],note:note||''};
+  }
+  var CONFIG={};
+  // 总经办
+  setPL('张冬晓','市场商务&项目管理',[]);
+  setPL('喻青','市场商务&项目管理',['PCB&仓库&工程','非标集成线']);
+  setPL('唐梅','市场商务&项目管理',['光模块测试站']);
+  // 市场部
+  setPL('马佳','市场商务&项目管理',[]);
+  setPL('商务（女）','市场商务&项目管理',[]);
+  // 研发部
+  setPL('黄子少','PCB&仓库&工程',[]);
+  setPL('李国伟','光模块测试站',['非标集成线']);
+  setPL('许锦川','光模块测试站',[]);
+  setPL('许传奇','复合机器人',[]);
+  setPL('黄子访','PCB&仓库&工程',[]);
+  setPL('张雄','复合机器人',[]);
+  setPL('曾庆辰','非标集成线',[]);
+  setPL('毕伟平','光模块测试站',['复合机器人']);
+  setPL('卢柏贵','复合机器人',['光模块测试站']);
+  setPL('吴思豪','非标集成线',['PCB&仓库&工程']);
+  setPL('唐小初','非标集成线',['PCB&仓库&工程']);
+  setPL('结构（男）','光模块测试站',[]);
+  setPL('软件开发测试','光模块测试站',['非标集成线']);
+  // 交付部
+  setPL('欧阳雄军','PCB&仓库&工程',['复合机器人','市场商务&项目管理']);
+  setPL('黄辉军','非标集成线',['市场商务&项目管理']);
+  setPL('邹振华','光模块测试站',['市场商务&项目管理']);
+  setPL('罗敏','PCB&仓库&工程',[]);
+  setPL('段文强','复合机器人',['非标集成线']);
+  setPL('罗宏伟','PCB&仓库&工程',['非标集成线']);
+  setPL('陈立智','光模块测试站',[]);
+  setPL('陈凯','非标集成线',['PCB&仓库&工程']);
+  setPL('韦灵智','非标集成线',['复合机器人']);
+  setPL('宣恩宝','非标集成线',['PCB&仓库&工程']);
+  setPL('韦伟','PCB&仓库&工程',['非标集成线']);
+  setPL('李城洁','光模块测试站',['非标集成线']);
+  setPL('朱坤城','光模块测试站',['复合机器人']);
+  setPL('旷文武','复合机器人',[]);
+  setPL('蒙增俭','光模块测试站',['非标集成线']);
+  setPL('施文实','光模块测试站',[]);
+  setPL('吴开兴','光模块测试站',['非标集成线']);
+  setPL('杨舜钧','光模块测试站',[]);
+  setPL('电气（男）','非标集成线',['光模块测试站']);
+  setPL('支持（男）','光模块测试站',[]);
+
+  function getPrimary(emp){var c=CONFIG[emp.name];return c&&c.primary?c.primary:emp.dept;}
+  function getSecondary(emp){var c=CONFIG[emp.name];return c&&c.secondary?c.secondary:[];}
+
+  // ─── 产品线架构树 ───
+  function renderProductTree(){
+    var emps=EMPLOYEES.slice();
+    var groups={};
+    ALL_PLS.forEach(function(pl){groups[pl]={primary:[],secondary:[]};});
+    emps.forEach(function(e){
+      var pri=getPrimary(e),sec=getSecondary(e);
+      if(groups[pri])groups[pri].primary.push(e);
+      sec.forEach(function(pl){if(groups[pl]&&!groups[pl].primary.find(function(x){return x.name===e.name;}))groups[pl].secondary.push(e);});
+    });
+    ALL_PLS.forEach(function(pl){groups[pl].primary=sortByRank(groups[pl].primary);groups[pl].secondary=sortByRank(groups[pl].secondary);});
+
+    function card(e,isSec,isLead){
+      var tag='';if(e.status==='兼职')tag='<span style="font-size:0.42vw;color:#d97706">兼职 </span>';if(e.status==='待入职')tag='<span style="font-size:0.42vw;color:#9ca3af">待入职 </span>';
+      var lt=isLead?'<span class="op-tag">负责</span>':'';
+      var cls='org-person'+(isSec?'':' op-lead')+(e.status==='兼职'?' op-part':'')+(e.status==='待入职'?' op-pending':'');
+      return '<div class="'+cls+'"><div class="op-name">'+tag+e.name+lt+'</div><div class="op-title">'+e.title+'</div></div>';
+    }
+
+    var h='<div class="org-chart">';
+    h+='<div class="org-root"><div class="org-root-card"><div class="orn-name">赵健章</div><div class="orn-title">产品线总负责人</div></div></div>';
+    h+='<div class="org-level">';
+    ALL_PLS.forEach(function(pl){
+      var g=groups[pl],c=PL_COLORS[pl],bg=PL_BG[pl];
+      var a=g.primary.filter(function(e){return e.status==='在职';}).length;
+      var p=g.primary.filter(function(e){return e.status==='兼职';}).length;
+      var pe=g.primary.filter(function(e){return e.status==='待入职';}).length;
+      var PL_LEAD_OVERRIDE={'复合机器人':'欧阳雄军'};
+      var lead=PL_LEAD_OVERRIDE[pl]?
+        g.primary.concat(g.secondary).find(function(e){return e.name===PL_LEAD_OVERRIDE[pl]&&e.status==='在职';}):
+        sortByRank(g.primary.filter(function(e){return e.status==='在职';}))[0];
+      h+='<div class="org-dept"><div class="org-dept-box">';
+      h+='<div class="org-dept-head" style="background:'+bg+';color:'+c+';flex-direction:column;align-items:flex-start;gap:1px"><span>'+pl+'</span><span class="dept-count">'+fmtCount(a,p,pe)+'</span></div>';
+      h+='<div class="org-dept-body">';
+      var all=sortByRank(g.primary.concat(g.secondary.filter(function(e){return !g.primary.find(function(x){return x.name===e.name;});})));
+      all.forEach(function(e){var sec=g.secondary.indexOf(e)>=0&&g.primary.indexOf(e)<0;h+=card(e,sec,e===lead);});
+      h+='</div></div></div>';
+    });
+    h+='</div></div><div class="arch-note">— 按产品线分组 · 蓝色=负责人 · 灰底=辅助线 —</div>';
+    return h;
+  }
+
+  // ─── 职能线架构树 ───
+  function renderFuncTree(){
+    var emps=EMPLOYEES.filter(function(e){return e.name!=='施驰';});
+    var nodeMap={};
+    emps.forEach(function(e){nodeMap[e.name]={emp:e,children:[],parent:null};});
+    emps.forEach(function(e){if(e.leader&&nodeMap[e.leader]){nodeMap[e.leader].children.push(nodeMap[e.name]);nodeMap[e.name].parent=nodeMap[e.leader];}});
+    Object.keys(nodeMap).forEach(function(k){nodeMap[k].children.sort(function(a,b){return rankWeight(a.emp.title)-rankWeight(b.emp.title);});});
+
+    var MGMT_KW=['总经理','副总经理','总监','经理','架构师','主管'];
+    function isMgmt(e){return MGMT_KW.some(function(k){return(e.title||'').indexOf(k)>=0;})&&(e.status==='在职'||e.status==='兼职');}
+    function shouldDemote(n){var l=n.parent;if(!l||l.emp.name==='赵健章')return false;if(!isMgmt(l.emp))return false;var lt=l.emp.title||'';if(lt.indexOf('总经理')>=0||lt.indexOf('副总经理')>=0)return false;return true;}
+
+    function card(e,isLead){
+      var tag='';if(e.status==='兼职')tag='<span style="font-size:0.42vw;color:#d97706">兼职 </span>';if(e.status==='待入职')tag='<span style="font-size:0.42vw;color:#9ca3af">待入职 </span>';
+      var cls='org-person'+(isLead?' op-lead-func':'')+(e.status==='兼职'?' op-part':'')+(e.status==='待入职'?' op-pending':'');
+      return '<div class="'+cls+'"><div class="op-name">'+tag+e.name+'</div><div class="op-title">'+e.title+'</div></div>';
+    }
+
+    function renderSubtree(n,forMgmt){
+      var items=[];n.children.forEach(function(c){if(forMgmt&&isMgmt(c.emp)&&!shouldDemote(c))return;items.push(c);});
+      if(!items.length)return'';
+      var h='<div class="org-subs">';
+      items.forEach(function(c){h+=card(c.emp,false);if(c.children.length)h+=renderSubtree(c,true);});
+      h+='</div>';return h;
+    }
+
+    var root=nodeMap['赵健章'];
+    if(!root)return '<div style="padding:2vw;text-align:center;color:var(--muted)">无数据</div>';
+
+    var mgrNodes=[];Object.keys(nodeMap).forEach(function(k){if(k!=='赵健章'&&isMgmt(nodeMap[k].emp)&&!shouldDemote(nodeMap[k]))mgrNodes.push(nodeMap[k]);});
+    var nonMgmtRoot=[];root.children.forEach(function(c){if(!isMgmt(c.emp)&&c.emp.name!=='施驰')nonMgmtRoot.push(c);});root.children.forEach(function(c){if(isMgmt(c.emp)&&shouldDemote(c)&&c.emp.name!=='施驰')nonMgmtRoot.push(c);});
+
+    var depts={};
+    mgrNodes.forEach(function(n){var fd=n.emp.funcDept;if(!depts[fd])depts[fd]={mgrs:[],others:[]};depts[fd].mgrs.push(n);});
+    nonMgmtRoot.forEach(function(n){var fd=n.emp.funcDept;if(!depts[fd])depts[fd]={mgrs:[],others:[]};depts[fd].others.push(n);});
+
+    function countDept(mgrs,others){
+      var a=0,p=0,pe=0;
+      function tally(e){if(e.status==='在职')a++;else if(e.status==='兼职')p++;else if(e.status==='待入职')pe++;}
+      mgrs.forEach(function(n){tally(n.emp);});others.forEach(function(n){tally(n.emp);});
+      function walk(n){n.children.forEach(function(c){if(!isMgmt(c.emp)||shouldDemote(c)){tally(c.emp);walk(c);}});}
+      mgrs.forEach(function(n){walk(n);});others.forEach(function(n){walk(n);});
+      return {total:a+p+pe,active:a,part:p,pending:pe};
+    }
+
+    var h='<div class="org-chart">';
+    h+='<div class="org-root"><div class="org-root-card"><div class="orn-name">赵健章</div><div class="orn-title">总经理</div></div></div>';
+    h+='<div class="org-level">';
+    FUNC_DEPT_ORDER.forEach(function(fd){
+      var d=depts[fd];if(!d||(!d.mgrs.length&&!d.others.length))return;
+      var bg=FUNC_DEPT_BG[fd],c=countDept(d.mgrs,d.others);
+      h+='<div class="org-dept"><div class="org-dept-box">';
+      h+='<div class="org-dept-head" style="background:'+bg+';flex-direction:column;align-items:flex-start;gap:1px"><span>'+fd+'</span><span class="dept-count">'+fmtCount(c.active,c.part,c.pending)+'</span></div>';
+      h+='<div class="org-dept-body">';
+      if(fd==='研发部')h+='<div class="org-person op-lead-func"><div class="op-name">赵健章（兼）</div><div class="op-title">研发部负责人</div></div>';
+      d.mgrs.forEach(function(n){h+=card(n.emp,true);var subs=renderSubtree(n,true);if(subs)h+=subs;});
+      d.others.forEach(function(n){h+=card(n.emp,false);var subs=renderSubtree(n,true);if(subs)h+=subs;});
+      h+='</div></div></div>';
+    });
+    h+='</div></div><div class="arch-note">— 按职能部门分层 · 紫底=管理者 · 缩进=部下 —</div>';
+    return h;
+  }
+
+  document.getElementById('productArch').innerHTML=renderProductTree();
+  document.getElementById('funcArch').innerHTML=renderFuncTree();
+
+  // ─── 汇报关系 SVG 图（基于 EMPLOYEES 动态生成） ───
+  (function(){
+    var chart=document.getElementById('report-chart');
+    if(!chart)return;
+
+    var PL_LEAD={'市场商务&项目管理':'马佳','光模块测试站':'邹振华','非标集成线':'黄辉军','复合机器人':'欧阳雄军','PCB&仓库&工程':'欧阳雄军'};
+    var PL_SHORT={'市场商务&项目管理':'市场商务','光模块测试站':'光模块','非标集成线':'非标','复合机器人':'复合','PCB&仓库&工程':'PCB'};
+
+    // 从 EMPLOYEES 构建 emps 数组：[姓名, 简称, 部门, 职位, 职能领导, 产品线领导, 产品线简称, 产品线色]
+    // PL 负责人的产品线虚线上报总经理（虚线指向赵健章）
+    var PL_LEADERS=[];Object.keys(PL_LEAD).forEach(function(k){var v=PL_LEAD[k];if(PL_LEADERS.indexOf(v)<0)PL_LEADERS.push(v);});
+    var emps=[];
+    EMPLOYEES.forEach(function(e){
+      if(e.name==='赵健章'||e.name==='施驰')return;
+      if(e.funcDept==='财务部'||e.status==='待入职')return;
+      var pri=getPrimary(e);
+      var isPL=PL_LEADERS.indexOf(e.name)>=0;
+      var plLeader=isPL?'赵健章':(pri?PL_LEAD[pri]||e.leader:e.leader);
+      var plShort=isPL?'':(pri?PL_SHORT[pri]||'':'');
+      var plColor=isPL?'#64748B':(pri?PL_COLORS[pri]||'#64748B':'#64748B');
+      emps.push([e.name,e.name,e.funcDept,e.title,e.leader,plLeader,plShort,plColor,e.note||'']);
+    });
+
+    // 构建管理者数据
+    var mgrSet={};
+    emps.forEach(function(e){mgrSet[e[4]]=1;mgrSet[e[5]]=1;});
+    var mgrData={};
+    // 确保已知管理者都在 mgrData 中
+    var knownMgrs=['赵健章','马佳','欧阳雄军','黄辉军','邹振华','张冬晓','黄子少','李国伟','许锦川','许传奇'];
+    EMPLOYEES.forEach(function(e){
+      if(mgrSet[e.name]&&knownMgrs.indexOf(e.name)<0)knownMgrs.push(e.name);
+    });
+    knownMgrs.forEach(function(m){
+      if(!mgrSet[m])return;
+      for(var i=0;i<EMPLOYEES.length;i++){
+        if(EMPLOYEES[i].name===m){
+          mgrData[m]=[m,EMPLOYEES[i].title,EMPLOYEES[i].funcDept,rankWeight(EMPLOYEES[i].title),EMPLOYEES[i].note||''];
+          break;
+        }
+      }
+    });
+
+    var deptOrderList=["总经办","市场部","研发部","交付部"];
+    var mgrDataArr=[];
+    Object.keys(mgrData).forEach(function(m){
+      if(!mgrSet[m])return;
+      mgrDataArr.push({name:m,data:mgrData[m]});
+    });
+    // 按部门分组，组内按 rank 排序
+    var groups={};
+    deptOrderList.forEach(function(d){groups[d]=[];});
+    mgrDataArr.forEach(function(item){
+      var dept=item.data[2];
+      if(groups[dept])groups[dept].push(item);
+      else groups[dept]=[item];
+    });
+    Object.keys(groups).forEach(function(d){
+      groups[d].sort(function(a,b){return a.data[3]-b.data[3];});
+    });
+    var mgrs=[];
+    deptOrderList.forEach(function(d){
+      (groups[d]||[]).forEach(function(item){mgrs.push(item.name);});
+    });
+
+    var ROW_H=1.4,GAP=0.25;
+    var leftH=(emps.length*ROW_H*1.56+(emps.length-1)*GAP)+2;
+    var rightH=(mgrs.length*ROW_H*5.4+(mgrs.length-1)*GAP)+2;
+    var totalH=Math.max(leftH,rightH);
+    chart.style.height=totalH+'vh';
+
+    var leftEl=document.getElementById('report-left');
+    var rightEl=document.getElementById('report-right');
+    var svgEl=document.getElementById('report-svg');
+    svgEl.setAttribute('viewBox','0 0 100 '+Math.ceil(totalH*10));
+    svgEl.setAttribute('preserveAspectRatio','none');
+    svgEl.style.height=totalH+'vh';
+
+    var SC=10;
+    function empY(i){return (i*(ROW_H*1.56+GAP))*SC;}
+    function mgrY(name){var idx=mgrs.indexOf(name);return (idx>=0)?(idx*(ROW_H*5.4+GAP))*SC:-1;}
+    var mRH=(ROW_H*5.4)*SC,eRH=(ROW_H*1.56)*SC;
+
+    var DC={"总经办":"#FFF8E1","市场部":"#FFFDE7","研发部":"#E3F2FD","交付部":"#E8F5E9","财务部":"#FCE4EC"};
+
+    // 左列员工卡片（双线书签移入卡片左对齐，角色分工在卡片左侧外边左对齐）
+    var leftHTML='';
+    emps.forEach(function(e,i){
+      var pc=e[7],dept=e[2],bg=DC[dept]||'#fff',isDual=e[4]!==e[5],role=e[8];
+      leftHTML+='<div style="height:'+(ROW_H*1.56)+'vh;margin-bottom:'+GAP+'vh;position:relative">';
+      if(role)leftHTML+='<span style="position:absolute;right:100%;top:50%;transform:translateY(-50%);color:#94A3B8;font-size:0.5vw;text-align:left;white-space:nowrap;padding-right:0.4vw">'+role+'</span>';
+      leftHTML+='<div style="height:100%;display:flex;align-items:center;border-left:0.18vw solid '+pc+';padding:0 0.4vw;background:'+bg+';border-radius:0 0.3vw 0.3vw 0;font-size:0.65vw;gap:0;overflow:hidden">';
+      if(isDual)leftHTML+='<span style="color:#1A56DB;font-size:0.5vw;font-weight:700;white-space:nowrap;margin-right:0.3vw;flex-shrink:0">⇄双线</span>';
+      leftHTML+='<span style="margin-left:auto;color:#64748B;font-size:0.6vw;white-space:nowrap">'+e[3]+'</span>';
+      leftHTML+='<span style="font-weight:700;white-space:nowrap;margin-left:0.3vw">'+e[0]+'</span>';
+      leftHTML+='<span style="color:#94A3B8;font-size:0.5vw;white-space:nowrap;margin-left:0.3vw">'+dept+'</span>';
+      leftHTML+='</div></div>';
+    });
+    leftEl.innerHTML=leftHTML;
+
+    // 统计汇报人数
+    var funcCounts={},plCounts={};
+    emps.forEach(function(e){
+      var self=e[0],funcMgr=e[4],plMgr=e[5];
+      if(funcMgr!==self)funcCounts[funcMgr]=(funcCounts[funcMgr]||0)+1;
+      if(plMgr!==self)plCounts[plMgr]=(plCounts[plMgr]||0)+1;
+    });
+
+    // 右列管理卡片（卡片宽70%，右侧30%放角色分工）
+    var rightHTML='';
+    mgrs.forEach(function(m){
+      var d=mgrData[m],name=d[0],pos=d[1],dept=d[2],bg=DC[dept]||'#fff',role=d[4];
+      var fc=funcCounts[m]||0,pc=plCounts[m]||0;
+      rightHTML+='<div style="height:'+(ROW_H*5.4)+'vh;margin-bottom:'+GAP+'vh;display:flex;align-items:center;gap:0">';
+      rightHTML+='<div style="width:70%;height:100%;display:flex;flex-direction:column;justify-content:center;border-left:0.2vw solid #1A56DB;padding:0.15vw 0.4vw;background:'+bg+';border-radius:0 0.3vw 0.3vw 0;overflow:hidden">';
+      rightHTML+='<div style="font-weight:700;font-size:0.68vw;white-space:nowrap">'+name+'</div>';
+      rightHTML+='<div style="color:#64748B;font-size:0.58vw;white-space:nowrap">'+pos+'</div>';
+      rightHTML+='<div style="color:#94A3B8;font-size:0.52vw;white-space:nowrap">'+dept+'</div>';
+      rightHTML+='<div style="color:#6366F1;font-size:0.48vw;white-space:nowrap;margin-top:0.05vh">↓ 职能'+fc+'人 · 产品线'+pc+'人</div>';
+      rightHTML+='</div>';
+      if(role)rightHTML+='<span style="width:30%;color:#94A3B8;font-size:0.5vw;text-align:left;white-space:nowrap;padding-left:0.4vw">'+role+'</span>';
+      rightHTML+='</div>';
+    });
+    rightEl.innerHTML=rightHTML;
+
+    // SVG 连线
+    var lines=[],leftDots={},mgrDots={};
+    emps.forEach(function(e,i){
+      var funcMgr=e[4],plMgr=e[5],plColor=e[7],self=e[0];
+      var yL=empY(i),yLCenter=yL+eRH/2;
+      var same=(funcMgr===plMgr);
+      var selfPL=(plMgr===self),selfFunc=(funcMgr===self);
+
+      var leftKey=Math.round(yLCenter);
+      if(!leftDots[leftKey])leftDots[leftKey]=same?'#1D9E75':plColor;
+
+      if(same&&!selfPL&&!selfFunc){
+        var yR=mgrY(funcMgr);
+        if(yR>=0){var ry=Math.round(yR+mRH/2);lines.push('<line x1="0" y1="'+yLCenter+'" x2="100" y2="'+ry+'" stroke="#1D9E75" stroke-width="0.8" opacity="0.7"/>');if(!mgrDots[funcMgr])mgrDots[funcMgr]='#1D9E75';}
+      }else{
+        if(plMgr!==self){var yR1=mgrY(plMgr);if(yR1>=0){var ry1=Math.round(yR1+mRH/2);lines.push('<line x1="0" y1="'+yLCenter+'" x2="100" y2="'+ry1+'" stroke="#94A3B8" stroke-width="0.6" stroke-dasharray="5,4" opacity="0.6"/>');if(!mgrDots[plMgr])mgrDots[plMgr]=plColor;}}
+        if(funcMgr!==self){var yR2=mgrY(funcMgr);if(yR2>=0){var ry2=Math.round(yR2+mRH/2);lines.push('<line x1="0" y1="'+yLCenter+'" x2="100" y2="'+ry2+'" stroke="#1A56DB" stroke-width="0.6" opacity="0.6"/>');if(!mgrDots[funcMgr])mgrDots[funcMgr]='#1A56DB';}}
+      }
+    });
+
+    var mergedR={};
+    mgrs.forEach(function(m){var yR=mgrY(m);if(yR>=0){var ry=Math.round(yR+mRH/2);mergedR[ry]=mgrDots[m]||'#64748B';}});
+
+    var svgHTML=lines.join('\n');
+    Object.keys(leftDots).forEach(function(y){svgHTML+='<circle cx="0" cy="'+y+'" r="3" fill="'+leftDots[y]+'" opacity="0.9"/>\n';});
+    Object.keys(mergedR).forEach(function(y){svgHTML+='<circle cx="100" cy="'+y+'" r="3" fill="'+mergedR[y]+'" opacity="0.9"/>\n';});
+    svgEl.innerHTML=svgHTML;
+  })();
+})();
+</script>
+
+</body>
+</html>

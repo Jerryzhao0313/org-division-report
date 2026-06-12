@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>玑之智能 · 产品线半年规划梳理清单</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;900&family=Noto+Serif+SC:wght@400;600;700;900&display=swap');
+:root {
+  --dark: #0F1923;
+  --dark2: #162231;
+  --dark3: #1A2C3E;
+  --light: #F5F7FA;
+  --white: #FFFFFF;
+  --text: #1E293B;
+  --muted: #64748B;
+  --blue: #1A56DB;
+  --blueL: #DBEAFE;
+  --blueM: #3B82F6;
+  --green: #059669;
+  --greenL: #D1FAE5;
+  --amber: #D97706;
+  --amberL: #FEF3C7;
+  --red: #DC2626;
+  --redL: #FEE2E2;
+  --purple: #7C3AED;
+  --purpleL: #EDE9FE;
+  --pl-biz: #BA7517;
+  --pl-optical: #639922;
+  --pl-custom: #D85A30;
+  --pl-robot: #378ADD;
+  --pl-pcb: #1D9E75;
+  --font-display: 'Noto Serif SC', serif;
+  --font-body: 'Noto Sans SC', sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;font-family:var(--font-body);background:var(--dark)}
+.deck{width:100%;height:100%;position:relative}
+.slide{
+  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+  opacity:0;transform:scale(0.96);
+  transition:opacity .5s cubic-bezier(.4,0,.2,1),transform .5s cubic-bezier(.4,0,.2,1);
+  pointer-events:none;padding:3vh 4vw;overflow-y:auto
+}
+.slide.active{opacity:1;transform:scale(1);pointer-events:auto;z-index:1}
+.slide.dark{background:var(--dark);color:var(--white)}
+.slide.light{background:var(--light);color:var(--text)}
+.slide-inner{width:100%;max-width:92vw;margin:auto}
+
+/* 封面 */
+.slide-cover{text-align:center;padding:8vh 0}
+.slide-cover .top-bar{position:fixed;top:0;left:0;right:0;height:.35vh;background:var(--blue)}
+.slide-cover .tag{display:inline-block;padding:.4vw 1.5vw;border:1px solid rgba(255,255,255,.2);border-radius:2vw;font-size:1.1vw;color:var(--blueM);margin-bottom:3vh;letter-spacing:.2vw}
+.slide-cover h1{font-family:var(--font-display);font-size:4vw;font-weight:900;line-height:1.2;margin-bottom:1.5vh;letter-spacing:.3vw}
+.slide-cover .subtitle{font-size:1.5vw;color:var(--blueM);margin-bottom:1.5vh;letter-spacing:.1vw}
+.slide-cover .meta{font-size:1.15vw;color:var(--muted);display:flex;align-items:center;gap:1vw;justify-content:center}
+
+/* 章节标题 */
+.sec-title{margin-bottom:2.5vh}
+.sec-title h2{font-family:var(--font-display);font-size:2.6vw;font-weight:700;margin-bottom:.6vh;letter-spacing:.08vw}
+.sec-title .desc{font-size:1.2vw;color:var(--muted)}
+.dark .sec-title .desc{color:#94A3B8}
+
+/* 产品线概览卡片 */
+.pl-overview-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1.5vw;margin-top:1.5vh}
+.pl-card{border-radius:.6vw;overflow:hidden;box-shadow:0 .1vw .3vw rgba(0,0,0,.08)}
+.pl-card-header{padding:1.2vw .8vw;color:#fff;font-weight:700;font-size:1.2vw;text-align:center}
+.pl-card-body{padding:2vw 1vw;background:var(--white)}
+.pl-card-body .pl-lead{font-size:1vw;font-weight:700;color:var(--text);margin-bottom:1.2vh}
+.pl-card-body .pl-info{font-size:.88vw;color:var(--muted);line-height:1.6}
+.pl-card-body .pl-count{font-size:.82vw;color:var(--text);margin-top:1.2vh;padding:.45vw .6vw;background:#F1F5F9;border-radius:.3vw;display:inline-block}
+.pl-core-tag{display:inline-block;font-size:.75vw;font-weight:700;padding:.2vw .55vw;border-radius:.25vw;letter-spacing:.02vw}
+
+/* 梳理维度标题 */
+.dimension-block{margin-bottom:2vh}
+.dimension-header{display:flex;align-items:center;gap:.6vw;margin-bottom:1vh}
+.dimension-icon{width:2.2vw;height:2.2vw;border-radius:.4vw;display:flex;align-items:center;justify-content:center;font-size:1.2vw;color:#fff;flex-shrink:0}
+.dimension-header h3{font-size:1.45vw;font-weight:700;color:var(--text)}
+.dimension-header .dim-tag{font-size:.8vw;color:var(--muted);background:#F1F5F9;padding:.2vw .6vw;border-radius:.3vw;margin-left:.5vw}
+
+/* 检查项列表 */
+.checklist{list-style:none}
+.checklist li{display:flex;align-items:flex-start;gap:.6vw;padding:.65vw .8vw;border-radius:.4vw;margin-bottom:.35vh;background:var(--white);box-shadow:0 .05vw .1vw rgba(0,0,0,.03)}
+.checklist li .cb{width:1.1vw;height:1.1vw;border:1.5px solid #CBD5E1;border-radius:.2vw;flex-shrink:0;margin-top:.15vw}
+.checklist li .cb-text{font-size:1.05vw;color:var(--text);line-height:1.5;flex:1}
+.checklist li .cb-text strong{color:var(--blue);font-weight:700}
+.checklist li .cb-hint{font-size:.88vw;color:var(--muted);display:block;margin-top:.1vh}
+.checklist li .cb-tag{font-size:.8vw;padding:.2vw .5vw;border-radius:.25vw;flex-shrink:0;white-space:nowrap}
+.tag-past{background:var(--redL);color:var(--red);font-weight:700}
+.tag-present{background:var(--amberL);color:var(--amber);font-weight:700}
+.tag-future{background:var(--blueL);color:var(--blue);font-weight:700}
+.tag-other{background:var(--purpleL);color:var(--purple);font-weight:700}
+
+/* 补充维度卡片 */
+.supplement-grid{display:grid;grid-template-columns:1fr 1fr;gap:1vw;margin-top:1vh}
+.supplement-card{border-radius:.5vw;padding:1vw;background:var(--white);box-shadow:0 .08vw .15vw rgba(0,0,0,.04);border-left:.3vw solid}
+.supplement-card h4{font-size:1.2vw;font-weight:700;margin-bottom:.4vh;display:flex;align-items:center;gap:.4vw}
+.supplement-card ul{list-style:none;margin-top:.4vh}
+.supplement-card ul li{font-size:.95vw;color:var(--muted);padding:.2vh 0;padding-left:.8vw;position:relative;line-height:1.6}
+.supplement-card ul li::before{content:'';position:absolute;left:0;top:.55vh;width:.35vw;height:.35vw;border-radius:50%;background:var(--muted);opacity:.4}
+
+/* 表格 */
+.pl-summary-table{width:100%;border-collapse:collapse;font-size:1vw;margin-top:1vh}
+.pl-summary-table th{background:var(--dark);color:#fff;padding:.65vw .9vw;text-align:left;font-weight:700;font-size:.95vw}
+.pl-summary-table td{padding:.55vw .9vw;border-bottom:1px solid #E2E8F0;font-size:.95vw;vertical-align:top}
+.pl-summary-table td:first-child{font-weight:700}
+.pl-summary-table td:nth-child(3){color:var(--blue);font-weight:700}
+.pl-summary-table tr:last-child td{border-bottom:none}
+.pl-dot{display:inline-block;width:.55vw;height:.55vw;border-radius:50%;margin-right:.3vw}
+.pl-summary-table tbody tr:hover{filter:brightness(1.03);box-shadow:inset 0 0 0 1px rgba(26,86,219,.15)}
+.td-seq-p{color:var(--red)!important;font-weight:800!important}
+.td-seq-d{color:var(--amber)!important;font-weight:800!important}
+.td-seq-r{color:var(--blue)!important;font-weight:800!important}
+.td-seq-k{color:var(--purple)!important;font-weight:800!important}
+.td-seq-t{color:var(--green)!important;font-weight:800!important}
+
+/* 梳理工具 + 图片占位 */
+.tool-bar{display:flex;align-items:center;gap:1vw;margin-top:1.5vh;padding:.8vw 1.2vw;background:var(--dark2);border-radius:.6vw;color:#fff}
+.tool-bar a{color:var(--blueM);font-weight:700;text-decoration:none;font-size:1vw}
+.tool-bar a:hover{text-decoration:underline}
+.tool-bar .tool-pw{font-size:.8vw;color:#94A3B8}
+
+.image-grid-2x2{display:grid;grid-template-columns:1fr 1fr;gap:1vw;margin-top:1.5vh}
+.image-placeholder{border-radius:.5vw;overflow:hidden;background:var(--white);box-shadow:0 .08vw .2vw rgba(0,0,0,.06);padding:1vw;text-align:center;min-height:16vh;display:flex;flex-direction:column;align-items:center;justify-content:center;border:1.5px dashed #CBD5E1;cursor:pointer;transition:border-color .2s}
+.image-placeholder:hover{border-color:var(--blueM)}
+.image-placeholder .ip-icon{font-size:2.5vw;color:#CBD5E1;margin-bottom:.5vh}
+.image-placeholder .ip-title{font-size:1vw;font-weight:700;color:var(--text);margin-bottom:.2vh}
+.image-placeholder .ip-hint{font-size:.8vw;color:var(--muted)}
+
+.hl-box{background:var(--blueL);border-radius:.6vw;padding:1vw 1.5vw;font-size:1.15vw;color:var(--blue);font-weight:700;margin-top:1.5vh}
+
+/* 导航 */
+.nav{position:fixed;bottom:2.5vh;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.6vw;z-index:100}
+.nav-btn{width:2.5vw;height:2.5vw;min-width:32px;min-height:32px;border-radius:50%;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.2vw;transition:all .2s;backdrop-filter:blur(10px)}
+.nav-btn:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25)}
+.dots{display:flex;gap:.45vw}
+.dot{width:.55vw;height:.55vw;min-width:6px;min-height:6px;border-radius:50%;background:rgba(255,255,255,.2);cursor:pointer;transition:all .3s}
+.dot.active{background:var(--blueM);width:1.6vw;min-width:16px;border-radius:1vw}
+.slide-num{font-size:1vw;color:rgba(255,255,255,.5);margin:0 .6vw;min-width:3vw;text-align:center}
+.slide.light ~ .nav .nav-btn{color:var(--text);border-color:rgba(0,0,0,.1);background:rgba(255,255,255,.8)}
+.slide.light ~ .nav .dot{background:rgba(0,0,0,.15)}
+.key-hint{position:fixed;top:1.5vh;right:2vw;font-size:.9vw;color:rgba(255,255,255,.3);z-index:100;pointer-events:none}
+
+.hl-box{background:var(--blueL);border-radius:.6vw;padding:1vw 1.5vw;font-size:1.15vw;color:var(--blue);font-weight:700;margin-top:1.5vh}
+
+@media(max-width:768px){
+  .pl-overview-grid{grid-template-columns:1fr 1fr}
+  .slide-cover h1{font-size:7vw}
+  .sec-title h2{font-size:4.5vw}
+  .supplement-grid{grid-template-columns:1fr}
+  .image-grid-2x2{grid-template-columns:1fr}
+  .pl-summary-table th,.pl-summary-table td{font-size:2.5vw;padding:1.5vw}
+  .dimension-header h3{font-size:2.8vw}
+  .checklist li .cb-text{font-size:2.5vw}
+}
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- ═══ SLIDE 1: 封面 ═══ -->
+  <div class="slide dark active" data-index="0">
+    <div class="slide-inner">
+      <div class="slide-cover">
+        <div class="top-bar"></div>
+        <div class="tag">讨论稿 v0.1</div>
+        <h1>产品线下半年规划<br>梳理清单</h1>
+        <div class="subtitle">过去收尾 · 当前交付 · 未来规划 · 其他维度</div>
+        <div class="meta">2026年5月<span></span>玑之智能 JIZHI Intelligence</div>
+        <div style="margin-top:5vh;font-size:1.1vw;color:#94A3B8;line-height:2;max-width:50vw;margin-left:auto;margin-right:auto;text-align:left">
+          <div style="display:flex;align-items:center;gap:.6vw;margin-bottom:.8vh"><span style="background:var(--blue);width:2vw;height:2vw;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.8vw;flex-shrink:0">1</span><span>与各产品线负责人逐一梳理，统一格式，对标进度</span></div>
+          <div style="display:flex;align-items:center;gap:.6vw;margin-bottom:.8vh"><span style="background:var(--blue);width:2vw;height:2vw;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.8vw;flex-shrink:0">2</span><span>每个产品线形成下半年的目标清单 + 关键行动项</span></div>
+          <div style="display:flex;align-items:center;gap:.6vw"><span style="background:var(--blue);width:2vw;height:2vw;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.8vw;flex-shrink:0">3</span><span>汇总后作为下半年管理抓手，纳入利润考核基线</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-cover" style="position:fixed;bottom:2vh;left:50%;transform:translateX(-50%);font-size:.9vw;color:#475569">← → 翻页  ·  讨论稿 · 待各负责人填写</div>
+  </div>
+
+  <!-- ═══ SLIDE 2: 5条产品线概览 ═══ -->
+  <div class="slide light" data-index="1">
+    <div class="slide-inner" style="padding:1.5vh 0 1vh">
+      <div class="sec-title"><h2>五条产品线 · 当前概览</h2><p class="desc">新架构下的5条产品线，负责人、团队规模、核心能力一览</p></div>
+      <div class="pl-overview-grid">
+        <div class="pl-card" style="border:1.5px solid var(--pl-biz)">
+          <div class="pl-card-header" style="background:var(--pl-biz)">市场商务&<br>项目管理</div>
+          <div class="pl-card-body">
+            <div class="pl-lead">负责人：马佳 <span style="display:inline-block;font-size:.75vw;background:var(--pl-biz);color:#fff;padding:.1vw .5vw;border-radius:.2vw;margin-left:.3vw">公共产品线</span></div>
+            <div class="pl-info">直属：赵健章（总经理）</div>
+            <div class="pl-count">👤 4在职+1待入职+1辅助</div>
+            <div style="margin-top:.8vh;display:flex;flex-wrap:wrap;gap:.4vw">
+              <span class="pl-core-tag" style="background:var(--pl-biz);color:#fff">管理公共项目</span>
+              <span class="pl-core-tag" style="background:var(--pl-biz);color:#fff">研发立项验收考核</span>
+              <span class="pl-core-tag" style="background:var(--pl-biz);color:#fff">商务合同</span>
+              <span class="pl-core-tag" style="background:var(--pl-biz);color:#fff">投融资</span>
+              <span class="pl-core-tag" style="background:var(--pl-biz);color:#fff">国高申报</span>
+              <span class="pl-core-tag" style="background:var(--pl-biz);color:#fff">专精特新</span>
+              <span class="pl-core-tag" style="background:var(--pl-biz);color:#fff">专利申请</span>
+            </div>
+            <div style="margin-top:.7vh;font-size:.85vw;color:var(--muted);line-height:1.4;background:#FFF8E1;padding:.45vw .55vw;border-radius:.3vw">对其余4条产品线提出的研发项目进行立项、验收等考核管理 · 国高/专精特新申报 · 专利申请布局</div>
+          </div>
+        </div>
+        <div class="pl-card" style="border:1.5px solid var(--pl-optical)">
+          <div class="pl-card-header" style="background:var(--pl-optical)">光模块测试站</div>
+          <div class="pl-card-body">
+            <div class="pl-lead">负责人：邹振华 <span style="display:inline-block;font-size:.75vw;background:var(--pl-optical);color:#fff;padding:.1vw .5vw;border-radius:.2vw;margin-left:.3vw">业务产品线</span></div>
+            <div class="pl-info">产品线直属：赵健章（总经理）<br>职能管理：欧阳雄军（交付部）</div>
+            <div class="pl-count">👤 11在职+3待入职+2辅助(含兼职)</div>
+            <div style="margin-top:.8vh;display:flex;flex-wrap:wrap;gap:.4vw">
+              <span class="pl-core-tag" style="background:var(--pl-optical);color:#fff">一字型工作站量产</span>
+              <span class="pl-core-tag" style="background:var(--pl-optical);color:#fff">MES对接</span>
+              <span class="pl-core-tag" style="background:var(--pl-optical);color:#fff">深度绑定供应商</span>
+              <span class="pl-core-tag" style="background:var(--pl-optical);color:#fff">精密测试交付</span>
+            </div>
+            <div style="margin-top:.7vh;font-size:.85vw;color:var(--muted);line-height:1.4;background:#FFF8E1;padding:.45vw .55vw;border-radius:.3vw"><strong style="color:var(--pl-optical)">深度绑定合作供应商</strong>，一起设计、一起到现场解决问题</div>
+          </div>
+        </div>
+        <div class="pl-card" style="border:1.5px solid var(--pl-custom)">
+          <div class="pl-card-header" style="background:var(--pl-custom)">非标集成线</div>
+          <div class="pl-card-body">
+            <div class="pl-lead">负责人：黄辉军 <span style="display:inline-block;font-size:.75vw;background:var(--pl-custom);color:#fff;padding:.1vw .5vw;border-radius:.2vw;margin-left:.3vw">业务产品线</span></div>
+            <div class="pl-info">产品线直属：赵健章（总经理）<br>职能管理：欧阳雄军（交付部）</div>
+            <div class="pl-count">👤 5在职+1兼职+2待入职+3辅助</div>
+            <div style="margin-top:.8vh;display:flex;flex-wrap:wrap;gap:.4vw">
+              <span class="pl-core-tag" style="background:var(--pl-custom);color:#fff">光模块包装线</span>
+              <span class="pl-core-tag" style="background:var(--pl-custom);color:#fff">包装软件自研</span>
+              <span class="pl-core-tag" style="background:var(--pl-custom);color:#fff">MES对接</span>
+              <span class="pl-core-tag" style="background:var(--pl-custom);color:#fff">外包供应商</span>
+              <span class="pl-core-tag" style="background:var(--pl-custom);color:#fff">大模型AOI</span>
+            </div>
+            <div style="margin-top:.7vh;font-size:.85vw;color:var(--muted);line-height:1.4;background:#FFF8E1;padding:.45vw .55vw;border-radius:.3vw">聚焦光模块包装线（一次/二次/后段包装）· 扩张外包合作供应商 · 自研大模型AOI作为设备增值配置</div>
+          </div>
+        </div>
+        <div class="pl-card" style="border:1.5px solid var(--pl-robot)">
+          <div class="pl-card-header" style="background:var(--pl-robot)">复合机器人</div>
+          <div class="pl-card-body">
+            <div class="pl-lead">负责人：欧阳雄军 <span style="display:inline-block;font-size:.75vw;background:var(--pl-robot);color:#fff;padding:.1vw .5vw;border-radius:.2vw;margin-left:.3vw">业务产品线</span></div>
+            <div class="pl-info">产品线直属：赵健章（总经理）</div>
+            <div class="pl-count">👤 4在职+1兼职+3辅助</div>
+            <div style="margin-top:.8vh;display:flex;flex-wrap:wrap;gap:.4vw">
+              <span class="pl-core-tag" style="background:var(--pl-robot);color:#fff">调度系统自研</span>
+              <span class="pl-core-tag" style="background:var(--pl-robot);color:#fff">MES对接</span>
+              <span class="pl-core-tag" style="background:var(--pl-robot);color:#fff">外包合作供应商</span>
+              <span class="pl-core-tag" style="background:var(--pl-robot);color:#fff">集成交付</span>
+            </div>
+            <div style="margin-top:.7vh;font-size:.85vw;color:var(--muted);line-height:1.4;background:#FFF8E1;padding:.45vw .55vw;border-radius:.3vw">聚焦调度系统自研上线+对接MES · 寻找更好的外包合作供应商</div>
+          </div>
+        </div>
+        <div class="pl-card" style="border:1.5px solid var(--pl-pcb)">
+          <div class="pl-card-header" style="background:var(--pl-pcb)">PCB&仓库&<br>工程</div>
+          <div class="pl-card-body">
+            <div class="pl-lead">负责人：欧阳雄军 <span style="display:inline-block;font-size:.75vw;background:var(--pl-pcb);color:#fff;padding:.1vw .5vw;border-radius:.2vw;margin-left:.3vw">业务产品线</span></div>
+            <div class="pl-info">产品线直属：赵健章（总经理）</div>
+            <div class="pl-count">👤 6在职+3辅助</div>
+            <div style="margin-top:.8vh;display:flex;flex-wrap:wrap;gap:.4vw">
+              <span class="pl-core-tag" style="background:var(--pl-pcb);color:#fff">行为监控集成</span>
+              <span class="pl-core-tag" style="background:var(--pl-pcb);color:#fff">自研标注单平台</span>
+              <span class="pl-core-tag" style="background:var(--pl-pcb);color:#fff">仓储集成</span>
+              <span class="pl-core-tag" style="background:var(--pl-pcb);color:#fff">PCB设备运维</span>
+            </div>
+            <div style="margin-top:.7vh;font-size:.85vw;color:var(--muted);line-height:1.4;background:#FFF8E1;padding:.45vw .55vw;border-radius:.3vw">聚焦行为监控集成 · 自研标注单岗位行为监控平台</div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:1.5vh;padding:.7vw 1vw;background:#EFF6FF;border-radius:.5vw;font-size:.95vw;color:var(--blue)">
+        💡 <strong>讨论切入点：</strong>每条产品线从上到下过一遍，负责人提前准备各维度的清单数据
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 3: 梳理维度总览 ═══ -->
+  <div class="slide light" data-index="2">
+    <div class="slide-inner">
+      <div class="sec-title">
+        <h2>梳理维度框架</h2>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:1vw">
+          <p class="desc" style="flex:1;margin:0">每条产品线按以下5个维度逐一输出清单，形成完整的"过去→现在→未来→风险→资源"闭环</p>
+          <div style="display:flex;align-items:center;gap:.6vw;flex-shrink:0;padding:.4vw .8vw;background:var(--dark2);border-radius:.4vw">
+            <span style="font-size:.75vw;font-weight:700;color:#fff">🔧 梳理工具</span>
+            <a href="https://m5ws4gwtxq.coze.site" target="_blank" rel="noopener" style="color:var(--blueM);font-weight:700;text-decoration:none;font-size:.8vw">玑之科技经营分析报告 →</a>
+            <span style="font-size:.7vw;color:#94A3B8">密码规则：今天日期</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 维度卡片横排 -->
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:.8vw;margin-top:1.5vh">
+        <div style="border-radius:.5vw;overflow:hidden;box-shadow:0 .08vw .15vw rgba(0,0,0,.04)">
+          <div style="background:var(--red);color:#fff;padding:.5vw .6vw;font-size:.95vw;font-weight:700;text-align:center;letter-spacing:.05vw">维度一</div>
+          <div style="background:var(--white);padding:.6vw;text-align:center">
+            <div style="font-size:1.5vw;margin-bottom:.2vh">🔙</div>
+            <div style="font-size:1vw;font-weight:700;color:var(--text)">已签单收尾</div>
+            <div style="font-size:.8vw;color:var(--muted);margin-top:.2vh">过去已签、未完全结项</div>
+          </div>
+        </div>
+        <div style="border-radius:.5vw;overflow:hidden;box-shadow:0 .08vw .15vw rgba(0,0,0,.04)">
+          <div style="background:var(--amber);color:#fff;padding:.5vw .6vw;font-size:.9vw;font-weight:700;text-align:center">维度二</div>
+          <div style="background:var(--white);padding:.6vw;text-align:center">
+            <div style="font-size:1.5vw;margin-bottom:.2vh">📋</div>
+            <div style="font-size:1vw;font-weight:700;color:var(--text)">交付中订单</div>
+            <div style="font-size:.8vw;color:var(--muted);margin-top:.2vh">正在进行、需推进的</div>
+          </div>
+        </div>
+        <div style="border-radius:.5vw;overflow:hidden;box-shadow:0 .08vw .15vw rgba(0,0,0,.04)">
+          <div style="background:var(--blue);color:#fff;padding:.5vw .6vw;font-size:.9vw;font-weight:700;text-align:center">维度三</div>
+          <div style="background:var(--white);padding:.6vw;text-align:center">
+            <div style="font-size:1.5vw;margin-bottom:.2vh">🚀</div>
+            <div style="font-size:1vw;font-weight:700;color:var(--text)">研发与新产品</div>
+            <div style="font-size:.8vw;color:var(--muted);margin-top:.2vh">内部研发 / 新订单规划</div>
+          </div>
+        </div>
+        <div style="border-radius:.5vw;overflow:hidden;box-shadow:0 .08vw .15vw rgba(0,0,0,.04)">
+          <div style="background:var(--purple);color:#fff;padding:.5vw .6vw;font-size:.9vw;font-weight:700;text-align:center">维度四</div>
+          <div style="background:var(--white);padding:.6vw;text-align:center">
+            <div style="font-size:1.5vw;margin-bottom:.2vh">⚠️</div>
+            <div style="font-size:1vw;font-weight:700;color:var(--text)">风险与依赖</div>
+            <div style="font-size:.8vw;color:var(--muted);margin-top:.2vh">卡点/风险/主力人员配置</div>
+          </div>
+        </div>
+        <div style="border-radius:.5vw;overflow:hidden;box-shadow:0 .08vw .15vw rgba(0,0,0,.04)">
+          <div style="background:var(--green);color:#fff;padding:.5vw .6vw;font-size:.9vw;font-weight:700;text-align:center">维度五</div>
+          <div style="background:var(--white);padding:.6vw;text-align:center">
+            <div style="font-size:1.5vw;margin-bottom:.2vh">🧑‍🤝‍🧑</div>
+            <div style="font-size:1vw;font-weight:700;color:var(--text)">团队与资源</div>
+            <div style="font-size:.8vw;color:var(--muted);margin-top:.2vh">人力缺口 / 培养计划</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 时间线说明 -->
+      <div style="margin-top:2vh;padding:.8vw 1vw;background:#F8FAFC;border-radius:.5vw;border:1px solid #E2E8F0">
+        <div style="display:flex;align-items:center;justify-content:space-between;font-size:.95vw">
+          <span><strong>时间范围：</strong>2025年1月 — 2026年5月（数据分析由各产品线负责人补充）</span>
+          <span><strong>适用对象：</strong>全部5条产品线（市场商务·光模块·非标集成·复合机器人·PCB）</span>
+          <span><strong>输出物：</strong>每条产品线 1 张清单表</span>
+        </div>
+      </div>
+
+      <!-- 营收数据图 -->
+      <div style="margin-top:1vh">
+        <div style="font-size:.9vw;font-weight:700;color:var(--text);margin-bottom:.5vh">📊 数据看板</div>
+        <div class="image-grid-2x2">
+          <div style="border-radius:.5vw;overflow:hidden;background:#fff;box-shadow:0 .08vw .2vw rgba(0,0,0,.06)">
+            <div style="padding:.35vw .6vw;background:#F8FAFC;border-bottom:1px solid #E2E8F0;font-size:.85vw;font-weight:700;color:var(--text)">2025年产品线营收</div>
+            <img src="https://6a69-ji-projects-d1g4i777v9f9d798e-1399547387.tcb.qcloud.la/images/2025营收.png" style="width:100%;height:auto;display:block" alt="2025年产品线营收">
+          </div>
+          <div style="border-radius:.5vw;overflow:hidden;background:#fff;box-shadow:0 .08vw .2vw rgba(0,0,0,.06)">
+            <div style="padding:.35vw .6vw;background:#F8FAFC;border-bottom:1px solid #E2E8F0;font-size:.85vw;font-weight:700;color:var(--text)">2026年产品线营收</div>
+            <img src="https://6a69-ji-projects-d1g4i777v9f9d798e-1399547387.tcb.qcloud.la/images/2026营收.png" style="width:100%;height:auto;display:block" alt="2026年产品线营收">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 4a: 行业分析与项目负责人订单分析 ═══ -->
+  <div class="slide light" data-index="3">
+    <div class="slide-inner">
+      <div class="sec-title"><h2>行业分析 · 项目负责人订单分析</h2><p class="desc">外部行业趋势 + 内部各负责人订单数据，辅助梳理决策</p></div>
+
+      <!-- 行业分析图 -->
+      <div style="margin-top:1.5vh">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1vw">
+          <div style="border-radius:.5vw;overflow:hidden;background:#fff;box-shadow:0 .08vw .2vw rgba(0,0,0,.06)">
+            <div style="padding:.35vw .6vw;background:#F8FAFC;border-bottom:1px solid #E2E8F0;font-size:.85vw;font-weight:700;color:var(--text)">2025年行业分析</div>
+            <img src="https://6a69-ji-projects-d1g4i777v9f9d798e-1399547387.tcb.qcloud.la/images/2025行业分析.png" style="width:100%;height:auto;display:block" alt="2025年行业分析">
+          </div>
+          <div style="border-radius:.5vw;overflow:hidden;background:#fff;box-shadow:0 .08vw .2vw rgba(0,0,0,.06)">
+            <div style="padding:.35vw .6vw;background:#F8FAFC;border-bottom:1px solid #E2E8F0;font-size:.85vw;font-weight:700;color:var(--text)">2026年行业分析</div>
+            <img src="https://6a69-ji-projects-d1g4i777v9f9d798e-1399547387.tcb.qcloud.la/images/2026行业分析.png" style="width:100%;height:auto;display:block" alt="2026年行业分析">
+          </div>
+        </div>
+      </div>
+
+      <!-- 项目负责人订单分析（2图） -->
+      <div style="margin-top:1.5vh">
+        <div class="image-grid-2x2">
+          <div style="border-radius:.5vw;overflow:hidden;background:#fff;box-shadow:0 .08vw .2vw rgba(0,0,0,.06)">
+            <div style="padding:.35vw .6vw;background:#F8FAFC;border-bottom:1px solid #E2E8F0;font-size:.85vw;font-weight:700;color:var(--text)">2025年项目负责人订单分析</div>
+            <img src="https://6a69-ji-projects-d1g4i777v9f9d798e-1399547387.tcb.qcloud.la/images/2025项目负责人分析.png" style="width:100%;height:auto;display:block" alt="2025年项目负责人订单分析">
+          </div>
+          <div style="border-radius:.5vw;overflow:hidden;background:#fff;box-shadow:0 .08vw .2vw rgba(0,0,0,.06)">
+            <div style="padding:.35vw .6vw;background:#F8FAFC;border-bottom:1px solid #E2E8F0;font-size:.85vw;font-weight:700;color:var(--text)">2026年项目负责人订单分析</div>
+            <img src="https://6a69-ji-projects-d1g4i777v9f9d798e-1399547387.tcb.qcloud.la/images/2026项目负责人分析.png" style="width:100%;height:auto;display:block" alt="2026年项目负责人订单分析">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 5: 维度一 - 已签单收尾问题 ═══ -->
+  <div class="slide light" data-index="4">
+    <div class="slide-inner">
+      <div class="sec-title"><h2>维度一：已签单收尾问题</h2><p class="desc">🔙 过去已签订单中，尚未完成最终验收、回款、归档的项目逐一拉清单</p></div>
+      
+      <div class="dimension-block">
+        <ul class="checklist">
+          <li><span class="cb"></span><span class="cb-text"><strong>1. 已验收未回款</strong> — 客户已签字验收，发票已开，但尾款未到账的订单<span class="cb-hint">列出：客户名·合同金额·已收/应收·逾期天数·催收负责人</span></span><span class="cb-tag tag-past">收尾</span></li>
+          <li><span class="cb"></span><span class="cb-text"><strong>2. 已交付未验收</strong> — 设备/系统已发运或现场安装，但客户尚未签署验收报告的订单<span class="cb-hint">列出：项目名·交付日期·卡点原因·预计验收时间·验收条件</span></span><span class="cb-tag tag-past">收尾</span></li>
+          <li><span class="cb"></span><span class="cb-text"><strong>3. 售后/质保期内遗留问题</strong> — 已验收项目中，客户持续反馈的未闭环问题<span class="cb-hint">列出：问题描述·影响范围·已投入工时·解决方案状态</span></span><span class="cb-tag tag-past">收尾</span></li>
+          <li><span class="cb"></span><span class="cb-text"><strong>4. 合同变更/增补未签</strong> — 交付过程中客户提出了范围变更，但未走正式合同变更流程的<span class="cb-hint">列出：变更内容·涉及金额·审批状态·风险等级</span></span><span class="cb-tag tag-past">收尾</span></li>
+          <li><span class="cb"></span><span class="cb-text"><strong>5. 文档/资料归档缺失</strong> — 项目验收报告、技术文档、图纸、操作手册等未归档或归档不完整的<span class="cb-hint">列出：缺失项·归档责任人·计划完成时间</span></span><span class="cb-tag tag-past">收尾</span></li>
+        </ul>
+      </div>
+
+      <div style="margin-top:.8vh;padding:.6vw .8vw;background:var(--redL);border-radius:.4vw;font-size:.95vw;color:var(--red)">
+        ⚠️ <strong>收尾问题的隐性成本：</strong>尾款收不回 = 利润虚增；验收拖得久 = 占用交付资源、影响新订单启动
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 5: 维度二 - 正在交付中的订单 ═══ -->
+  <div class="slide light" data-index="6">
+    <div class="slide-inner">
+      <div class="sec-title"><h2>维度二：正在交付中的订单梳理</h2><p class="desc">📋 正在进行中的订单，确认进度、负责人、风险和交付时间</p></div>
+
+      <ul class="checklist">
+        <li><span class="cb"></span><span class="cb-text"><strong>1. 订单清单总表</strong> — 所有正在执行中的订单（含内部研发项目）逐一列出<span class="cb-hint">格式：项目名称·客户·合同金额·签约日期·计划交付日期·当前状态·项目经理</span></span><span class="cb-tag tag-present">交付</span></li>
+        <li><span class="cb"></span><span class="cb-text"><strong>2. 里程碑达成率</strong> — 各项目的关键里程碑实际完成时间 vs 计划时间，识别滞后项<span class="cb-hint">标记：按期/延后（X天）/严重滞后（>30天）</span></span><span class="cb-tag tag-present">交付</span></li>
+        <li><span class="cb"></span><span class="cb-text"><strong>3. 资源占用情况</strong> — 当前交付任务占用了哪些人员、工时？是否存在多线争抢同一资源？<span class="cb-hint">特别是：电气·部署·QA等跨线共用资源</span></span><span class="cb-tag tag-present">交付</span></li>
+        <li><span class="cb"></span><span class="cb-text"><strong>4. 客户现场问题</strong> — 交付过程中客户现场上报的、尚未处理完的问题清单<span class="cb-hint">分级：P0(阻塞)/P1(严重)/P2(一般)/P3(改进建议)</span></span><span class="cb-tag tag-present">交付</span></li>
+        <li><span class="cb"></span><span class="cb-text"><strong>5. 供应链/物料状态</strong> — 关键物料、外协加工件的到货进度是否影响交付？<span class="cb-hint">列出：物资名称·供应商·预计到货·是否影响项目计划</span></span><span class="cb-tag tag-present">交付</span></li>
+        <li><span class="cb"></span><span class="cb-text"><strong>6. 交付质量数据</strong> — 已交付部分的一次通过率、返修率、客户投诉次数<span class="cb-hint">用于识别产品/工艺的系统性问题</span></span><span class="cb-tag tag-present">交付</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 6: 维度三 - 研发与新订单规划 ═══ -->
+  <div class="slide light" data-index="6">
+    <div class="slide-inner">
+      <div class="sec-title"><h2>维度三：研发与新订单规划</h2><p class="desc">🚀 下半年的新订单目标、内部研发立项、新产品方向</p></div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1vw">
+        <div>
+          <div style="background:var(--blueL);border-radius:.5vw;padding:.8vw .8vw;margin-bottom:.6vh">
+            <h4 style="font-size:1.05vw;font-weight:700;color:var(--blue);margin-bottom:.5vh">📦 新订单规划</h4>
+            <ul class="checklist">
+              <li style="padding:.4vw .6vw"><span class="cb"></span><span class="cb-text" style="font-size:.95vw"><strong>在谈订单跟踪</strong> — 正在商务谈判中、有明确意向的订单<span class="cb-hint">客户·预估金额·签约概率·预计签约时间·负责人</span></span><span class="cb-tag tag-future">新订单</span></li>
+              <li style="padding:.4vw .6vw"><span class="cb"></span><span class="cb-text" style="font-size:.95vw"><strong>潜在客户拓展</strong> — 目标客户清单 / 待拜访客户 / 新行业拓展计划</span><span class="cb-tag tag-future">新订单</span></li>
+              <li style="padding:.4vw .6vw"><span class="cb"></span><span class="cb-text" style="font-size:.95vw"><strong>下半年目标</strong> — 按产品线设定下半年的签约目标（金额/数量）<span class="cb-hint">与利润考核挂钩</span></span><span class="cb-tag tag-future">新订单</span></li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <div style="background:#EFF6FF;border-radius:.5vw;padding:.8vw .8vw;margin-bottom:.6vh">
+            <h4 style="font-size:1.05vw;font-weight:700;color:var(--blue);margin-bottom:.5vh">🔬 研发规划</h4>
+            <ul class="checklist">
+              <li style="padding:.4vw .6vw"><span class="cb"></span><span class="cb-text" style="font-size:.95vw"><strong>内部立项项目</strong> — 已有/计划启动的内部研发项目清单<span class="cb-hint">项目名·目标·预算·时间线·负责人</span></span><span class="cb-tag tag-future">研发</span></li>
+              <li style="padding:.4vw .6vw"><span class="cb"></span><span class="cb-text" style="font-size:.95vw"><strong>技术/产品预研</strong> — 新技术方向探索、POC验证计划（如具身AI、VLA/WAM等）</span><span class="cb-tag tag-future">研发</span></li>
+              <li style="padding:.4vw .6vw"><span class="cb"></span><span class="cb-text" style="font-size:.95vw"><strong>产品标准化/平台化</strong> — 可复用的模块、平台、工具链建设计划</span><span class="cb-tag tag-future">研发</span></li>
+              <li style="padding:.4vw .6vw"><span class="cb"></span><span class="cb-text" style="font-size:.95vw"><strong>现有产品迭代</strong> — 已交付产品的功能升级、性能优化清单</span><span class="cb-tag tag-future">研发</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:.6vh;padding:.5vw .8vw;background:var(--greenL);border-radius:.4vw;font-size:.95vw;color:var(--green)">
+        💡 <strong>关键原则：</strong>产品线利润考核 = 客户订单利润 + 内部研发项目利润。研发投入也要算清产出。
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 7: 维度四 - 风险与主力人员配置 ═══ -->
+  <div class="slide light" data-index="6">
+    <div class="slide-inner">
+      <div class="sec-title"><h2>维度四：风险与主力人员配置</h2><p class="desc">⚠️ 影响下半年交付和利润达成的关键风险、卡点、产品线主力人员配置分析</p></div>
+
+      <div class="supplement-grid">
+        <div class="supplement-card" style="border-color:var(--red)">
+          <h4><span style="color:var(--red)">⚠️</span> 关键风险</h4>
+          <ul>
+            <li><strong>人员流失风险</strong> — 核心岗位是否有离职隐患？AB角是否到位？</li>
+            <li><strong>交付延期风险</strong> — 哪些项目存在明确的延期风险？客户是否已表达不满？</li>
+            <li><strong>供应链风险</strong> — 关键元器件/外协加工是否存在交期不可控？备选方案？</li>
+            <li><strong>技术风险</strong> — 研发/交付中遇到的技术瓶颈，是否需要外部支持？</li>
+            <li><strong>客户关系风险</strong> — 是否有客户投诉升级为商务风险的可能？</li>
+          </ul>
+        </div>
+        <div class="supplement-card" style="border-color:var(--blue)">
+          <h4><span style="color:var(--blue)">👥</span> 产品线主力人员配置</h4>
+          <ul>
+            <li><strong>各产品线核心骨干</strong> — 每条产品线的主力人员（负责人+关键岗位）是否配齐？</li>
+            <li><strong>待入职到岗计划</strong> — 6个待入职/待定岗位招聘进度是否影响产品线架构？</li>
+            <li><strong>岗位BP角建设</strong> — 关键岗位是否具备BP角轮替能力？风险岗位是否有备份？</li>
+            <li><strong>超级个体识别</strong> — 谁可以成长为"一个人能干的事不找第二个人"的超级个体？</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 组织架构全貌展示图 -->
+      <div style="margin-top:1.5vh">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1vw">
+          <div style="border-radius:.5vw;overflow:hidden;background:#fff;box-shadow:0 .08vw .2vw rgba(0,0,0,.06)">
+            <div style="padding:.35vw .6vw;background:#F8FAFC;border-bottom:1px solid #E2E8F0;font-size:.85vw;font-weight:700;color:var(--text)">组织架构全貌 · 产品线</div>
+            <img src="https://6a69-ji-projects-d1g4i777v9f9d798e-1399547387.tcb.qcloud.la/images/组织架构产品线.png" style="width:100%;height:auto;display:block" alt="组织架构全貌·产品线">
+          </div>
+          <div style="border-radius:.5vw;overflow:hidden;background:#fff;box-shadow:0 .08vw .2vw rgba(0,0,0,.06)">
+            <div style="padding:.35vw .6vw;background:#F8FAFC;border-bottom:1px solid #E2E8F0;font-size:.85vw;font-weight:700;color:var(--text)">组织架构全貌 · 职能线</div>
+            <img src="https://6a69-ji-projects-d1g4i777v9f9d798e-1399547387.tcb.qcloud.la/images/组织架构职能线.png" style="width:100%;height:auto;display:block" alt="组织架构全貌·职能线">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 8: 维度五 - 团队与资源 ═══ -->
+  <div class="slide light" data-index="7">
+    <div class="slide-inner">
+      <div class="sec-title"><h2>维度五：团队与资源配置</h2><p class="desc">🧑‍🤝‍🧑 人力缺口、人才梯队建设、待入职跟进</p></div>
+
+      <div class="supplement-grid">
+        <div class="supplement-card" style="border-color:var(--blue)">
+          <h4><span style="color:var(--blue)">👤</span> 人力缺口</h4>
+          <ul>
+            <li><strong>待入职/待定岗位跟进</strong> — 商务经理 / 具身团队新成员 / 电气工程师 / 技术支持 / 结构工程师 / 测试工程师 — 各岗位的招聘进度、预计到岗时间</li>
+            <li><strong>现有岗位技能短板</strong> — 当前人员的能力差距？哪些技能需要外部培训或引进？</li>
+            <li><strong>高峰期弹性需求</strong> — 如果下半年订单量激增，人力弹性从哪里来？</li>
+          </ul>
+        </div>
+        <div class="supplement-card" style="border-color:var(--green)">
+          <h4><span style="color:var(--green)">🎯</span> 团队人才梯队建设</h4>
+          <ul>
+            <li><strong>提拔交付总监 → 产品线负责人</strong></li>
+            <ul style="margin-top:.2vh;list-style:none;padding-left:1.2vw">
+              <li style="font-size:.9vw;color:var(--text);padding:.1vh 0;display:flex;align-items:center;gap:.3vw">
+                <span style="display:inline-block;width:.4vw;height:.4vw;border-radius:50%;background:var(--pl-custom)"></span>
+                黄辉军（非标集成线）
+              </li>
+              <li style="font-size:.9vw;color:var(--text);padding:.1vh 0;display:flex;align-items:center;gap:.3vw">
+                <span style="display:inline-block;width:.4vw;height:.4vw;border-radius:50%;background:var(--pl-optical)"></span>
+                邹振华（光模块测试站）
+              </li>
+            </ul>
+            <li style="margin-top:.4vh"><strong>培养项目经理 → 未来新产品线负责人</strong></li>
+            <ul style="margin-top:.2vh;list-style:none;padding-left:1.2vw">
+              <li style="font-size:.85vw;color:var(--muted);padding:.1vh 0">罗敏 · 段文强 · 罗宏伟 · 陈立智 · 陈凯</li>
+            </ul>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 产品线专有的特殊问题 -->
+      <div style="margin-top:1.2vh;padding:.6vw .8vw;background:#F8FAFC;border-radius:.4vw;border:1px solid #E2E8F0">
+        <h4 style="font-size:1.05vw;font-weight:700;color:var(--text);margin-bottom:.3vh">📌 各产品线特殊关注点</h4>
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:.5vw;margin-top:.3vh">
+          <div style="font-size:.85vw;color:var(--muted);padding:.3vw .4vw;background:var(--pl-biz);color:#fff;border-radius:.3vw;text-align:center">市场商务<br>国高·专利等申请</div>
+          <div style="font-size:.85vw;color:var(--muted);padding:.3vw .4vw;background:var(--pl-optical);color:#fff;border-radius:.3vw;text-align:center">光模块<br>一字型工作站量产</div>
+          <div style="font-size:.85vw;color:var(--muted);padding:.3vw .4vw;background:var(--pl-custom);color:#fff;border-radius:.3vw;text-align:center">非标集成<br>光模块包装线+大模型AOI</div>
+          <div style="font-size:.85vw;color:var(--muted);padding:.3vw .4vw;background:var(--pl-robot);color:#fff;border-radius:.3vw;text-align:center">复合机器人<br>调度系统自研+MES</div>
+          <div style="font-size:.85vw;color:var(--muted);padding:.3vw .4vw;background:var(--pl-pcb);color:#fff;border-radius:.3vw;text-align:center">PCB<br>行为监控+自研标注平台</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 9: 完整输出表格模板 ═══ -->
+  <div class="slide light" data-index="8">
+    <div class="slide-inner">
+      <div class="sec-title"><h2>输出模板：每条产品线一张清单表</h2><p class="desc">各产品线负责人按此模板填写，汇总后作为下半年管理基线</p></div>
+
+      <table class="pl-summary-table">
+        <thead>
+          <tr><th style="width:8%">序号</th><th style="width:12%">维度</th><th style="width:20%">项目/事项</th><th style="width:18%">当前状态</th><th style="width:12%">负责人</th><th style="width:12%">计划完成</th><th style="width:18%">备注/风险</th></tr>
+        </thead>
+        <tbody>
+          <tr><td style="text-align:center;color:var(--red);font-weight:700">P1</td><td><span class="cb-tag tag-past">已签单收尾</span></td><td>[项目名] 尾款催收</td><td>已验收未回款 · 逾期XX天</td><td>[姓名]</td><td>2026-XX-XX</td><td>客户付款流程慢</td></tr>
+          <tr><td style="text-align:center;color:var(--red);font-weight:700">P2</td><td><span class="cb-tag tag-past">已签单收尾</span></td><td>[项目名] 客户验收</td><td>已交付 · 待验收</td><td>[姓名]</td><td>2026-XX-XX</td><td>缺调试时间</td></tr>
+          <tr><td style="text-align:center;color:var(--amber);font-weight:700">D1</td><td><span class="cb-tag tag-present">交付中</span></td><td>[项目名] 交付</td><td>进度XX% · 按计划/滞后</td><td>[姓名]</td><td>2026-XX-XX</td><td>[风险说明]</td></tr>
+          <tr><td style="text-align:center;color:var(--amber);font-weight:700">D2</td><td><span class="cb-tag tag-present">交付中</span></td><td>[项目名] 交付</td><td>进度XX% · 按计划/滞后</td><td>[姓名]</td><td>2026-XX-XX</td><td>[风险说明]</td></tr>
+          <tr><td style="text-align:center;color:var(--blue);font-weight:700">R1</td><td><span class="cb-tag tag-future">研发/新订单</span></td><td>[在谈项目] 签约</td><td>商务谈判中 · 概率XX%</td><td>[姓名]</td><td>2026-XX-XX</td><td>预估金额XX万</td></tr>
+          <tr><td style="text-align:center;color:var(--blue);font-weight:700">R2</td><td><span class="cb-tag tag-future">研发/新订单</span></td><td>[内部研发项目]</td><td>立项中/进行中</td><td>[姓名]</td><td>2026-XX-XX</td><td>预算XX万</td></tr>
+          <tr><td style="text-align:center;color:var(--purple);font-weight:700">K1</td><td><span class="cb-tag tag-other">风险/依赖</span></td><td>[关键风险项]</td><td>风险等级：高/中/低</td><td>[姓名]</td><td>—</td><td>应对措施</td></tr>
+          <tr><td style="text-align:center;color:var(--green);font-weight:700">T1</td><td><span class="cb-tag tag-other">团队/资源</span></td><td>[待入职岗位]</td><td>招聘中/面试中/待入职</td><td>[姓名]</td><td>预计到岗日</td><td></td></tr>
+        </tbody>
+      </table>
+
+      <div class="hl-box" style="margin-top:1vh">每条产品线产出这样一张清单，讨论会上逐条过，会后作为下半年管理基线，每周更新状态</div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- ═══ 产品线专属填报表（按讨论顺序排列） ═══ -->
+  <!-- ═══════════════════════════════════════════ -->
+
+  <!-- ═══ SLIDE 10: ① 光模块测试站 ═══ -->
+  <div class="slide light" data-index="9">
+    <div class="slide-inner">
+      <div class="sec-title">
+        <h2 style="display:flex;align-items:center;gap:.6vw">
+          <span style="display:inline-block;width:1.8vw;height:1.8vw;border-radius:.3vw;background:var(--pl-optical);color:#fff;font-size:1vw;text-align:center;line-height:1.8vw">①</span>
+          光模块测试站 <span style="font-size:1.2vw;color:var(--pl-optical);font-weight:400">负责人：邹振华</span>
+        </h2>
+        <p class="desc">团队最大·资源倾斜·4个待入职跟进 · 一字型工作站量产 · 深度绑定供应商</p>
+      </div>
+
+      <!-- PL 上下文 -->
+      <div style="display:flex;gap:.6vw;margin-bottom:1vh;flex-wrap:wrap">
+        <span style="font-size:.88vw;background:var(--pl-optical);color:#fff;padding:.15vw .5vw;border-radius:.3vw">在职10人</span>
+        <span style="font-size:.88vw;background:#FEF3C7;color:#D97706;padding:.15vw .5vw;border-radius:.3vw">待入职4人</span>
+        <span style="font-size:.88vw;background:#F3E8FF;color:#7C3AED;padding:.15vw .5vw;border-radius:.3vw">辅助线2人</span>
+        <span style="font-size:.88vw;background:var(--blueL);color:var(--blue);padding:.15vw .5vw;border-radius:.3vw">产品线→赵健章</span>
+        <span style="font-size:.88vw;background:#F1F5F9;color:var(--text);padding:.15vw .5vw;border-radius:.3vw">职能→欧阳雄军</span>
+      </div>
+
+      <!-- 核心成员 -->
+      <div style="display:flex;flex-wrap:wrap;gap:.3vw;margin-bottom:1.2vh">
+        <span style="font-size:.82vw;background:#F1F5F9;padding:.1vw .4vw;border-radius:.25vw;color:var(--text)">邹振华(交付总监)</span>
+        <span style="font-size:.82vw;background:#F1F5F9;padding:.1vw .4vw;border-radius:.25vw;color:var(--text)">李国伟(研发经理)</span>
+        <span style="font-size:.82vw;background:#F1F5F9;padding:.1vw .4vw;border-radius:.25vw;color:var(--text)">许锦川(机械经理)</span>
+        <span style="font-size:.82vw;background:#F1F5F9;padding:.1vw .4vw;border-radius:.25vw;color:var(--text)">毕伟平(软件)</span>
+        <span style="font-size:.82vw;background:#F1F5F9;padding:.1vw .4vw;border-radius:.25vw;color:var(--text)">陈立智(PM)</span>
+        <span style="font-size:.82vw;background:#F1F5F9;padding:.1vw .4vw;border-radius:.25vw;color:var(--text)">吴开兴(电气)</span>
+        <span style="font-size:.82vw;background:#F1F5F9;padding:.1vw .4vw;border-radius:.25vw;color:var(--text)">李城洁(结构)</span>
+        <span style="font-size:.82vw;background:#F1F5F9;padding:.1vw .4vw;border-radius:.25vw;color:var(--text)">朱坤城(技术支持)</span>
+        <span style="font-size:.82vw;background:#F1F5F9;padding:.1vw .4vw;border-radius:.25vw;color:var(--text)">杨舜钧(技术支持)</span>
+        <span style="font-size:.82vw;background:#F1F5F9;padding:.1vw .4vw;border-radius:.25vw;color:var(--text)">蒙增俭/施文实(装配)</span>
+        <span style="font-size:.82vw;background:#FEF3C7;padding:.1vw .4vw;border-radius:.25vw;color:#D97706">结构(男)·支持(男)·软件开发测试(待入职)</span>
+        <span style="font-size:.82vw;background:#F3E8FF;padding:.1vw .4vw;border-radius:.25vw;color:#7C3AED">卢柏贵(QA/辅助) · 唐梅(采购/辅助)</span>
+      </div>
+
+      <table class="pl-summary-table">
+        <thead>
+          <tr><th style="width:8%">序号</th><th style="width:11%">维度</th><th style="width:22%">项目/事项</th><th style="width:16%">当前状态</th><th style="width:10%">负责人</th><th style="width:11%">计划完成</th><th style="width:22%">备注/风险</th></tr>
+        </thead>
+        <tbody>
+          <tr style="background:#FFF5F5"><td style="text-align:center;color:var(--red);font-weight:700">P1</td><td><span class="cb-tag tag-past">已签单收尾</span></td><td>[光模块项目] 验收尾款</td><td>已验收未回款</td><td>邹振华</td><td></td><td>客户付款节点</td></tr>
+          <tr style="background:#FFF5F5"><td style="text-align:center;color:var(--red);font-weight:700">P2</td><td><span class="cb-tag tag-past">已签单收尾</span></td><td>[光模块项目] 客户验收</td><td>已交付待验收</td><td>陈立智</td><td></td><td>现场调试排期</td></tr>
+          <tr style="background:#FFF5F5"><td style="text-align:center;color:var(--red);font-weight:700">P3</td><td><span class="cb-tag tag-past">已签单收尾</span></td><td>售后/质保期内遗留问题</td><td></td><td></td><td></td><td></td></tr>
+          <tr style="background:#FFF8E1"><td style="text-align:center;color:var(--amber);font-weight:700">D1</td><td><span class="cb-tag tag-present">交付中</span></td><td>[项目名] 交付</td><td>进度 %</td><td></td><td></td><td></td></tr>
+          <tr style="background:#FFF8E1"><td style="text-align:center;color:var(--amber);font-weight:700">D2</td><td><span class="cb-tag tag-present">交付中</span></td><td>[项目名] 交付</td><td>进度 %</td><td></td><td></td><td></td></tr>
+          <tr style="background:#FFF8E1"><td style="text-align:center;color:var(--amber);font-weight:700">D3</td><td><span class="cb-tag tag-present">交付中</span></td><td>资源占用 — 吴开兴(电气)调度冲突</td><td></td><td>邹振华</td><td></td><td>电气同时支持非标线</td></tr>
+          <tr style="background:#EFF6FF"><td style="text-align:center;color:var(--blue);font-weight:700">R1</td><td><span class="cb-tag tag-future">研发/新订单</span></td><td>一字型工作站量产推进</td><td></td><td>邹振华+许锦川</td><td></td><td>结构+电气配合</td></tr>
+          <tr style="background:#EFF6FF"><td style="text-align:center;color:var(--blue);font-weight:700">R2</td><td><span class="cb-tag tag-future">研发/新订单</span></td><td>深度绑定供应商——联合设计/现场解决问题</td><td></td><td>邹振华+唐梅</td><td></td><td>采购配合</td></tr>
+          <tr style="background:#EFF6FF"><td style="text-align:center;color:var(--blue);font-weight:700">R3</td><td><span class="cb-tag tag-future">研发/新订单</span></td><td>光模块工作站MES对接深化</td><td></td><td>毕伟平</td><td></td><td>调度系统支撑</td></tr>
+          <tr style="background:#EFF6FF"><td style="text-align:center;color:var(--blue);font-weight:700">R4</td><td><span class="cb-tag tag-future">研发/新订单</span></td><td>下半年新订单目标</td><td> 万元</td><td>马佳+邹振华</td><td></td><td></td></tr>
+          <tr style="background:#F3E8FF"><td style="text-align:center;color:var(--purple);font-weight:700">K1</td><td><span class="cb-tag tag-other">风险/依赖</span></td><td>4个待入职到岗时间不确定性</td><td>结构·支持·测试·电气待入</td><td>邹振华</td><td></td><td>影响交付产能</td></tr>
+          <tr style="background:#F3E8FF"><td style="text-align:center;color:var(--purple);font-weight:700">K2</td><td><span class="cb-tag tag-other">风险/依赖</span></td><td>吴开兴电气双线调度冲突</td><td></td><td>邹振华</td><td></td><td>需优先级对齐</td></tr>
+          <tr style="background:#F0FFF4"><td style="text-align:center;color:var(--green);font-weight:700">T1</td><td><span class="cb-tag tag-other">团队/资源</span></td><td>待入职4人招聘跟进</td><td></td><td>张冬晓</td><td></td><td></td></tr>
+          <tr style="background:#F0FFF4"><td style="text-align:center;color:var(--green);font-weight:700">T2</td><td><span class="cb-tag tag-other">团队/资源</span></td><td>AB角建设 · 装配/现场支持双人备份</td><td></td><td>邹振华</td><td></td><td>蒙增俭·施文实已双人</td></tr>
+        </tbody>
+      </table>
+
+      <div style="margin-top:.6vh;padding:.4vw .6vw;background:#F0FFF4;border-radius:.3vw;font-size:.9vw;color:var(--green)">
+        💡 <strong>本次讨论重点：</strong> ① 一字型工作站量产计划 ② 供应商深度绑定方案 ③ 4个待入职到岗时间表 ④ 下半年产能目标 ⑤ 电气资源调度优先级
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 11: ② 非标集成线 ═══ -->
+  <div class="slide light" data-index="10">
+    <div class="slide-inner">
+      <div class="sec-title">
+        <h2 style="display:flex;align-items:center;gap:.6vw">
+          <span style="display:inline-block;width:1.8vw;height:1.8vw;border-radius:.3vw;background:var(--pl-custom);color:#fff;font-size:1vw;text-align:center;line-height:1.8vw">②</span>
+          非标集成线 <span style="font-size:1.2vw;color:var(--pl-custom);font-weight:400">负责人：黄辉军</span>
+        </h2>
+        <p class="desc">聚焦光模块包装线（一次/二次/后段）· 包装软件自研+MES对接 · 外包供应商扩张 · 自研大模型AOI增值</p>
+      </div>
+
+      <div style="display:flex;gap:.6vw;margin-bottom:1vh;flex-wrap:wrap">
+        <span style="font-size:.88vw;background:var(--pl-custom);color:#fff;padding:.15vw .5vw;border-radius:.3vw">在职5人</span>
+        <span style="font-size:.88vw;background:#FEF3C7;color:#D97706;padding:.15vw .5vw;border-radius:.3vw">兼职1人·待入职2人</span>
+        <span style="font-size:.88vw;background:var(--blueL);color:var(--blue);padding:.15vw .5vw;border-radius:.3vw">产品线→赵健章</span>
+        <span style="font-size:.88vw;background:#F1F5F9;color:var(--text);padding:.15vw .5vw;border-radius:.3vw">职能→欧阳雄军</span>
+        <span style="font-size:.88vw;background:#F3E8FF;color:#7C3AED;padding:.15vw .5vw;border-radius:.3vw">辅助线3人</span>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:.3vw;margin-bottom:1.2vh">
+        <span style="font-size:.82vw;background:#F1F5F9;padding:.1vw .4vw;border-radius:.25vw;color:var(--text)">黄辉军(交付总监)</span>
+        <span style="font-size:.82vw;background:#F1F5F9;padding:.1vw .4vw;border-radius:.25vw;color:var(--text)">曾庆辰(软件·具身研发)</span>
+        <span style="font-size:.82vw;background:#F1F5F9;padding:.1vw .4vw;border-radius:.25vw;color:var(--text)">陈凯(PM)</span>
+        <span style="font-size:.82vw;background:#F1F5F9;padding:.1vw .4vw;border-radius:.25vw;color:var(--text)">韦灵智/宣恩宝(技术支持)</span>
+        <span style="font-size:.82vw;background:#FEF3C7;padding:.1vw .4vw;border-radius:.25vw;color:#D97706">吴思豪(AI架构/兼职)·电气(男)</span>
+        <span style="font-size:.82vw;background:#EFF6FF;padding:.1vw .4vw;border-radius:.25vw;color:var(--blue)">曾庆辰+具身团队新成员</span>
+        <span style="font-size:.82vw;background:#F3E8FF;padding:.1vw .4vw;border-radius:.25vw;color:#7C3AED">李国伟(研发经理/辅助)·段文强(PM/辅助)·电气(男)</span>
+      </div>
+
+      <table class="pl-summary-table">
+        <thead>
+          <tr><th style="width:8%">序号</th><th style="width:11%">维度</th><th style="width:22%">项目/事项</th><th style="width:16%">当前状态</th><th style="width:10%">负责人</th><th style="width:11%">计划完成</th><th style="width:22%">备注/风险</th></tr>
+        </thead>
+        <tbody>
+          <tr style="background:#FFF5F5"><td style="text-align:center;color:var(--red);font-weight:700">P1</td><td><span class="cb-tag tag-past">已签单收尾</span></td><td>[非标项目] 验收/尾款</td><td></td><td>陈凯</td><td></td><td></td></tr>
+          <tr style="background:#FFF5F5"><td style="text-align:center;color:var(--red);font-weight:700">P2</td><td><span class="cb-tag tag-past">已签单收尾</span></td><td>售后运维遗留问题</td><td></td><td>韦灵智/宣恩宝</td><td></td><td></td></tr>
+          <tr style="background:#FFF8E1"><td style="text-align:center;color:var(--amber);font-weight:700">D1</td><td><span class="cb-tag tag-present">交付中</span></td><td>[非标项目] 交付</td><td>进度 %</td><td>陈凯</td><td></td><td></td></tr>
+          <tr style="background:#FFF8E1"><td style="text-align:center;color:var(--amber);font-weight:700">D2</td><td><span class="cb-tag tag-present">交付中</span></td><td>现场安装调试问题</td><td></td><td>宣恩宝</td><td></td><td></td></tr>
+          <tr style="background:#EFF6FF"><td style="text-align:center;color:var(--blue);font-weight:700">R1</td><td><span class="cb-tag tag-future">研发/新订单</span></td><td>光模块包装线（一/二次/后段）方案 + 大模型AOI自研</td><td></td><td>黄辉军+曾庆辰</td><td></td><td>吴思豪AI协助·自研增值</td></tr>
+          <tr style="background:#EFF6FF"><td style="text-align:center;color:var(--blue);font-weight:700">R2</td><td><span class="cb-tag tag-future">研发/新订单</span></td><td>包装软件自研 + 产线数据MES对接</td><td></td><td>曾庆辰</td><td></td><td></td></tr>
+          <tr style="background:#EFF6FF"><td style="text-align:center;color:var(--blue);font-weight:700">R3</td><td><span class="cb-tag tag-future">研发/新订单</span></td><td>外包合作供应商扩张计划</td><td></td><td>黄辉军</td><td></td><td></td></tr>
+          <tr style="background:#EFF6FF"><td style="text-align:center;color:var(--blue);font-weight:700">R4</td><td><span class="cb-tag tag-future">研发/新订单</span></td><td>下半年新订单/在谈项目</td><td> 万元</td><td>马佳+黄辉军</td><td></td><td></td></tr>
+          <tr style="background:#F3E8FF"><td style="text-align:center;color:var(--purple);font-weight:700">K1</td><td><span class="cb-tag tag-other">风险/依赖</span></td><td>AI研发依赖李国伟研发线支持</td><td></td><td>黄辉军</td><td></td><td>李国伟主光模块</td></tr>
+          <tr style="background:#F3E8FF"><td style="text-align:center;color:var(--purple);font-weight:700">K2</td><td><span class="cb-tag tag-other">风险/依赖</span></td><td>具身团队新成员招聘进度</td><td></td><td>黄辉军</td><td></td><td>曾庆辰+吴思豪已支撑</td></tr>
+          <tr style="background:#F0FFF4"><td style="text-align:center;color:var(--green);font-weight:700">T1</td><td><span class="cb-tag tag-other">团队/资源</span></td><td>电气(男)入职跟进</td><td>进入二面</td><td>张冬晓</td><td></td><td></td></tr>
+          <tr style="background:#F0FFF4"><td style="text-align:center;color:var(--green);font-weight:700">T2</td><td><span class="cb-tag tag-other">团队/资源</span></td><td>超级个体培养——谁可以独当一面？</td><td></td><td>黄辉军</td><td></td><td></td></tr>
+        </tbody>
+      </table>
+
+      <div style="margin-top:.6vh;padding:.4vw .6vw;background:#F0FFF4;border-radius:.3vw;font-size:.9vw;color:var(--green)">
+        💡 <strong>本次讨论重点：</strong> ① 光模块包装线（一次/二次/后段）方案 ② 包装软件自研+MES对接规划 ③ 外包供应商扩张计划 ④ 大模型AOI自研路线图 ⑤ 曾庆辰+具身团队新成员分工
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 12: ③ PCB&仓库&工程 ═══ -->
+  <div class="slide light" data-index="11">
+    <div class="slide-inner">
+      <div class="sec-title">
+        <h2 style="display:flex;align-items:center;gap:.6vw">
+          <span style="display:inline-block;width:1.8vw;height:1.8vw;border-radius:.3vw;background:var(--pl-pcb);color:#fff;font-size:1vw;text-align:center;line-height:1.8vw">③</span>
+          PCB&仓库&工程 <span style="font-size:1.2vw;color:var(--pl-pcb);font-weight:400">负责人：欧阳雄军</span>
+        </h2>
+        <p class="desc">聚焦行为监控集成 · 自研标注单岗位行为监控平台 · 经营交付副总主力线</p>
+      </div>
+
+      <div style="display:flex;gap:.6vw;margin-bottom:1vh;flex-wrap:wrap">
+        <span style="font-size:.88vw;background:var(--pl-pcb);color:#fff;padding:.15vw .5vw;border-radius:.3vw">在职6人</span>
+        <span style="font-size:.88vw;background:#F3E8FF;color:#7C3AED;padding:.15vw .5vw;border-radius:.3vw">辅助线3人</span>
+        <span style="font-size:.88vw;background:var(--blueL);color:var(--blue);padding:.15vw .5vw;border-radius:.3vw">产品线→赵健章</span>
+        <span style="font-size:.88vw;background:#F1F5F9;color:var(--text);padding:.15vw .5vw;border-radius:.3vw">欧阳雄军双线负责</span>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:.3vw;margin-bottom:1.2vh">
+        <span style="font-size:.82vw;background:#F1F5F9;padding:.1vw .4vw;border-radius:.25vw;color:var(--text)">欧阳雄军(副总)</span>
+        <span style="font-size:.82vw;background:#F1F5F9;padding:.1vw .4vw;border-radius:.25vw;color:var(--text)">黄子少(研发经理)</span>
+        <span style="font-size:.82vw;background:#F1F5F9;padding:.1vw .4vw;border-radius:.25vw;color:var(--text)">罗敏(PM·工程集成)</span>
+        <span style="font-size:.82vw;background:#F1F5F9;padding:.1vw .4vw;border-radius:.25vw;color:var(--text)">罗宏伟(PM·仓储集成)</span>
+        <span style="font-size:.82vw;background:#F1F5F9;padding:.1vw .4vw;border-radius:.25vw;color:var(--text)">黄子访(测试·行为监控)</span>
+        <span style="font-size:.82vw;background:#F1F5F9;padding:.1vw .4vw;border-radius:.25vw;color:var(--text)">韦伟(技术支持)</span>
+        <span style="font-size:.82vw;background:#F3E8FF;padding:.1vw .4vw;border-radius:.25vw;color:#7C3AED">宣恩宝(非标辅助)·韦灵智(非标辅助)·罗宏伟兼非标运维</span>
+      </div>
+
+      <table class="pl-summary-table">
+        <thead>
+          <tr><th style="width:8%">序号</th><th style="width:11%">维度</th><th style="width:22%">项目/事项</th><th style="width:16%">当前状态</th><th style="width:10%">负责人</th><th style="width:11%">计划完成</th><th style="width:22%">备注/风险</th></tr>
+        </thead>
+        <tbody>
+          <tr style="background:#FFF5F5"><td style="text-align:center;color:var(--red);font-weight:700">P1</td><td><span class="cb-tag tag-past">已签单收尾</span></td><td>[PCB/仓储项目] 验收尾款</td><td></td><td>罗宏伟</td><td></td><td></td></tr>
+          <tr style="background:#FFF5F5"><td style="text-align:center;color:var(--red);font-weight:700">P2</td><td><span class="cb-tag tag-past">已签单收尾</span></td><td>PCB设备运维遗留问题</td><td></td><td>韦伟</td><td></td><td></td></tr>
+          <tr style="background:#FFF8E1"><td style="text-align:center;color:var(--amber);font-weight:700">D1</td><td><span class="cb-tag tag-present">交付中</span></td><td>[PCB项目] 交付</td><td>进度 %</td><td></td><td></td><td></td></tr>
+          <tr style="background:#FFF8E1"><td style="text-align:center;color:var(--amber);font-weight:700">D2</td><td><span class="cb-tag tag-present">交付中</span></td><td>[仓储项目] 交付</td><td>进度 %</td><td>罗宏伟</td><td></td><td></td></tr>
+          <tr style="background:#FFF8E1"><td style="text-align:center;color:var(--amber);font-weight:700">D3</td><td><span class="cb-tag tag-present">交付中</span></td><td>工程集成项目（含行为监控）</td><td>进度 %</td><td>罗敏</td><td></td><td>行为监控新赛道</td></tr>
+          <tr style="background:#EFF6FF"><td style="text-align:center;color:var(--blue);font-weight:700">R1</td><td><span class="cb-tag tag-future">研发/新订单</span></td><td>行为监控集成深化 + 自研标注单岗位平台</td><td></td><td>黄子少+罗敏</td><td></td><td>AI辅助标注</td></tr>
+          <tr style="background:#EFF6FF"><td style="text-align:center;color:var(--blue);font-weight:700">R2</td><td><span class="cb-tag tag-future">研发/新订单</span></td><td>仓储集成标准化/平台化</td><td></td><td>罗宏伟</td><td></td><td></td></tr>
+          <tr style="background:#EFF6FF"><td style="text-align:center;color:var(--blue);font-weight:700">R3</td><td><span class="cb-tag tag-future">研发/新订单</span></td><td>下半年新订单目标</td><td> 万元</td><td>马佳+欧阳雄军</td><td></td><td></td></tr>
+          <tr style="background:#F3E8FF"><td style="text-align:center;color:var(--purple);font-weight:700">K1</td><td><span class="cb-tag tag-other">风险/依赖</span></td><td>欧阳雄军双线负载（PCB+复合机器人）</td><td></td><td>欧阳雄军</td><td></td><td>需评估精力分配</td></tr>
+          <tr style="background:#F3E8FF"><td style="text-align:center;color:var(--purple);font-weight:700">K2</td><td><span class="cb-tag tag-other">风险/依赖</span></td><td>行为监控新赛道的市场验证</td><td></td><td>罗敏+欧阳雄军</td><td></td><td>从售前转入</td></tr>
+          <tr style="background:#F0FFF4"><td style="text-align:center;color:var(--green);font-weight:700">T1</td><td><span class="cb-tag tag-other">团队/资源</span></td><td>黄子少团队能力评估</td><td></td><td>欧阳雄军</td><td></td><td>导航开发+测试</td></tr>
+          <tr style="background:#F0FFF4"><td style="text-align:center;color:var(--green);font-weight:700">T2</td><td><span class="cb-tag tag-other">团队/资源</span></td><td>工程集成岗位AB角建设</td><td></td><td>欧阳雄军</td><td></td><td></td></tr>
+        </tbody>
+      </table>
+
+      <div style="margin-top:.6vh;padding:.4vw .6vw;background:#F0FFF4;border-radius:.3vw;font-size:.9vw;color:var(--green)">
+        💡 <strong>本次讨论重点：</strong> ① 行为监控集成方案 ② 自研标注单岗位平台规划 ③ PCB/仓储/工程交付项目清单 ④ 欧阳雄军双线负载评估 ⑤ 仓储集成标准化方向
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 13: ④ 复合机器人 ═══ -->
+  <div class="slide light" data-index="12">
+    <div class="slide-inner">
+      <div class="sec-title">
+        <h2 style="display:flex;align-items:center;gap:.6vw">
+          <span style="display:inline-block;width:1.8vw;height:1.8vw;border-radius:.3vw;background:var(--pl-robot);color:#fff;font-size:1vw;text-align:center;line-height:1.8vw">④</span>
+          复合机器人 <span style="font-size:1.2vw;color:var(--pl-robot);font-weight:400">负责人：欧阳雄军</span>
+        </h2>
+        <p class="desc">聚焦调度系统自研上线+MES对接 · 寻找更好外包合作供应商 · 技术驱动产品线</p>
+      </div>
+
+      <div style="display:flex;gap:.6vw;margin-bottom:1vh;flex-wrap:wrap">
+        <span style="font-size:.88vw;background:var(--pl-robot);color:#fff;padding:.15vw .5vw;border-radius:.3vw">在职5人</span>
+        <span style="font-size:.88vw;background:#FEF3C7;color:#D97706;padding:.15vw .5vw;border-radius:.3vw">兼职1人</span>
+        <span style="font-size:.88vw;background:#F3E8FF;color:#7C3AED;padding:.15vw .5vw;border-radius:.3vw">辅助线3人</span>
+        <span style="font-size:.88vw;background:var(--blueL);color:var(--blue);padding:.15vw .5vw;border-radius:.3vw">产品线→赵健章</span>
+        <span style="font-size:.88vw;background:#F1F5F9;color:var(--text);padding:.15vw .5vw;border-radius:.3vw">欧阳雄军兼管</span>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:.3vw;margin-bottom:1.2vh">
+        <span style="font-size:.82vw;background:#F1F5F9;padding:.1vw .4vw;border-radius:.25vw;color:var(--text)">许传奇(后台架构师)</span>
+        <span style="font-size:.82vw;background:#F1F5F9;padding:.1vw .4vw;border-radius:.25vw;color:var(--text)">张雄(软件·调度系统)</span>
+        <span style="font-size:.82vw;background:#F1F5F9;padding:.1vw .4vw;border-radius:.25vw;color:var(--text)">段文强(PM·集成交付)</span>
+        <span style="font-size:.82vw;background:#F1F5F9;padding:.1vw .4vw;border-radius:.25vw;color:var(--text)">卢柏贵(QA·运维兼职)</span>
+        <span style="font-size:.82vw;background:#F1F5F9;padding:.1vw .4vw;border-radius:.25vw;color:var(--text)">旷文武(技术支持)</span>
+        <span style="font-size:.82vw;background:#F3E8FF;padding:.1vw .4vw;border-radius:.25vw;color:#7C3AED">毕伟平(光模块/辅助·调度+MES)·韦灵智(非标/辅助·售后)·朱坤城(光模块/辅助)</span>
+      </div>
+
+      <table class="pl-summary-table">
+        <thead>
+          <tr><th style="width:8%">序号</th><th style="width:11%">维度</th><th style="width:22%">项目/事项</th><th style="width:16%">当前状态</th><th style="width:10%">负责人</th><th style="width:11%">计划完成</th><th style="width:22%">备注/风险</th></tr>
+        </thead>
+        <tbody>
+          <tr style="background:#FFF5F5"><td style="text-align:center;color:var(--red);font-weight:700">P1</td><td><span class="cb-tag tag-past">已签单收尾</span></td><td>[复合机器人项目] 验收尾款</td><td></td><td>段文强</td><td></td><td></td></tr>
+          <tr style="background:#FFF5F5"><td style="text-align:center;color:var(--red);font-weight:700">P2</td><td><span class="cb-tag tag-past">已签单收尾</span></td><td>复合机器人售后遗留问题</td><td></td><td>旷文武</td><td></td><td>侧重售后</td></tr>
+          <tr style="background:#FFF8E1"><td style="text-align:center;color:var(--amber);font-weight:700">D1</td><td><span class="cb-tag tag-present">交付中</span></td><td>[复合机器人项目] 集成交付</td><td>进度 %</td><td>段文强</td><td></td><td></td></tr>
+          <tr style="background:#FFF8E1"><td style="text-align:center;color:var(--amber);font-weight:700">D2</td><td><span class="cb-tag tag-present">交付中</span></td><td>Wi-Fi测试工作站维护</td><td></td><td>段文强</td><td></td><td></td></tr>
+          <tr style="background:#EFF6FF"><td style="text-align:center;color:var(--blue);font-weight:700">R1</td><td><span class="cb-tag tag-future">研发/新订单</span></td><td>调度系统自研上线 + MES对接</td><td></td><td>许传奇+张雄</td><td></td><td>核心攻坚</td></tr>
+          <tr style="background:#EFF6FF"><td style="text-align:center;color:var(--blue);font-weight:700">R2</td><td><span class="cb-tag tag-future">研发/新订单</span></td><td>寻找更好的外包合作供应商</td><td></td><td>欧阳雄军</td><td></td><td>提升交付弹性</td></tr>
+          <tr style="background:#EFF6FF"><td style="text-align:center;color:var(--blue);font-weight:700">R3</td><td><span class="cb-tag tag-future">研发/新订单</span></td><td>下半年新订单/在谈项目</td><td> 万元</td><td>马佳+欧阳雄军</td><td></td><td></td></tr>
+          <tr style="background:#F3E8FF"><td style="text-align:center;color:var(--purple);font-weight:700">K1</td><td><span class="cb-tag tag-other">风险/依赖</span></td><td>欧阳雄军双线负载（复合+PCB）</td><td></td><td>欧阳雄军</td><td></td><td></td></tr>
+          <tr style="background:#F3E8FF"><td style="text-align:center;color:var(--purple);font-weight:700">K2</td><td><span class="cb-tag tag-other">风险/依赖</span></td><td>调度系统与光模块MES对接带宽</td><td></td><td>许传奇</td><td></td><td>毕伟平做MES</td></tr>
+          <tr style="background:#F3E8FF"><td style="text-align:center;color:var(--purple);font-weight:700">K3</td><td><span class="cb-tag tag-other">风险/依赖</span></td><td>卢柏贵QA运维兼职——精力分配</td><td></td><td>许传奇</td><td></td><td>跨线QA+运维</td></tr>
+          <tr style="background:#F0FFF4"><td style="text-align:center;color:var(--green);font-weight:700">T1</td><td><span class="cb-tag tag-other">团队/资源</span></td><td>调度系统团队稳定度 + 外包供应商寻找</td><td></td><td>许传奇+欧阳雄军</td><td></td><td></td></tr>
+        </tbody>
+      </table>
+
+      <div style="margin-top:.6vh;padding:.4vw .6vw;background:#F0FFF4;border-radius:.3vw;font-size:.9vw;color:var(--green)">
+        💡 <strong>本次讨论重点：</strong> ① 调度系统自研上线计划 ② MES对接方案 ③ 外包供应商寻找/评估 ④ 复合机器人交付项目清单 ⑤ 卢柏贵QA/运维精力分配
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 14: ⑤ 市场商务&项目管理 ═══ -->
+  <div class="slide light" data-index="13">
+    <div class="slide-inner">
+      <div class="sec-title">
+        <h2 style="display:flex;align-items:center;gap:.6vw">
+          <span style="display:inline-block;width:1.8vw;height:1.8vw;border-radius:.3vw;background:var(--pl-biz);color:#fff;font-size:1vw;text-align:center;line-height:1.8vw">⑤</span>
+          市场商务&项目管理 <span style="font-size:1.2vw;color:var(--pl-biz);font-weight:400">负责人：马佳</span>
+        </h2>
+        <p class="desc">公共产品线·先明确考核口径·再谈目标</p>
+      </div>
+
+      <div style="display:flex;gap:.6vw;margin-bottom:1vh;flex-wrap:wrap">
+        <span style="font-size:.88vw;background:var(--pl-biz);color:#fff;padding:.15vw .5vw;border-radius:.3vw">在职4人</span>
+        <span style="font-size:.88vw;background:#FEF3C7;color:#D97706;padding:.15vw .5vw;border-radius:.3vw">待入职1人</span>
+        <span style="font-size:.88vw;background:#F3E8FF;color:#7C3AED;padding:.15vw .5vw;border-radius:.3vw">辅助线3人</span>
+        <span style="font-size:.88vw;background:var(--blueL);color:var(--blue);padding:.15vw .5vw;border-radius:.3vw">产品线→赵健章</span>
+        <span style="font-size:.88vw;background:#FFF8E1;color:var(--pl-biz);padding:.15vw .5vw;border-radius:.3vw;font-weight:700">管理公共项目·研发立项验收考核</span>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:.3vw;margin-bottom:1.2vh">
+        <span style="font-size:.82vw;background:#F1F5F9;padding:.1vw .4vw;border-radius:.25vw;color:var(--text)">马佳(商务副总)</span>
+        <span style="font-size:.82vw;background:#F1F5F9;padding:.1vw .4vw;border-radius:.25vw;color:var(--text)">张冬晓(总助·经指·行政·IT)</span>
+        <span style="font-size:.82vw;background:#F1F5F9;padding:.1vw .4vw;border-radius:.25vw;color:var(--text)">喻青(业务助理·订单·合同·对账)</span>
+        <span style="font-size:.82vw;background:#F1F5F9;padding:.1vw .4vw;border-radius:.25vw;color:var(--text)">唐梅(采购)</span>
+        <span style="font-size:.82vw;background:#FEF3C7;padding:.1vw .4vw;border-radius:.25vw;color:#D97706">商务(女/待入职)</span>
+        <span style="font-size:.82vw;background:#F3E8FF;padding:.1vw .4vw;border-radius:.25vw;color:#7C3AED">欧阳雄军(副总·辅助商务)</span>
+      </div>
+
+      <table class="pl-summary-table">
+        <thead>
+          <tr><th style="width:8%">序号</th><th style="width:11%">维度</th><th style="width:22%">项目/事项</th><th style="width:16%">当前状态</th><th style="width:10%">负责人</th><th style="width:11%">计划完成</th><th style="width:22%">备注/风险</th></tr>
+        </thead>
+        <tbody>
+          <tr style="background:#FFF5F5"><td style="text-align:center;color:var(--red);font-weight:700">P1</td><td><span class="cb-tag tag-past">已签单收尾</span></td><td>各产品线合同尾款催收总表</td><td></td><td>喻青</td><td></td><td></td></tr>
+          <tr style="background:#FFF5F5"><td style="text-align:center;color:var(--red);font-weight:700">P2</td><td><span class="cb-tag tag-past">已签单收尾</span></td><td>客户对账/未结发票清理</td><td></td><td>喻青</td><td></td><td></td></tr>
+          <tr style="background:#FFF8E1"><td style="text-align:center;color:var(--amber);font-weight:700">D1</td><td><span class="cb-tag tag-present">交付中</span></td><td>在谈合同商务对接跟进</td><td></td><td>马佳</td><td></td><td></td></tr>
+          <tr style="background:#FFF8E1"><td style="text-align:center;color:var(--amber);font-weight:700">D2</td><td><span class="cb-tag tag-present">交付中</span></td><td>采购订单跟进</td><td></td><td>唐梅</td><td></td><td></td></tr>
+          <tr style="background:#FFF8E1"><td style="text-align:center;color:var(--amber);font-weight:700">D3</td><td><span class="cb-tag tag-present">交付中</span></td><td>轻流改革·IT升级进度</td><td></td><td>张冬晓</td><td></td><td></td></tr>
+          <tr style="background:#EFF6FF"><td style="text-align:center;color:var(--blue);font-weight:700">R1</td><td><span class="cb-tag tag-future">研发/新订单</span></td><td><strong>讨论前提：公共线考核口径 + 研发项目立项验收流程</strong></td><td>待明确</td><td>马佳</td><td></td><td>4产品线研发项目立项/验收/考核</td></tr>
+          <tr style="background:#EFF6FF"><td style="text-align:center;color:var(--blue);font-weight:700">R2</td><td><span class="cb-tag tag-future">研发/新订单</span></td><td>下半年新订单目标（全公司口径）</td><td> 万元</td><td>马佳</td><td></td><td>按产品线拆分</td></tr>
+          <tr style="background:#EFF6FF"><td style="text-align:center;color:var(--blue);font-weight:700">R3</td><td><span class="cb-tag tag-future">研发/新订单</span></td><td>投融资推进进展</td><td></td><td>马佳</td><td></td><td></td></tr>
+          <tr style="background:#F3E8FF"><td style="text-align:center;color:var(--purple);font-weight:700">K1</td><td><span class="cb-tag tag-other">风险/依赖</span></td><td>商务(女)招聘进度——客户关系公关</td><td>招聘中</td><td>张冬晓</td><td></td><td>影响商务承接能力</td></tr>
+          <tr style="background:#F3E8FF"><td style="text-align:center;color:var(--purple);font-weight:700">K2</td><td><span class="cb-tag tag-other">风险/依赖</span></td><td>经营指标考核体系搭建进度</td><td></td><td>张冬晓</td><td></td><td></td></tr>
+          <tr style="background:#F0FFF4"><td style="text-align:center;color:var(--green);font-weight:700">T1</td><td><span class="cb-tag tag-other">团队/资源</span></td><td>商务(女)入职跟进</td><td>招聘中</td><td>张冬晓</td><td></td><td></td></tr>
+          <tr style="background:#F0FFF4"><td style="text-align:center;color:var(--green);font-weight:700">T2</td><td><span class="cb-tag tag-other">团队/资源</span></td><td>全员AI化·张冬晓牵头——本线推进计划</td><td></td><td>张冬晓</td><td></td><td></td></tr>
+        </tbody>
+      </table>
+
+      <div style="margin-top:.6vh;padding:.4vw .6vw;background:#F0FFF4;border-radius:.3vw;font-size:.9vw;color:var(--green)">
+        💡 <strong>本次讨论重点：</strong> ① 公共线考核口径 + 研发项目立项验收流程 ② 国高/专精特新申报规划 ③ 专利申请布局 ④ 各产品线在谈项目汇总 ⑤ 投融资进展 ⑥ 全员AI化/轻流改革进度
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 15: 建议讨论议程 ═══ -->
+  <div class="slide light" data-index="14">
+    <div class="slide-inner">
+      <div class="sec-title"><h2>建议讨论议程</h2><p class="desc">与各产品线负责人的梳理会议怎么开</p></div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5vw;margin-top:1.5vh">
+        <div>
+          <div style="padding:1vw;border-radius:.5vw;background:var(--white);box-shadow:0 .08vw .15vw rgba(0,0,0,.04);margin-bottom:.8vh">
+            <div style="display:flex;align-items:center;gap:.5vw;margin-bottom:.5vh">
+              <span style="background:var(--blue);color:#fff;width:1.8vw;height:1.8vw;display:flex;align-items:center;justify-content:center;border-radius:50%;font-size:.8vw;font-weight:700">1</span>
+              <span style="font-size:1.15vw;font-weight:700">会前准备（负责人自行完成）</span>
+            </div>
+            <ul style="list-style:none">
+              <li style="font-size:.95vw;color:var(--muted);padding:.2vh 0;padding-left:1vw;position:relative">✓ 维度一+维度二的清单初稿</li>
+              <li style="font-size:.95vw;color:var(--muted);padding:.2vh 0;padding-left:1vw;position:relative">✓ 维度三的下半年目标初稿</li>
+              <li style="font-size:.95vw;color:var(--muted);padding:.2vh 0;padding-left:1vw;position:relative">✓ 维度四的风险预判</li>
+            </ul>
+          </div>
+          <div style="padding:1vw;border-radius:.5vw;background:var(--white);box-shadow:0 .08vw .15vw rgba(0,0,0,.04);margin-bottom:.8vh">
+            <div style="display:flex;align-items:center;gap:.5vw;margin-bottom:.5vh">
+              <span style="background:var(--amber);color:#fff;width:1.8vw;height:1.8vw;display:flex;align-items:center;justify-content:center;border-radius:50%;font-size:.8vw;font-weight:700">2</span>
+              <span style="font-size:1.15vw;font-weight:700">会上逐条过（全场讨论）</span>
+            </div>
+            <ul style="list-style:none">
+              <li style="font-size:.95vw;color:var(--muted);padding:.2vh 0;padding-left:1vw;position:relative">→ 负责人逐条述职</li>
+              <li style="font-size:.95vw;color:var(--muted);padding:.2vh 0;padding-left:1vw;position:relative">→ 当场确认优先级和时间节点</li>
+              <li style="font-size:.95vw;color:var(--muted);padding:.2vh 0;padding-left:1vw;position:relative">→ 产品线主力人员配置当场对齐</li>
+              <li style="font-size:.95vw;color:var(--muted);padding:.2vh 0;padding-left:1vw;position:relative">→ 赵老师拍板争议项</li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <div style="padding:1vw;border-radius:.5vw;background:var(--white);box-shadow:0 .08vw .15vw rgba(0,0,0,.04);margin-bottom:.8vh">
+            <div style="display:flex;align-items:center;gap:.5vw;margin-bottom:.5vh">
+              <span style="background:var(--green);color:#fff;width:1.8vw;height:1.8vw;display:flex;align-items:center;justify-content:center;border-radius:50%;font-size:.8vw;font-weight:700">3</span>
+              <span style="font-size:1.15vw;font-weight:700">会后产出</span>
+            </div>
+            <ul style="list-style:none">
+              <li style="font-size:.95vw;color:var(--muted);padding:.2vh 0;padding-left:1vw;position:relative">📄 5条产品线 × 1张清单表（汇总版）</li>
+              <li style="font-size:.95vw;color:var(--muted);padding:.2vh 0;padding-left:1vw;position:relative">📊 下半年目标看板（按产品线）</li>
+              <li style="font-size:.95vw;color:var(--muted);padding:.2vh 0;padding-left:1vw;position:relative">📅 每月更新机制</li>
+            </ul>
+          </div>
+          <div style="padding:1vw;border-radius:.5vw;background:var(--white);box-shadow:0 .08vw .15vw rgba(0,0,0,.04);margin-bottom:.8vh">
+            <div style="display:flex;align-items:center;gap:.5vw;margin-bottom:.5vh">
+              <span style="background:var(--purple);color:#fff;width:1.8vw;height:1.8vw;display:flex;align-items:center;justify-content:center;border-radius:50%;font-size:.8vw;font-weight:700">4</span>
+              <span style="font-size:1.15vw;font-weight:700">建议讨论顺序</span>
+            </div>
+            <ul style="list-style:none">
+              <li style="font-size:.95vw;color:var(--muted);padding:.2vh 0;padding-left:1vw;position:relative">1️⃣ 光模块测试站（一字型工作站量产·深度绑定供应商·4待入职）</li>
+              <li style="font-size:.95vw;color:var(--muted);padding:.2vh 0;padding-left:1vw;position:relative">2️⃣ 非标集成线（光模块包装线·外包供应商扩张·大模型AOI）</li>
+              <li style="font-size:.95vw;color:var(--muted);padding:.2vh 0;padding-left:1vw;position:relative">3️⃣ PCB&仓库&工程（行为监控集成·自研标注平台·体量大）</li>
+              <li style="font-size:.95vw;color:var(--muted);padding:.2vh 0;padding-left:1vw;position:relative">4️⃣ 复合机器人（调度系统自研上线+MES·外包供应商）</li>
+              <li style="font-size:.95vw;color:var(--muted);padding:.2vh 0;padding-left:1vw;position:relative">5️⃣ 市场商务&项目管理（国高/专精特新/专利 · 研发项目立项验收考核）</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SLIDE 16: 封底 ═══ -->
+  <div class="slide dark" data-index="15">
+    <div class="slide-inner" style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:80vh">
+      <div style="font-family:var(--font-display);font-size:3vw;font-weight:900;color:var(--blueM);letter-spacing:.15vw;margin-bottom:2vh">锚定方向 · 对齐目标 · 干出结果</div>
+      <div style="font-size:1.2vw;color:#94A3B8;margin-bottom:4vh">梳理清楚才能管理到位</div>
+      <div style="display:flex;gap:1.5vw;margin-bottom:3vh">
+        <div style="text-align:center;padding:.8vw 1.2vw;background:var(--dark2);border-radius:.5vw">
+          <div style="font-size:1.8vw;font-weight:900;color:var(--pl-optical)">5</div>
+          <div style="font-size:.75vw;color:#94A3B8">产品线</div>
+        </div>
+        <div style="text-align:center;padding:.8vw 1.2vw;background:var(--dark2);border-radius:.5vw">
+          <div style="font-size:1.8vw;font-weight:900;color:var(--pl-custom)">5</div>
+          <div style="font-size:.75vw;color:#94A3B8">梳理维度</div>
+        </div>
+        <div style="text-align:center;padding:.8vw 1.2vw;background:var(--dark2);border-radius:.5vw">
+          <div style="font-size:1.8vw;font-weight:900;color:var(--pl-robot)">1</div>
+          <div style="font-size:.75vw;color:#94A3B8">份统一清单</div>
+        </div>
+      </div>
+      <div style="font-size:.85vw;color:#64748B">玑之智能 · 2026年5月 · 讨论稿 v0.1</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- NAV -->
+<div class="nav" id="nav">
+  <button class="nav-btn" id="prevBtn" title="上一页">◀</button>
+  <div class="dots" id="dots"></div>
+  <button class="nav-btn" id="nextBtn" title="下一页">▶</button>
+  <span class="slide-num" id="slideNum">1 / 16</span>
+</div>
+
+<div class="key-hint">← → 翻页 &nbsp; Space 切换</div>
+
+<script>
+(function(){
+  var slides = document.querySelectorAll('.slide');
+  var dotsEl = document.getElementById('dots');
+  var prevBtn = document.getElementById('prevBtn');
+  var nextBtn = document.getElementById('nextBtn');
+  var slideNum = document.getElementById('slideNum');
+  var total = slides.length;
+  var current = 0;
+  for (var i = 0; i < total; i++) {
+    var dot = document.createElement('span');
+    dot.className = 'dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('data-i', i);
+    dot.onclick = function(){ goTo(parseInt(this.getAttribute('data-i'))); };
+    dotsEl.appendChild(dot);
+  }
+  slideNum.textContent = '1 / ' + total;
+  function goTo(idx) {
+    if (idx < 0 || idx >= total) return;
+    slides[current].classList.remove('active');
+    dotsEl.children[current].classList.remove('active');
+    current = idx;
+    slides[current].classList.add('active');
+    dotsEl.children[current].classList.add('active');
+    slideNum.textContent = (current + 1) + ' / ' + total;
+    var isDark = slides[current].classList.contains('dark');
+    var navEl = document.getElementById('nav');
+    if (isDark) {
+      navEl.querySelectorAll('.nav-btn').forEach(function(b){
+        b.style.color = '#fff'; b.style.borderColor = 'rgba(255,255,255,.15)'; b.style.background = 'rgba(255,255,255,.05)';
+      });
+      navEl.querySelectorAll('.dot').forEach(function(d){
+        if (!d.classList.contains('active')) d.style.background = 'rgba(255,255,255,.2)';
+      });
+    } else {
+      navEl.querySelectorAll('.nav-btn').forEach(function(b){
+        b.style.color = 'var(--text)'; b.style.borderColor = 'rgba(0,0,0,.1)'; b.style.background = 'rgba(255,255,255,.8)';
+      });
+      navEl.querySelectorAll('.dot').forEach(function(d){
+        if (!d.classList.contains('active')) d.style.background = 'rgba(0,0,0,.15)';
+      });
+    }
+  }
+  prevBtn.onclick = function(){ goTo(current - 1); };
+  nextBtn.onclick = function(){ goTo(current + 1); };
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); goTo(current + 1); }
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); goTo(current - 1); }
+    if (e.key === ' ') { e.preventDefault(); goTo(current + 1); }
+    if (e.key === 'Home') { e.preventDefault(); goTo(0); }
+    if (e.key === 'End') { e.preventDefault(); goTo(total - 1); }
+  });
+  var touchStartX = 0;
+  document.addEventListener('touchstart', function(e){ touchStartX = e.touches[0].clientX; });
+  document.addEventListener('touchend', function(e){
+    var dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 60) { goTo(dx < 0 ? current + 1 : current - 1); }
+  });
+})();
+</script>
+</body>
+</html>
