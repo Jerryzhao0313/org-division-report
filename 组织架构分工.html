@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>玑之智能 · 产品线组织架构 v3.26</title>
+<title>玑之智能 · 产品线组织架构 v3.27</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{--bg:#f5f6f8;--card:#fff;--border:#e0e3e8;--text:#1a1d23;--text2:#6b7280;--text3:#9ca3af;--accent:#2563eb;--radius:10px}
@@ -192,7 +192,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-seri
 <body>
 
 <div class="header">
-  <h1>玑之智能 · <span>产品线分工 v3.26</span><span style="font-size:10px;color:var(--text3);margin-left:8px;font-weight:400">2026-06-06</span></h1>
+  <h1>玑之智能 · <span>产品线分工 v3.27</span><span style="font-size:10px;color:var(--text3);margin-left:8px;font-weight:400">2026-06-12</span></h1>
   <div class="header-right">
     <span style="font-size:10px;color:var(--text3);margin-right:12px" id="apiUrlDisplay">k7vvy9pbjq.coze.site</span>
     <span class="status-label">数据来源于飞书</span>
@@ -289,7 +289,8 @@ function processOrgData(result,sourceLabel){
       phone:f['联系方式']||'',
       eid:f['工号']||'',
       status:f['状态']||'在职',
-      note:f['角色分工']||''
+      note:f['角色分工']||'',
+      remark:f['备注']||''
     });
     var primary=(f['主力产品线']||'').trim();
     var sec=(f['辅助产品线']||[]).map(function(s){var v=typeof s==='object'?s.text:s;return v?v.trim():'';}).filter(function(p){return p&&p!==primary;});
@@ -345,6 +346,20 @@ function sortByRank(arr,leaderName){
   });
 }
 
+function buildLeadOverrideFromRemarks(){
+  var override={};
+  LIVE_EMPLOYEES.forEach(function(e){
+    var r=(Array.isArray(e.remark)?e.remark[0]:(e.remark||'')).replace(/[\n\r]/g,' ');
+    var mMaster=r.match(/(?:产品线负责人|负责)[:：]\s*(.+)/);
+    if(!mMaster)return;
+    mMaster[1].split(/[,，、]/).forEach(function(raw){
+      var pl=raw.trim().replace(/产品线$/g,'').trim();
+      if(ALL_PLS.indexOf(pl)>=0)override[pl]=e.name;
+    });
+  });
+  return override;
+}
+
 function getAssignment(emp,cfg){
   var key=emp.name;
   if(cfg&&cfg[key]&&cfg[key].primary)return cfg[key];
@@ -355,8 +370,6 @@ function getAssignment(emp,cfg){
     if(n.indexOf('光模块')>=0)sec.push('光模块测试站');
     if(n.indexOf('仓储')>=0||n.indexOf('PCB')>=0)sec.push('PCB&仓库&工程');
   }
-  if(key==='吴思豪')sec.push('PCB&仓库&工程');
-  if(key==='欧阳雄军')sec.push('PCB&仓库&工程');
   return {primary:emp.dept,secondary:sec};
 }
 function getPrimary(emp,cfg){return getAssignment(emp,cfg).primary;}
@@ -402,7 +415,7 @@ function renderProductTableHtml(){
     s.forEach(function(pl){if(groups[pl]&&!groups[pl].primary.find(function(x){return x.name===e.name;}))groups[pl].secondary.push(e);});
   });
 
-  var PL_LEAD_OVERRIDE={'复合机器人':'欧阳雄军'};
+  var PL_LEAD_OVERRIDE=buildLeadOverrideFromRemarks();
   var h='<table><thead><tr><th>归属</th><th>姓名</th><th>职位</th><th>状态</th><th>角色分工</th><th>职能</th></tr></thead><tbody>';
   ALL_PLS.forEach(function(pl){
     var g=groups[pl],c=PL_COLORS[pl]||'#6b7280',bg=PL_BG[pl]||'#f9fafb';
@@ -426,7 +439,7 @@ function renderProductTableHtml(){
       h+='<td><strong style="cursor:pointer" ondblclick="showModal(\''+e.name+'\')" title="双击查看详情">'+e.name+leadTag+'</strong></td>';
       h+='<td style="font-size:10px;color:var(--text2)">'+e.title+'</td>';
       h+='<td>'+stTag+'</td>';
-      h+='<td style="font-size:10px;color:var(--text2);max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(e.note||'')+'</td>';
+      h+='<td style="font-size:10px;color:var(--text2);max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"'+(e.remark?' title="角色:'+(e.note||'').replace(/"/g,'&quot;')+'&#10;备注:'+e.remark.replace(/"/g,'&quot;')+'"':'')+'>'+(e.note||'')+'</td>';
       h+='<td><span class="role-tag" style="background:'+FUNC_DEPT_BG[e.funcDept]+'">'+e.funcDept+'</span></td></tr>';
     });
   });
@@ -466,7 +479,7 @@ function renderProductTree(){
   h+='<div class="org-root"><div class="org-root-card"><div class="orn-name">赵健章</div><div class="orn-title">产品线总负责人</div></div></div>';
   h+='<div class="org-level">';
 
-  var PL_LEAD_OVERRIDE2={'复合机器人':'欧阳雄军'};
+  var PL_LEAD_OVERRIDE2=buildLeadOverrideFromRemarks();
   ALL_PLS.forEach(function(pl){
     var g=groups[pl],c=PL_COLORS[pl]||'#6b7280',bg=PL_BG[pl]||'#f9fafb';
     var a=g.primary.filter(function(e){return e.status==='在职';}).length;
@@ -534,7 +547,7 @@ function renderFuncTableHtml(){
       h+='<tr'+rowStyle+'><td><strong style="cursor:pointer" ondblclick="showModal(\''+e.name+'\')" title="双击查看详情">'+e.name+leadTag+'</strong></td>';
       h+='<td style="font-size:10px;color:var(--text2)">'+e.title+'</td>';
       h+='<td>'+stTag+'</td>';
-      h+='<td style="font-size:10px;color:var(--text2);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+(role.replace(/"/g,'&quot;'))+'">'+role+'</td>';
+      h+='<td style="font-size:10px;color:var(--text2);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+(role.replace(/"/g,'&quot;'))+(e.remark?'&#10;备注:'+e.remark.replace(/"/g,'&quot;'):'')+'">'+role+'</td>';
       ALL_PLS.forEach(function(pl){
         if(pl===pri)h+='<td style="text-align:center"><span class="pl-primary" style="background:'+PL_BG[pl]+';color:'+PL_COLORS[pl]+'">主</span></td>';
         else if(sec.indexOf(pl)>=0)h+='<td style="text-align:center"><span class="pl-secondary">辅</span></td>';
@@ -686,7 +699,7 @@ function renderReportView(){
   var emps=LIVE_EMPLOYEES.filter(function(e){return (e.status==='在职'||e.status==='兼职') && e.name!=='施驰' && e.funcDept!=='财务部' && e.name!=='赵健章';});
   var allEmps=LIVE_EMPLOYEES.filter(function(e){return e.name!=='施驰' && e.funcDept!=='财务部';});
 
-  var PL_LEAD_OVERRIDE3={'复合机器人':'欧阳雄军'};
+  var PL_LEAD_OVERRIDE3=buildLeadOverrideFromRemarks();
   var plLeads={};
   ALL_PLS.forEach(function(pl){
     if(PL_LEAD_OVERRIDE3[pl]){
@@ -967,7 +980,8 @@ function showModal(name){
     '<tr><td>工号</td><td>'+emp.eid+'</td></tr>'+
     '<tr><td>联系方式</td><td>'+(emp.phone||'未录入')+'</td></tr>'+
     dottedHtml+dutiesHtml+
-    (emp.note?'<tr><td>角色</td><td>'+getCustomNote(emp,cfg)+'</td></tr>':'')+'</table>';
+    (emp.note?'<tr><td>角色</td><td>'+getCustomNote(emp,cfg)+'</td></tr>':'')+
+    (emp.remark?'<tr><td>备注</td><td style="font-size:12px">'+emp.remark.replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</td></tr>':'')+'</table>';
   document.getElementById('modalOverlay').classList.add('show');
 }
 
