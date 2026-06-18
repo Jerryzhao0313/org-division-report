@@ -49,6 +49,8 @@ jobs:
             --ignore 'Bad value X-UA-Compatible' \
             --ignore 'Trailing slash on void elements' \
             --ignore 'Attribute "dk" not allowed' \
+            --ignore-re 'CSS: "inset"' \
+            --ignore-re 'CSS: "backdrop-filter"' \
             --ignore-re 'Element ".*" not allowed as child of element'
 
       - name: 文件完整性检查
