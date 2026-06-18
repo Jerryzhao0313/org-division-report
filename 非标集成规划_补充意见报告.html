@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>非标集成产品线规划 · 补充意见报告（定稿）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --page-bg:#F0F2F5;
+  --card:#FFFFFF;
+  --text:#1E293B;
+  --muted:#64748B;
+  --accent:#D85A30;
+  --green:#065f46;
+  --green-bg:#d1fae5;
+  --amber:#92400e;
+  --amber-bg:#fef3c7;
+  --blue:#1e40af;
+  --blue-bg:#e6f1fb;
+  --border:#E2E8F0;
+  --font-display:'Noto Serif SC',serif;
+  --font-body:'Noto Sans SC',sans-serif;
+}
+html{font-size:clamp(14px,1.2vw,18px)}
+body{
+  font-family:var(--font-body);background:var(--page-bg);color:var(--text);
+  line-height:1.7;padding:3rem 1.5rem
+}
+.report{
+  max-width:1000px;margin:0 auto;background:var(--card);
+  border-radius:1.2rem;box-shadow:0 .25rem 2rem rgba(0,0,0,.06);overflow:hidden
+}
+/* Header */
+.r-header{
+  background:linear-gradient(135deg,#D85A30 0%,#E87346 50%,#F0906A 100%);
+  padding:2.8rem 3rem 2.2rem;color:#fff;position:relative;overflow:hidden
+}
+.r-header::before{
+  content:'';position:absolute;top:-40%;right:-10%;width:50%;height:200%;
+  background:rgba(255,255,255,.06);border-radius:50%;pointer-events:none
+}
+.r-header::after{
+  content:'';position:absolute;bottom:-30%;left:20%;width:40%;height:150%;
+  background:rgba(255,255,255,.04);border-radius:50%;pointer-events:none
+}
+.r-header .tag{
+  display:inline-block;padding:.2rem .8rem;border:1px solid rgba(255,255,255,.3);
+  border-radius:1rem;font-size:.75rem;letter-spacing:.08rem;margin-bottom:1rem;opacity:.85
+}
+.r-header h1{
+  font-family:var(--font-display);font-size:1.8rem;font-weight:900;
+  letter-spacing:.04rem;position:relative;z-index:1
+}
+.r-header .sub{
+  font-size:.9rem;opacity:.75;margin-top:.3rem;position:relative;z-index:1
+}
+.r-header .meta{
+  display:flex;gap:1.2rem;margin-top:.8rem;font-size:.8rem;opacity:.6;position:relative;z-index:1
+}
+/* Body */
+.r-body{padding:2.5rem 3rem 3rem}
+/* Section */
+.sec{margin-bottom:2.5rem}
+.sec:last-child{margin-bottom:0}
+.sec-header{
+  display:flex;align-items:center;gap:.6rem;margin-bottom:1rem;padding-bottom:.6rem;
+  border-bottom:2px solid var(--border)
+}
+.sec-num{
+  display:flex;align-items:center;justify-content:center;width:2rem;height:2rem;
+  border-radius:50%;background:var(--accent);color:#fff;font-size:.85rem;font-weight:700;flex-shrink:0
+}
+.sec-header h2{font-family:var(--font-display);font-size:1.2rem;font-weight:700;color:var(--text)}
+.sec-header .sec-tag{padding:.15rem .5rem;border-radius:.3rem;font-size:.7rem;font-weight:600}
+.sec-tag.final{background:#d1fae5;color:#065f46}
+.sec-tag.info{background:#e6f1fb;color:#1e40af}
+/* Paragraph & Callout */
+.sec p,.sec li{font-size:.9rem;color:var(--text);line-height:1.8}
+.callout{
+  background:#FFF8F5;border-left:3px solid var(--accent);border-radius:.5rem;
+  padding:.8rem 1rem;margin:.8rem 0;font-size:.85rem;color:#5B3A2A
+}
+.callout.info{border-left-color:#3b82f6;background:#F0F7FF}
+.callout.green{border-left-color:#059669;background:#ECFDF5}
+.callout.amber{border-left-color:#d97706;background:#FFFBEB}
+/* Tables */
+.opinion-table{width:100%;border-collapse:collapse;margin:.6rem 0;font-size:.85rem}
+.opinion-table th{
+  background:#F8FAFC;color:var(--muted);font-weight:600;font-size:.75rem;
+  padding:.5rem .6rem;text-align:left;border-bottom:2px solid var(--border);
+  white-space:nowrap;letter-spacing:.03rem
+}
+.opinion-table td{
+  padding:.45rem .6rem;border-bottom:1px solid var(--border);vertical-align:top
+}
+.opinion-table tr:last-child td{border-bottom:none}
+.opinion-table .tag{
+  display:inline-block;padding:.08rem .4rem;border-radius:.2rem;
+  font-size:.7rem;font-weight:600;white-space:nowrap
+}
+.tag-drop{background:#fee2e2;color:#991b1b}
+.tag-add{background:#d1fae5;color:#065f46}
+.tag-maybe{background:#fef3c7;color:#92400e}
+/* Comparison card */
+.comp-grid{display:flex;gap:1rem;margin:.6rem 0}
+.comp-card{
+  flex:1;border:1px solid var(--border);border-radius:.6rem;padding:1rem;
+  background:#FAFBFC;text-align:center
+}
+.comp-card .cc-title{font-size:.7rem;color:var(--muted);font-weight:600;letter-spacing:.04rem;text-transform:uppercase}
+.comp-card .cc-num{font-size:1.8rem;font-weight:900;margin:.3rem 0;line-height:1.2}
+.comp-card .cc-num.g1{color:#059669}
+.comp-card .cc-num.g2{color:#D85A30}
+.comp-card .cc-desc{font-size:.75rem;color:var(--muted)}
+.comp-card .cc-detail{font-size:.8rem;color:var(--text);margin-top:.4rem;text-align:left;line-height:1.6}
+/* Role grid */
+.role-grid{display:flex;flex-wrap:wrap;gap:.6rem;margin:.6rem 0}
+.role-item{
+  flex:1;min-width:180px;border:1px solid var(--border);border-radius:.5rem;
+  padding:.6rem .8rem;background:#FAFBFC
+}
+.role-item .ri-label{font-size:.7rem;color:var(--muted);font-weight:600;letter-spacing:.02rem}
+.role-item .ri-name{font-size:.95rem;font-weight:600;margin:.15rem 0}
+.role-item .ri-desc{font-size:.78rem;color:var(--muted)}
+/* Summary card */
+.summary-card{
+  background:linear-gradient(135deg,#0F1923,#1E293B);border-radius:.8rem;
+  padding:1.5rem 2rem;color:#fff;margin-top:1rem
+}
+.summary-card h3{font-family:var(--font-display);font-size:1.05rem;font-weight:700;margin-bottom:.6rem;color:#f97316}
+.summary-card p{font-size:.85rem;color:#CBD5E1;line-height:1.8}
+.summary-card ol{padding-left:1.2rem;margin-top:.4rem}
+.summary-card li{font-size:.82rem;color:#94A3B8;line-height:1.9}
+/* Hiring plan */
+.hiring-grid{display:flex;flex-wrap:wrap;gap:.6rem;margin:.6rem 0}
+.hiring-card{
+  flex:1;min-width:160px;border:1px solid var(--border);border-radius:.5rem;
+  padding:.7rem .8rem;background:#FAFBFC;text-align:center
+}
+.hiring-card .hc-icon{font-size:1.2rem;margin-bottom:.2rem}
+.hiring-card .hc-title{font-size:.8rem;font-weight:600}
+.hiring-card .hc-quota{font-size:1.2rem;font-weight:700;color:var(--accent);margin:.15rem 0}
+.hiring-card .hc-note{font-size:.7rem;color:var(--muted)}
+@media(max-width:640px){
+  body{padding:1rem}
+  .r-header{padding:1.5rem 1.2rem}
+  .r-header h1{font-size:1.3rem}
+  .r-body{padding:1.5rem 1.2rem}
+  .comp-grid{flex-direction:column}
+  .role-grid{flex-direction:column}
+  .hiring-grid{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<div class="report">
+
+<div class="r-header">
+  <div class="tag">补充意见 · 定稿 · 2026-06-18</div>
+  <h1>非标集成产品线规划<br>补充意见报告（定稿）</h1>
+  <div class="sub">基于「非标集成产品线年度规划」与「产品线分工汇报」交叉比对 · 经赵老师确认</div>
+  <div class="meta"><span>赵健章</span><span>2026年6月18日</span><span>玑之智能</span></div>
+</div>
+
+<div class="r-body">
+
+<!-- === 议题1：辅助成员 · 确认 === -->
+<div class="sec">
+  <div class="sec-header">
+    <span class="sec-num">1</span>
+    <h2>跨线辅助成员评估</h2>
+    <span class="sec-tag final">待讨论</span>
+  </div>
+
+  <p>原「产品线分工汇报」中非标集成线有 <strong>7 名跨线辅助成员</strong>，经逐人确认，结论如下。</p>
+
+  <!-- 非标集成线完整组织结构 -->
+  <div style="background:#FAFBFC;border:1px solid var(--border);border-radius:.6rem;padding:1rem 1.2rem;margin:.8rem 0">
+    <div style="font-size:.8rem;font-weight:600;color:var(--muted);margin-bottom:.5rem;letter-spacing:.04rem">基于 飞书 数据表 · 非标集成线完整组织结构</div>
+    
+    <!-- 负责人 -->
+    <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem">
+      <span style="background:var(--accent);color:#fff;font-size:.7rem;font-weight:600;padding:.1rem .4rem;border-radius:.2rem">负责人</span>
+      <span style="font-size:.95rem;font-weight:700;color:var(--accent)">黄辉军</span>
+      <span style="font-size:.78rem;color:var(--muted)">交付总监 · 直属欧阳雄军</span>
+    </div>
+
+    <!-- 组织树 -->
+    <div style="border-left:2px solid var(--border);padding-left:.8rem">
+      <!-- 交付侧（黄辉军下属） -->
+      <div>
+        <div style="font-size:.75rem;color:var(--muted);font-weight:600;margin-bottom:.2rem">交付侧（直属黄辉军）</div>
+        <div style="display:flex;flex-wrap:wrap;gap:.3rem">
+          <span style="background:#fff;border:1px solid var(--border);border-radius:.25rem;padding:.15rem .4rem;font-size:.78rem"><strong>陈凯</strong><span style="color:var(--muted);font-size:.7rem"> 项目经理</span><span style="background:#ede9fe;color:#5b21b6;font-size:.65rem;padding:0 .25rem;border-radius:.15rem;margin-left:.2rem">核心</span></span>
+          <span style="background:#fff;border:1px solid var(--border);border-radius:.25rem;padding:.15rem .4rem;font-size:.78rem"><strong>韦灵智</strong><span style="color:var(--muted);font-size:.7rem"> 技术支持工程师</span></span>
+          <span style="background:#fff;border:1px solid var(--border);border-radius:.25rem;padding:.15rem .4rem;font-size:.78rem"><strong>宣恩宝</strong><span style="color:var(--muted);font-size:.7rem"> 技术支持工程师</span></span>
+          <span style="background:#fff;border:1px solid var(--border);border-radius:.25rem;padding:.15rem .4rem;font-size:.78rem"><strong>梁锭男</strong><span style="color:var(--muted);font-size:.7rem"> 电气工程师</span><span style="background:#d1fae5;color:#065f46;font-size:.65rem;padding:0 .25rem;border-radius:.15rem;margin-left:.2rem">6月入职</span></span>
+        </div>
+      </div>
+      <!-- 分隔线 -->
+      <div style="height:2px;background:#D8DFE8;margin:.6rem 0;border-radius:1px"></div>
+      <!-- 研发侧 -->
+      <div>
+        <div style="font-size:.75rem;color:var(--muted);font-weight:600;margin-bottom:.2rem">研发侧（直属李国伟/赵健章）</div>
+        <div style="display:flex;flex-wrap:wrap;gap:.3rem">
+          <span style="background:#fff;border:1px solid var(--border);border-radius:.25rem;padding:.15rem .4rem;font-size:.78rem"><strong>曾庆辰</strong><span style="color:var(--muted);font-size:.7rem"> 软件工程师 · 直属李国伟</span></span>
+          <span style="background:#fef3c7;border:1px solid #fcd34d;border-radius:.25rem;padding:.15rem .4rem;font-size:.78rem"><strong>吴思豪</strong><span style="color:var(--muted);font-size:.7rem"> AI架构师 · 兼职/外聘</span></span>
+        </div>
+      </div>
+      <!-- 分隔线 -->
+      <div style="height:2px;background:#D8DFE8;margin:.6rem 0;border-radius:1px"></div>
+      <!-- 跨线辅助 -->
+      <div>
+        <div style="font-size:.75rem;color:var(--muted);font-weight:600;margin-bottom:.2rem">跨线辅助</div>
+        <div style="display:flex;flex-wrap:wrap;gap:.3rem">
+          <span style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:.25rem;padding:.15rem .4rem;font-size:.78rem"><strong>喻青</strong><span style="color:var(--muted);font-size:.7rem"> 业务助理·总经办</span></span>
+          <span style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:.25rem;padding:.15rem .4rem;font-size:.78rem"><strong>段文强</strong><span style="color:var(--muted);font-size:.7rem"> 项目经理·复合机器人</span></span>
+          <span style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:.25rem;padding:.15rem .4rem;font-size:.78rem"><strong>罗宏伟</strong><span style="color:var(--muted);font-size:.7rem"> 项目经理·PCB仓储</span></span>
+          <span style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:.25rem;padding:.15rem .4rem;font-size:.78rem"><strong>蒙增俭</strong><span style="color:var(--muted);font-size:.7rem"> 装配工程师·光模块</span></span>
+        </div>
+      </div>
+      <!-- 分隔线 -->
+      <div style="height:2px;background:#D8DFE8;margin:.6rem 0;border-radius:1px"></div>
+      <!-- 待入职 -->
+      <div>
+        <div style="font-size:.75rem;color:var(--muted);font-weight:600;margin-bottom:.2rem">待入职</div>
+        <div style="display:flex;flex-wrap:wrap;gap:.3rem">
+          <span style="background:#F8FAFC;border:1px dashed #CBD5E1;border-radius:.25rem;padding:.15rem .4rem;font-size:.78rem;color:#94A3B8"><strong>模型训练工程师</strong><span style="font-size:.7rem"> · 研发 · 6-7月</span></span>
+          <span style="background:#F8FAFC;border:1px dashed #CBD5E1;border-radius:.25rem;padding:.15rem .4rem;font-size:.78rem;color:#94A3B8"><strong>国内交付2</strong><span style="font-size:.7rem"> · 交付 · 6-8月</span></span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 统计条 -->
+    <div style="display:flex;gap:.6rem;margin-top:.6rem;padding-top:.5rem;border-top:1px solid var(--border);font-size:.75rem;color:var(--muted)">
+      <span>👤 在职 <strong style="color:var(--text)">7</strong> 人</span>
+      <span>🔶 兼职 <strong style="color:var(--text)">1</strong> 人</span>
+      <span>🔗 跨线辅助 <strong style="color:var(--text)">4</strong> 人</span>
+      <span>⏳ 待入职 <strong style="color:var(--text)">2</strong> 人</span>
+    </div>
+  </div>
+
+  <table class="opinion-table">
+    <thead>
+      <tr><th style="width:12%">姓名</th><th style="width:14%">来源产品线</th><th>当前辅助职责</th><th style="width:12%">结论</th><th>原因</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>喻青</strong></td><td>总经办</td>
+        <td>订单跟进·合同管理·客户对账</td>
+        <td><span class="tag-add">保留</span></td>
+        <td>跨产品线公共服务，非标线的跟单、合同、对账绕不开，按需支持</td>
+      </tr>
+      <tr>
+        <td><strong>段文强</strong></td><td>复合机器人</td>
+        <td>集成项目交付管理</td>
+        <td><span class="tag-maybe">视项目定</span></td>
+        <td>有非标旧项目需维护，或临时产线帮忙时调用，不固定辅助</td>
+      </tr>
+      <tr>
+        <td><strong>罗宏伟</strong></td><td>PCB仓储</td>
+        <td>仓储集成+运维</td>
+        <td><span class="tag-maybe">视项目定</span></td>
+        <td>有非标旧项目需维护，或临时产线帮忙时调用，不固定辅助</td>
+      </tr>
+      <tr>
+        <td><strong>唐梅</strong></td><td>市场商务</td>
+        <td>采购·供应商管理</td>
+        <td><span class="tag-drop">删除</span></td>
+        <td>主要负责光模块产品线设备采购，无法兼顾非标采购需求</td>
+      </tr>
+      <tr>
+        <td><strong>韦伟</strong></td><td>PCB仓储</td>
+        <td>客户现场运维</td>
+        <td><span class="tag-drop">删除</span></td>
+        <td>主要负责骏亚项目，无法分身</td>
+      </tr>
+      <tr>
+        <td><strong>李城洁</strong></td><td>光模块测试站</td>
+        <td>非标治具结构设计</td>
+        <td><span class="tag-drop">删除</span></td>
+        <td>主要负责光模块项目，结构设计核心人力</td>
+      </tr>
+      <tr>
+        <td><strong>蒙增俭</strong></td><td>光模块测试站</td>
+        <td>供应链质检·生产跟单</td>
+        <td><span class="tag-add">保留</span></td>
+        <td>按原分工汇报设置保留辅助关系，光模块非标双线支持</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout amber">
+    <strong>小结：</strong>喻青保留跨线支持；段文强、罗宏伟按项目临时调用；其余删除。需同步招人补齐缺口，具体岗位和人头数由赵老师确定。
+  </div>
+</div>
+
+<!-- === 议题2：吴思豪 === -->
+<div class="sec">
+  <div class="sec-header">
+    <span class="sec-num">2</span>
+    <h2>吴思豪 · AI架构师职责与薪酬</h2>
+    <span class="sec-tag final">待讨论</span>
+  </div>
+
+  <p>当前兼职/外聘顾问（深技大/中科院），侧重非标集成线AI。年度规划中具身AI是核心差异化能力，职责与薪酬明确如下。</p>
+
+  <h3 style="font-size:.9rem;font-weight:600;margin:.6rem 0 .3rem">职责分工</h3>
+
+  <div class="role-grid">
+    <div class="role-item">
+      <div class="ri-label">核心职责</div>
+      <div class="ri-name">具身AI算法架构</div>
+      <div class="ri-desc">大模型VLA/WAM模型选型与微调、AOI视觉缺陷检测模型、具身包装机器人的感知-决策闭环</div>
+    </div>
+    <div class="role-item">
+      <div class="ri-label">辅助职责</div>
+      <div class="ri-name">AOI辅助算法开发</div>
+      <div class="ri-desc">用大模型辅助AOI视觉缺陷检测算法开发，提升检测精度与泛化能力</div>
+    </div>
+    <div class="role-item">
+      <div class="ri-label">技术基建</div>
+      <div class="ri-name">AI算力平台搭建</div>
+      <div class="ri-desc">GPU服务器选型与部署、训练推理环境搭建、数据标注管线搭建</div>
+    </div>
+    <div class="role-item">
+      <div class="ri-label">团队建设</div>
+      <div class="ri-name">带教+招聘把关</div>
+      <div class="ri-desc">指导模型训练工程师日常工作、参与AI相关岗位面试</div>
+    </div>
+  </div>
+
+  <h3 style="font-size:.9rem;font-weight:600;margin:.8rem 0 .3rem">薪酬模式</h3>
+
+  <table class="opinion-table">
+    <thead>
+      <tr><th style="width:22%">项目</th><th>说明</th><th style="width:20%">金额</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>固定顾问费</strong></td>
+        <td>按月支付，按团队总包计算，含吴思豪本人+下面2-3人</td>
+        <td><strong>¥1,000 /月</strong></td>
+      </tr>
+      <tr>
+        <td><strong>项目变动费</strong></td>
+        <td>按具身设备交付里程碑支付<br>· 原型机AI模块通过验收 → 支取 30%<br>· 小批量试产AI功能稳定 → 支取 30%<br>· 批量交付AI无重大缺陷 → 支取 40%</td>
+        <td><strong>¥30,000–50,000 /项目</strong></td>
+      </tr>
+      <tr>
+        <td><strong>招人佣金</strong></td>
+        <td>成功推荐并入职AI/软件相关岗位</td>
+        <td><strong>入职月薪 × 50%</strong></td>
+      </tr>
+      <tr>
+        <td><strong>年化预估</strong></td>
+        <td>假设H2 2个具身项目 + 日常顾问 + 推荐入职2人</td>
+        <td><strong>¥82,000–142,000 /年</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout info">
+    <strong>说明：</strong>项目变动费与具身设备交付直接挂钩，吴思豪有动力推动模型真正落地。招人佣金按入职月薪50%一次性支付，激励利用其学术圈资源推荐AI人才。
+  </div>
+</div>
+
+<!-- === 议题3：业绩目标拆分 === -->
+<div class="sec">
+  <div class="sec-header">
+    <span class="sec-num">3</span>
+    <h2>业绩目标拆分：传统非标 vs 具身设备</h2>
+    <span class="sec-tag final">待讨论</span>
+  </div>
+
+  <p>年度规划 H2 600万 / 2027年 2000万，按两条业务线拆分如下。</p>
+
+  <div class="comp-grid">
+    <div class="comp-card">
+      <div class="cc-title">传统非标自动化</div>
+      <div class="cc-num g1">450<span style="font-size:.8rem;font-weight:400;opacity:.6"> 万 H2</span></div>
+      <div class="cc-desc">存量基本盘 · 目标不变</div>
+      <div class="cc-detail">
+        <strong>业务范围：</strong>包装线、组装线、测试线<br>
+        <strong>毛利率：</strong>25–35%<br>
+        <strong>H2 2026：</strong>500–600万<br>
+        <strong>2027 全年：</strong>1,000–1,200万<br>
+        <strong>人员：</strong>黄辉军+陈凯+韦灵智+宣恩宝+梁锭男+招人
+      </div>
+    </div>
+    <div class="comp-card">
+      <div class="cc-title">新品 · 具身设备</div>
+      <div class="cc-num g2">100<span style="font-size:.8rem;font-weight:400;opacity:.6"> 万 H2</span></div>
+      <div class="cc-desc">增量突破线 · 保守起步</div>
+      <div class="cc-detail">
+        <strong>业务范围：</strong>具身包装机器人、<strong>AOI视觉缺陷检测</strong><br>
+        <em style="font-size:.72rem;color:var(--muted)">（不含自主移动操作平台）</em><br>
+        <strong>毛利率：</strong>35–50%+<br>
+        <strong>H2 2026：</strong>50–100万（原型验证+小批量）<br>
+        <strong>2027 全年：</strong>800–1,200万（可冲高）<br>
+        <strong>人员：</strong>黄辉军+吴思豪+曾庆辰+模型训练工程师(待招)
+      </div>
+    </div>
+  </div>
+
+  <table class="opinion-table">
+    <thead>
+      <tr><th>时期</th><th>传统非标自动化</th><th>新品具身设备</th><th>合计</th><th>占比变化</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>2026 H2</strong></td>
+        <td>500–600 万</td>
+        <td>50–100 万</td>
+        <td><strong>550–700 万</strong></td>
+        <td>具身占 9–14%</td>
+      </tr>
+      <tr>
+        <td><strong>2027 H1</strong></td>
+        <td>500–600 万</td>
+        <td>300–500 万</td>
+        <td><strong>800–1,100 万</strong></td>
+        <td>具身占 38–45%</td>
+      </tr>
+      <tr>
+        <td><strong>2027 H2</strong></td>
+        <td>500–600 万</td>
+        <td>500–700 万</td>
+        <td><strong>1,000–1,300 万</strong></td>
+        <td>具身占 50–54%</td>
+      </tr>
+      <tr>
+        <td><strong>2027 合计</strong></td>
+        <td>1,000–1,200 万</td>
+        <td>800–1,200 万</td>
+        <td><strong>1,800–2,400 万</strong></td>
+        <td>具身占 44–50%</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout green">
+    <strong>关键判断：</strong>H2 传统非标 500–600 万 + 具身 50–100 万 = 550–700 万。2027 年传统 1,000–1,200 万 + 具身 800–1,200 万 = 1,800–2,400 万。具身毛利率比传统高一档（35–50% vs 25–35%），但H2先验证市场接受度，不要冲量。
+  </div>
+</div>
+
+<!-- === 总结 === -->
+<div class="summary-card">
+  <h3>综合决策摘要</h3>
+  <ol>
+    <li><strong>跨线辅助：</strong>喻青保留（跨产品线公共服务），段文强、罗宏伟按项目临时调用（旧项目维护+产线帮忙）；唐梅、韦伟、李城洁删除，蒙增俭保留。需同步招人，具体岗位由赵老师定。</li>
+    <li><strong>吴思豪：</strong>固定费 1,000/月（团队总包，含吴+2-3人）+ 项目变动费 3-5万/项目 + 招人佣金（入职月薪×50%）。年化约 8.2-14.2 万（假设H2 2个具身项目+推荐2人）。</li>
+    <li><strong>业绩双线：</strong>传统非标（包装/组装/测试线）500-600万 H2 → 1,000-1,200万 2027；具身设备（包装+AOI，不含移动平台）50-100万 H2 → 800-1,200万 2027。毛利率传统25-35%、具身35-50%+。总目标 1,800-2,400 万。</li>
+  </ol>
+  <p style="margin-top:.6rem;font-size:.8rem;color:#64748B">以上为定稿，可据此更新年度规划与分工汇报文件。</p>
+</div>
+
+</div><!-- /r-body -->
+</div><!-- /report -->
+
+</body>
+</html>
