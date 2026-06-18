@@ -13,18 +13,11 @@
   --font-body: 'Noto Sans SC', sans-serif;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;height:100%;overflow:hidden;font-family:var(--font-body);background:var(--dark)}
-.deck{width:100%;height:100%;position:relative}
-.slide{
-  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  opacity:0;transform:scale(0.96);
-  transition:opacity .5s cubic-bezier(.4,0,.2,1),transform .5s cubic-bezier(.4,0,.2,1);
-  pointer-events:none;padding:4vh 4vw;overflow-y:auto
-}
-.slide.active{opacity:1;transform:scale(1);pointer-events:auto;z-index:1}
+html,body{width:100%;font-family:var(--font-body);background:var(--light);color:var(--text)}
+.slide{padding:4vh 4vw;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .slide.dark{background:var(--dark);color:var(--white)}
 .slide.light{background:var(--light);color:var(--text)}
-.slide-inner{width:100%;max-width:92vw;margin:auto;display:flex;flex-direction:column;height:100%}
+.slide-inner{width:100%;max-width:92vw;margin:auto;display:flex;flex-direction:column;min-height:80vh}
 .slide-cover{text-align:center}
 .slide-cover .tag{display:inline-block;padding:.4vw 1.5vw;border:1px solid rgba(255,255,255,.2);border-radius:2vw;font-size:1.1vw;color:#3B82F6;margin-bottom:3vh;letter-spacing:.2vw}
 .slide-cover h1{font-family:var(--font-display);font-size:4vw;font-weight:900;line-height:1.2;margin-bottom:2vh;letter-spacing:.3vw}
@@ -36,37 +29,28 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:var(--font-body);ba
 
 .dept-badge{display:inline-block;padding:.2vw .7vw;border-radius:2vw;font-size:.82vw;font-weight:500;white-space:nowrap}
 .st-tag{display:inline-block;padding:.1vw .4vw;border-radius:.2vw;font-size:.75vw;font-weight:500}
-/* S2 总览 - 网格对齐布局 */
-.sec-grid{display:flex;flex-direction:column;gap:.35vw;margin-top:1.5vh;flex:1;min-height:0}
-.sec-row{display:flex;gap:.4vw}
-.sec-cell{flex:1;min-width:0;border-radius:.35vw;overflow:hidden;box-shadow:0 .04vw .12vw rgba(0,0,0,.03)}
-.sec-cell .schd{display:flex;flex-direction:column;align-items:center;gap:.25vw;padding:.55vw .5vw;color:#fff;text-align:center}
-.sec-cell .schd .sc-pl{font-size:1.3vw;font-weight:700}
-.sec-cell .schd .sc-lead{font-size:1vw;opacity:.85}
-.sec-cell .schd .sc-total{font-size:.9vw;opacity:.75;margin-top:.1vw}
-/* 子卡片通用 */
-.scc{border:1px solid #E2E8F0;border-radius:.3vw;padding:.45vw .5vw;background:#FAFBFC;height:100%}
-.scc .scc-title{font-size:.9vw;font-weight:600;color:#64748B;margin-bottom:.25vw;letter-spacing:.02vw}
-.scc .scc-big{font-size:1.5vw;font-weight:900;line-height:1.2}
-.scc .scc-label{font-size:.75vw;color:#64748B}
-.scc .scc-bar{display:flex;height:.5vw;border-radius:.25vw;overflow:hidden;margin:.3vw 0 .15vw}
-.scc .scc-bar div{min-width:2px}
-.scc .scc-st{display:flex;gap:.5vw;margin-top:.08vw}
-.scc .scc-st .si{display:flex;align-items:center;gap:.15vw;font-size:.85vw;color:#64748B}
-.si-dot{width:.5vw;height:.5vw;border-radius:50%}
-.scc .scc-mem{font-size:1vw;line-height:1.5;color:#334155}
-.scc .scc-mem .core{font-weight:700}
-.scc .scc-mem .sep{color:#CBD5E1}
-.scc .scc-mem .more{color:#94A3B8;font-size:.8vw}
-.scc .scc-pend{font-size:1vw;line-height:1.45;color:#475569}
-.scc .scc-pend .pi{display:flex;justify-content:space-between;padding:.1vw 0;border-bottom:1px solid #F1F5F9}
-.scc .scc-pend .pi:last-child{border-bottom:none}
-.scc .scc-pend .pi .pn{font-weight:500}
-.scc .scc-pend .pi .pd{font-size:.75vw;color:#94A3B8}
-.scc .scc-sec{font-size:1vw;line-height:1.5;color:#475569}
-.scc .scc-sec .sep{color:#CBD5E1}
-.scc .scc-sec .src{font-size:.75vw;color:#94A3B8}
-.scc-empty{color:#94A3B8;font-size:.85vw;text-align:center;padding:.3vw 0}
+/* S2 总览 - 4维度卡片 */
+.s2-wrap{display:flex;gap:.6vw;margin-top:2vh;flex:1;align-items:stretch;min-height:0}
+.s2-col{flex:1;min-width:0;display:flex;flex-direction:column}
+.s2-card{background:#fff;border:1px solid #E2E8F0;border-radius:.6vw;overflow:hidden;box-shadow:0 .06vw .2vw rgba(0,0,0,.04);display:flex;flex-direction:column}
+.s2-card .s2h{padding:.5vw .6vw;color:#fff;display:flex;justify-content:space-between;align-items:center;font-size:1.1vw;font-weight:700}
+.s2-card .s2h .s2cnt{font-size:.8vw;font-weight:500;background:rgba(255,255,255,.3);padding:.06vw .5vw;border-radius:.3vw}
+.s2-card .s2b{padding:.4vw .5vw .5vw;display:flex;flex-direction:column;flex:1}
+.s2-plg{margin-bottom:.3vw}
+.s2-plg:last-child{margin-bottom:0}
+.s2-plg .s2psep{height:.1vw;background:#E2E8F0;margin:.2vw 0}
+.s2-plg .s2ph{font-size:.8vw;font-weight:600;color:#64748B;margin-bottom:.25vw;padding-bottom:.12vw;border-bottom:.5px solid #F1F5F9}
+.s2-chips{display:flex;flex-wrap:wrap;gap:.3vw}
+.s2-ch{background:#fff;border:.5px solid #E2E8F0;border-radius:.3vw;padding:.18vw .4vw;font-size:.82vw;display:flex;align-items:center;gap:.15vw;line-height:1.4}
+.s2-ch .s2n{font-weight:600;color:#1E293B}
+.s2-ch .s2t{font-size:.62vw;font-weight:600;padding:0 .25vw;border-radius:.15vw;line-height:1.4}
+.s2-ch.core .s2t{background:#EDE9FE;color:#5B21B6}
+.s2-ch.sec{background:#FFFBEB;border-color:#FDE68A}
+.s2-ch.sec .s2t{background:#FDE68A;color:#92400E}
+.s2-ch.pend{background:#F8FAFC;border:.5px dashed #CBD5E1}
+.s2-ch.pend .s2n{color:#94A3B8}
+.s2-stats{display:flex;gap:.6vw;margin-top:.4vw;padding-top:.3vw;border-top:1px solid #E2E8F0;font-size:.8vw;color:#94A3B8}
+.s2-stats b{color:#1E293B}
 
 .data-table{width:100%;border-collapse:collapse;font-size:.92vw;margin-top:1.2vh}
 .data-table th{background:var(--dark);color:#fff;padding:.55vw .7vw;text-align:left;font-weight:600;font-size:.85vw;white-space:nowrap}
@@ -95,12 +79,6 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:var(--font-body);ba
 .end-slide{text-align:center}
 .end-slide h2{font-family:var(--font-display);font-size:2.5vw;font-weight:700;color:#3B82F6;margin-bottom:2vh}
 .end-slide p{font-size:1.2vw;color:var(--muted)}
-
-.nav{position:fixed;bottom:2.5vh;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:.6vw;z-index:100}
-.nav-btn{width:2.5vw;height:2.5vw;min-width:32px;min-height:32px;border-radius:50%;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.05);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.2vw;transition:all .2s;backdrop-filter:blur(10px)}
-.dot{width:.55vw;height:.55vw;min-width:6px;min-height:6px;border-radius:50%;background:rgba(255,255,255,.2);cursor:pointer;transition:all .3s}
-.dot.active{background:#3B82F6;width:1.6vw;min-width:16px;border-radius:1vw}
-.slide-num{font-size:1vw;color:rgba(255,255,255,.5);margin:0 .6vw;min-width:3vw;text-align:center}
 
 .legend-row{display:flex;gap:1.5vw;margin-top:.8vh;font-size:.8vw;color:var(--muted)}
 
@@ -164,7 +142,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:var(--font-body);ba
 
 <div class="deck" id="deck">
 
-<div class="slide dark active" data-index="0">
+<div class="slide dark">
   <div class="slide-inner"><div class="slide-cover">
     <div class="tag">经营管理会 · 组织架构专题</div>
     <h1>产品线分⼯报告</h1>
@@ -173,10 +151,10 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:var(--font-body);ba
   </div></div>
 </div>
 
-<div class="slide light" data-index="1">
+<div class="slide light" 1">
   <div class="slide-inner">
     <div class="sec-title"><h2>总体概览</h2><p class="desc">在职+兼职+待招 · 按主力产品线分布 · 点击底部圆点查看各产品线详情</p></div>
-    <div class="sec-grid" id="summaryCards"></div>
+    <div class="s2-wrap" id="summaryCards"></div>
     <div class="legend-row">
       <span>&#x1F7E2; 在职</span><span>&#x1F7E0; 兼职</span><span>&#x26AA; 待招</span>
       <span style="margin-left:2vw">数据来源：飞书多维表格 · 2026-06-12</span>
@@ -184,7 +162,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:var(--font-body);ba
   </div>
 </div>
 
-<div class="slide light" data-index="2">
+<div class="slide light">
   <div class="slide-inner">
     <div class="sec-title"><h2>产品线分工 · 组织层次</h2><p class="desc">左：产品线维度架构图 · 右：职能维度架构图</p></div>
     <div class="lr-split">
@@ -194,26 +172,19 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:var(--font-body);ba
   </div>
 </div>
 
-<div class="slide light" data-index="3"><div class="slide-inner" id="detail0"></div></div>
-<div class="slide light" data-index="4"><div class="slide-inner" id="detail1"></div></div>
-<div class="slide light" data-index="5"><div class="slide-inner" id="detail2"></div></div>
-<div class="slide light" data-index="6"><div class="slide-inner" id="detail3"></div></div>
-<div class="slide light" data-index="7"><div class="slide-inner" id="detail4"></div></div>
+<div class="slide light"><div class="slide-inner" id="detail0"></div></div>
+<div class="slide light"><div class="slide-inner" id="detail1"></div></div>
+<div class="slide light"><div class="slide-inner" id="detail2"></div></div>
+<div class="slide light"><div class="slide-inner" id="detail3"></div></div>
+<div class="slide light"><div class="slide-inner" id="detail4"></div></div>
 
-<div class="slide light" data-index="8">
+<div class="slide light">
   <div class="slide-inner">
     <div class="sec-title"><h2>职能部⻔ × 产品线交叉矩阵</h2><p class="desc">按职能部⻔展开 · 主力/辅助挂职 · 灰色为待招</p></div>
     <div class="matrix-wrap" id="matrixDetail"></div>
   </div>
 </div>
 
-</div>
-
-<div class="nav" id="nav">
-  <button class="nav-btn" id="prevBtn">&#x25C0;</button>
-  <div class="dots" id="dots"></div>
-  <button class="nav-btn" id="nextBtn">&#x25B6;</button>
-  <span class="slide-num" id="slideNum">1/N</span>
 </div>
 
 <script>
@@ -243,7 +214,7 @@ var employees=[
   {name:'曾庆辰',title:'软件工程师',dept:'研发部',st:'在职',note:'研发-具身模型调优数据采集',pri:'非标集成线',sec:[],bk:''},
   {name:'许锦川',title:'机械开发经理',dept:'研发部',st:'在职',note:'研发-结构，光模块测试设备',pri:'光模块测试站',sec:[],bk:'产品线核心成员'},
   {name:'许传奇',title:'后台架构师',dept:'研发部',st:'在职',note:'研发-调度系统，主要是复合机器人',pri:'复合机器人',sec:[],bk:'产品线核心成员'},
-  {name:'毕伟平',title:'软件工程师',dept:'研发部',st:'在职',note:'研发-调度-MES对接，主要是光模块工作站',pri:'光模块测试站',sec:['复合机器人'],bk:'2026年6月离职'},
+  {name:'毕伟平',title:'软件工程师',dept:'研发部',st:'离职',note:'研发-调度-MES对接，主要是光模块工作站',pri:'光模块测试站',sec:['复合机器人'],bk:'2026年6月离职'},
   {name:'卢柏贵',title:'测试工程师',dept:'研发部',st:'在职',note:'跨线QA·复合调度测试+运维兼职',pri:'复合机器人',sec:['光模块测试站'],bk:''},
   {name:'黄辉军',title:'交付总监',dept:'交付部',st:'在职',note:'非标集成线统筹·具身AI落地·项目管理-小部分PCB项目',pri:'非标集成线',sec:['市场商务&项目管理'],bk:'产品线负责人：非标集成线产品线'},
   {name:'韦灵智',title:'技术支持工程师',dept:'交付部',st:'在职',note:'部署+运维·跨线复合售后',pri:'非标集成线',sec:['复合机器人'],bk:''},
@@ -317,116 +288,77 @@ function getLead(pl){
   return cand.length?sortByRank(cand)[0]:null;
 }
 
-// === S2 总览卡片（网格对齐） ===
+// === S2 总览卡片（4维度） ===
 (function(){
   function isLead(e){return e.bk&&e.bk.indexOf('产品线负责人')>=0;}
   function isCore(e){return e.bk&&(e.bk.indexOf('产品线负责人')>=0||e.bk.indexOf('产品线核心成员')>=0);}
-  var sep='<span class="sep"> · </span>';
+  function chip(e,c,tagCls){
+    var cls='s2-ch'+(tagCls?' '+tagCls:'');
+    var tag=isCore(e)?'<span class="s2t" style="background:'+c+'22;color:'+c+'">核心</span>':'';
+    return'<span class="'+cls+'"><span class="s2n">'+esc(e.name)+'</span>'+tag+'</span>';
+  }
+  function plg(pl,c,items,cls){
+    if(!items||!items.length)return'';
+    var h='<div class="s2-plg"><div class="s2psep"></div><div class="s2ph" style="color:'+c+'">'+pl+' · '+items.length+'</div><div class="s2-chips">';
+    items.forEach(function(e){h+=chip(e,c,cls);});return h+'</div></div>';
+  }
 
-  // 收集数据
-  var data=[];var secData=[];var H='';
-  ALL_PLS.forEach(function(pl,i){
-    var c=PL_COLORS[pl],g=plGroups[pl],lead=getLead(pl);
-    var act=g.primary.filter(function(e){return e.st==='在职';}).length;
-    var part=g.primary.filter(function(e){return e.st==='兼职';}).length;
-    var pend=g.pending.length,t=act+part+pend;
-    var allM=g.primary.filter(function(e){return e.st==='在职'||e.st==='兼职';});
-    var cores=allM.filter(isCore);
-    var sec=g.secondary.filter(function(e){return !isLead(e);});
-    data.push({pl,c,act,part,pend,t,lead,allM,cores,sec,g});
+  // 按 4 维度聚合
+  var dims={rd:[],dl:[],sec:[],pend:[]};
+  var total={act:0,part:0,pend:0,sec:0};
+  ALL_PLS.forEach(function(pl){
+    var g=plGroups[pl],c=PL_COLORS[pl];
+    var lead=getLead(pl);
+    var priOthers=g.primary.filter(function(e){return!lead||e.name!==lead.name;});
+    // 研发侧
+    var rds=priOthers.filter(function(e){return e.dept==='研发部';});
+    if(rds.length)dims.rd.push({pl,c,items:rds});
+    // 交付侧
+    var dls=priOthers.filter(function(e){return e.dept==='交付部';});
+    if(dls.length)dims.dl.push({pl,c,items:dls});
+    // 跨线
+    var secs=g.secondary.filter(function(e){return !g.primary.find(function(x){return x.name===e.name;})&&!isLead(e);});
+    if(secs.length)dims.sec.push({pl,c,items:secs});
+    // 待招
+    if(g.pending.length)dims.pend.push({pl,c,items:g.pending});
+    // 统计
+    total.act+=g.primary.filter(function(e){return e.st==='在职';}).length;
+    total.part+=g.primary.filter(function(e){return e.st==='兼职';}).length;
+    total.pend+=g.pending.length;
+    total.sec+=secs.length;
   });
 
-  // Row 0: 表头
-  H+='<div class="sec-row">';
-  data.forEach(function(d){
-    H+='<div class="sec-cell"><div class="schd" style="background:'+d.c+'">';
-    H+='<div class="sc-pl">'+d.pl+'</div>';
-    if(d.lead)H+='<div class="sc-lead">'+esc(d.lead.name)+' · '+esc(d.lead.title)+'</div>';
-    H+='<div class="sc-total">'+d.act+'在职'+(d.part?' · '+d.part+'兼职':'')+(d.pend?' · '+d.pend+'待招':'')+'</div>';
-    H+='</div></div>';
-  });
-  H+='</div>';
-
-  // Row 1: 人力概况
-  H+='<div class="sec-row">';
-  data.forEach(function(d){
-    H+='<div class="sec-cell"><div class="scc"><div class="scc-title">人力概况</div>';
-    H+='<div class="scc-big" style="color:'+d.c+'">'+d.t+'</div>';
-    H+='<div class="scc-label">总人力</div>';
-    if(d.t>0){H+='<div class="scc-bar">';
-      if(d.act)H+='<div style="flex:'+d.act+';background:#10b981"></div>';
-      if(d.part)H+='<div style="flex:'+d.part+';background:#d97706"></div>';
-      if(d.pend)H+='<div style="flex:'+d.pend+';background:#CBD5E1"></div>';
-    H+='</div>';}
-    H+='<div class="scc-st">';
-    H+='<div class="si"><span class="si-dot" style="background:#10b981"></span>在职 '+d.act+'</div>';
-    if(d.part)H+='<div class="si"><span class="si-dot" style="background:#d97706"></span>兼职 '+d.part+'</div>';
-    if(d.pend)H+='<div class="si"><span class="si-dot" style="background:#CBD5E1"></span>待招 '+d.pend+'</div>';
-    H+='</div>';
-    if(d.sec.length)H+='<div style="font-size:.75vw;color:#94A3B8;margin-top:.1vw">&#x21C4; '+d.sec.length+'人跨线辅助</div>';
-    H+='</div></div>';
-  });
-  H+='</div>';
-
-  // Row 2: 核心团队
-  H+='<div class="sec-row">';
-  data.forEach(function(d){
-    H+='<div class="sec-cell"><div class="scc"><div class="scc-title">核心团队</div>';
-    if(d.allM.length){
-      H+='<div class="scc-mem">';
-      if(d.lead)H+='<div style="font-weight:700;color:'+d.c+';font-size:1.1vw;margin-bottom:.15vw">&#x1F53D; '+esc(d.lead.name)+'</div>';
-      var others=d.cores.filter(function(e){return e!==d.lead;});
-      if(others.length)H+='<div>核心：'+others.map(function(e){return '<span class="core" style="color:'+d.c+'">'+esc(e.name)+'</span>';}).join(sep)+'</div>';
-      var normals=d.allM.filter(function(e){return !isCore(e);});
-      if(normals.length){
-        var nm=normals.slice(0,6);
-        H+='<div style="margin-top:.08vw">'+nm.map(function(e){return esc(e.name);}).join(sep)+'</div>';
-        if(normals.length>6)H+='<div class="more">+ '+(normals.length-6)+'人</div>';
+  var H='';
+  // 4 列卡片
+  var dimConfs=[
+    {key:'rd',title:'研发侧',color:'#1e40af'},
+    {key:'dl',title:'交付侧',color:'#065f46'},
+    {key:'sec',title:'跨线协作',color:'#92400E'},
+    {key:'pend',title:'待招',color:'#64748B'}
+  ];
+  H+='<div class="s2-wrap">';
+  dimConfs.forEach(function(dc){
+    var items=dims[dc.key];
+    var cnt=items.reduce(function(s,i){return s+i.items.length;},0);
+    H+='<div class="s2-col"><div class="s2-card"><div class="s2h" style="background:'+dc.color+'">'+dc.title+'<span class="s2cnt">'+cnt+(dc.key==='pend'?'岗':'人')+'</span></div><div class="s2b">';
+    items.forEach(function(g,i){
+      if(dc.key==='sec'){
+        var targetName=g.pl;
+        H+=plg('协助'+targetName,g.c,g.items,'sec');
+      }else if(dc.key==='pend'){
+        H+=plg(g.pl,g.c,g.items,'pend');
+      }else{
+        H+=plg(g.pl,g.c,g.items);
       }
-      H+='</div>';
-    }else{H+='<div class="scc-empty">暂无人员</div>';}
+    });
     H+='</div></div>';
+    // Stats bar after last card
+    if(dc.key==='pend'){
+      H+='<div class="s2-stats"><span><b style="color:#10b981">'+total.act+'</b> 在职</span><span><b style="color:#d97706">'+total.part+'</b> 兼职</span><span><b style="color:#94A3B8">'+total.pend+'</b> 待招</span><span><b style="color:#6366F1">'+total.sec+'</b> 跨线协作</span></div>';
+    }
+    H+='</div>';
   });
   H+='</div>';
-
-  // Row 3: 待招需求
-  H+='<div class="sec-row">';
-  data.forEach(function(d){
-    var hasPend=d.pend>0;
-    H+='<div class="sec-cell"><div class="scc" style="'+(hasPend?'':'background:#F8FAFC')+'"><div class="scc-title">待招需求</div>';
-    if(hasPend){
-      H+='<div class="scc-big" style="color:#94A3B8">'+d.pend+'</div><div class="scc-label">岗位</div>';
-      H+='<div class="scc-pend">';
-      d.g.pending.slice(0,4).forEach(function(e){
-        var short=e.name.replace(/[（(].*[）)]/g,'');
-        H+='<div class="pi"><span class="pn">'+esc(short)+'</span><span class="pd">'+esc(e.note||e.title)+'</span></div>';
-      });
-      if(d.g.pending.length>4)H+='<div style="font-size:.6vw;color:#94A3B8;margin-top:.08vw">+ '+(d.g.pending.length-4)+'个岗位</div>';
-      H+='</div>';
-    }else{H+='<div class="scc-empty">暂无待招需求</div>';}
-    H+='</div></div>';
-  });
-  H+='</div>';
-
-  // Row 4: 跨线协作
-  H+='<div class="sec-row">';
-  data.forEach(function(d){
-    var hasSec=d.sec.length>0;
-    H+='<div class="sec-cell"><div class="scc" style="'+(hasSec?'':'background:#F8FAFC')+'"><div class="scc-title">跨线协作</div>';
-    if(hasSec){
-      H+='<div class="scc-big" style="color:'+d.c+'">'+d.sec.length+'</div><div class="scc-label">辅助人员</div>';
-      H+='<div class="scc-sec" style="margin-top:.1vw">';
-      d.sec.slice(0,4).forEach(function(e,i){
-        var from=e.pri?e.pri.replace(/&/g,'&amp;'):'';
-        H+=(i?sep:'')+esc(e.name)+'<span class="src">('+from+')</span>';
-      });
-      if(d.sec.length>4)H+='<div style="font-size:.6vw;color:#94A3B8;margin-top:.05vw">+ '+(d.sec.length-4)+'人</div>';
-      H+='</div>';
-    }else{H+='<div class="scc-empty">暂无跨线协作</div>';}
-    H+='</div></div>';
-  });
-  H+='</div>';
-
   document.getElementById('summaryCards').innerHTML=H;
 })();
 
@@ -634,18 +566,6 @@ ALL_PLS.forEach(function(pl,pi){
 document.getElementById('orgChartPL').innerHTML=renderOrgChart();
 document.getElementById('orgChartFunc').innerHTML=renderFuncChart();
 
-// === NAV ===
-(function(){
-  var slides=document.querySelectorAll('.slide'),dotsEl=document.getElementById('dots');
-  var prevBtn=document.getElementById('prevBtn'),nextBtn=document.getElementById('nextBtn'),slideNum=document.getElementById('slideNum');
-  var total=slides.length,current=0;
-  for(var i=0;i<total;i++){var dot=document.createElement('span');dot.className='dot'+(i===0?' active':'');dot.setAttribute('data-i',i);dot.onclick=function(){goTo(parseInt(this.getAttribute('data-i')));};dotsEl.appendChild(dot);}
-  slideNum.textContent='1/'+total;
-  function goTo(idx){if(idx<0||idx>=total)return;slides[current].classList.remove('active');dotsEl.children[current].classList.remove('active');current=idx;slides[current].classList.add('active');dotsEl.children[current].classList.add('active');slideNum.textContent=(current+1)+'/'+total;}
-  prevBtn.onclick=function(){goTo(current-1);};nextBtn.onclick=function(){goTo(current+1);};
-  document.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key==='ArrowDown'){e.preventDefault();goTo(current+1);}if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();goTo(current-1);}if(e.key===' '){e.preventDefault();goTo(current+1);}if(e.key==='Home'){e.preventDefault();goTo(0);}if(e.key==='End'){e.preventDefault();goTo(total-1);}});
-  var touchStartX=0;document.addEventListener('touchstart',function(e){touchStartX=e.touches[0].clientX;});document.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-touchStartX;if(Math.abs(dx)>60){goTo(dx<0?current+1:current-1);}});
-})();
 })();
 </script>
 
