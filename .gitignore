@@ -1,0 +1,5 @@
+# 玑之智能 · 组织分工汇报页 — Git 忽略规则
+node_modules/
+.DS_Store
+*_备份.html
+.tcb/

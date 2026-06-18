@@ -1,0 +1,119 @@
+name: CI/CD — Validate & Deploy to CloudBase
+
+# ============================================================
+# 玑之智能 · 组织分工汇报页 CI/CD 工作流
+# 触发：push master / PR → master
+# 流程：HTML 校验 → 云端部署 → CDN 刷新
+# ============================================================
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - '**.html'
+      - '**.css'
+      - '**.js'
+      - '**.csv'
+      - '.github/workflows/deploy.yml'
+      - 'scripts/**'
+  pull_request:
+    branches: [master]
+    paths:
+      - '**.html'
+      - '.github/workflows/deploy.yml'
+
+env:
+  CLOUDBASE_ENV_ID: ji-projects-d1g4i777v9f9d798e
+  CDN_BASE: https://6a69-ji-projects-d1g4i777v9f9d798e-1399547387.tcb.qcloud.la
+
+jobs:
+  # ────────────────────────────────────────────
+  # Stage 1：HTML 校验 + 静态分析
+  # ────────────────────────────────────────────
+  validate:
+    name: Validate HTML
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 代码
+        uses: actions/checkout@v4
+
+      - name: HTML 语法校验（html5validator）
+        run: |
+          # 安装 html5validator（Python 工具，基于 vnu.jar / validator.nu）
+          pip install html5validator
+          # 校验仓库中所有 .html 文件，忽略 Google Fonts 导入报错
+          html5validator --root . \
+            --match '*.html' \
+            --ignore 'CSS: Parse Error' \
+            --ignore 'CSS: Unrecognized' \
+            --ignore 'Bad value X-UA-Compatible' \
+            --ignore 'Trailing slash on void elements' \
+            --ignore 'Attribute "dk" not allowed' \
+            --ignore-re 'Element ".*" not allowed as child of element'
+
+      - name: 文件完整性检查
+        run: |
+          echo "=== HTML 文件列表 ==="
+          find . -name '*.html' -not -path './.git/*' | sort
+          echo ""
+          echo "=== 文件大小统计 ==="
+          find . -name '*.html' -not -path './.git/*' -exec ls -lh {} \; | awk '{print $5, $NF}'
+          echo ""
+          echo "=== file:// 本地引用检查（应无残留） ==="
+          if grep -r 'file://' --include='*.html' .; then
+            echo "⚠️  发现 file:// 本地引用，部署前需用 cloudbase-cdn-upload 上传"
+          else
+            echo "✅ 无 file:// 本地引用"
+          fi
+
+      - name: 链接有效性检查（可选）
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        run: |
+          # 提取 HTML 中所有 https?:// 外部链接
+          grep -ohP 'https?://[^"'\''<>\\s]+' $(find . -name '*.html' -not -path './.git/*') | sort -u > /tmp/links.txt
+          echo "发现 $(wc -l < /tmp/links.txt) 个外部链接"
+          # 只检查 tcb.qcloud.la（CloudBase CDN）的链接可达性
+          grep 'tcb.qcloud.la' /tmp/links.txt > /tmp/cdn_links.txt || true
+          if [ -s /tmp/cdn_links.txt ]; then
+            while IFS= read -r url; do
+              status=$(curl -sL -o /dev/null -w '%{http_code}' --connect-timeout 5 "$url" || echo "ERR")
+              echo "[$status] $url"
+            done < /tmp/cdn_links.txt
+          fi
+
+  # ────────────────────────────────────────────
+  # Stage 2：部署到 CloudBase 静态托管
+  # ────────────────────────────────────────────
+  deploy:
+    name: Deploy to CloudBase
+    needs: validate
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 代码
+        uses: actions/checkout@v4
+
+      - name: 安装 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: 安装 CloudBase SDK
+        run: npm install @cloudbase/node-sdk @cloudbase/manager-node
+
+      - name: 部署 HTML 到 CloudBase 静态托管
+        env:
+          TCB_SECRET_ID: ${{ secrets.TCB_SECRET_ID }}
+          TCB_SECRET_KEY: ${{ secrets.TCB_SECRET_KEY }}
+          TCB_ENV_ID: ${{ env.CLOUDBASE_ENV_ID }}
+        run: node scripts/deploy-to-cloudbase.js
+
+      - name: 记录部署日志
+        run: |
+          echo "## 🚀 部署完成" >> $GITHUB_STEP_SUMMARY
+          echo "**时间**: $(date '+%Y-%m-%d %H:%M:%S')" >> $GITHUB_STEP_SUMMARY
+          echo "**分支**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "**提交**: [${{ github.sha }}](${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }})" >> $GITHUB_STEP_SUMMARY
+          echo "**环境**: ${{ env.CLOUDBASE_ENV_ID }}" >> $GITHUB_STEP_SUMMARY
+          echo "**CDN**: ${{ env.CDN_BASE }}" >> $GITHUB_STEP_SUMMARY
